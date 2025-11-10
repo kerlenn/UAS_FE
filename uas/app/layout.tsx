@@ -34,7 +34,7 @@ export default function RootLayout({
         <main>
           {children}
         </main>
-        <Footer /> {/* 2. TAMBAHKAN FOOTER DI SINI */}
+        <Footer /> 
       </body>
     </html>
   );
