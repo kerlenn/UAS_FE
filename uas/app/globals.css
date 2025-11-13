@@ -153,31 +153,118 @@ header.sticky-top {
   background: linear-gradient(to right, #4FD1C5, #63B3ED, #667EEA, #9F7AEA, #B794F4); /* Pastikan background header juga solid */
 }
 
-/* Card Putih Besar */
+/* --- MAIN CARD WRAPPER (Container Putih Besar) --- */
 .main-card-wrapper {
   background-color: white;
-  border-radius: 30px; /* Radius sudut yang besar */
-  padding: 60px 20px;  /* Padding atas-bawah lebih besar (60px) */
+  border-radius: 30px;
+  padding: 60px 20px;
   margin-bottom: 40px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.05); /* Bayangan halus */
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
 }
 
-/* Card Kursus */
+/* --- CARD KURSUS (UPDATE DISINI) --- */
 .course-card {
   border-radius: 20px;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: none;
-  background-color: #667EEA;
+  /* Gunakan warna standar yang diminta */
+  background-color: #5b21b6; 
 }
+
 .course-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transform: translateY(-8px); /* Efek naik sedikit saat hover */
+  box-shadow: 0 12px 30px rgba(96, 37, 225, 0.4); /* Shadow ungu halus */
 }
+
+/* Bagian Bawah Kartu (Teks) */
 .course-info-bg {
-  background-color: #6246ea;
+  /* Pastikan background menyatu dengan kartu */
+  background-color: #5b21b6; 
+  color: #ffffff; /* Kontras Teks Putih */
+  padding: 24px; /* Padding diperbesar sedikit agar lebih lega */
+}
+
+/* Judul Kursus */
+.course-info-bg h5 {
+  font-weight: 700;
+  color: #ffffff !important;
+  margin-bottom: 8px;
+}
+
+/* Nama Instruktur */
+.course-info-bg p {
+  color: rgba(255, 255, 255, 0.9) !important; /* Putih agak transparan sedikit */
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+/* Tag Beginner / Video */
+.course-info-bg small {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.8) !important; /* Putih transparan */
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.contact-form-wrapper {
+  background-color: #5B21B6;
+  padding: 32px;
+  border-radius: 20px;
   color: white;
-  padding: 15px;
+  box-shadow: 0 4px 15px rgba(91, 33, 182, 0.3);
+}
+
+/* Input Field Custom */
+.contact-input {
+  width: 100%;
+  padding: 16px;
+  /* Border tipis putih transparan */
+  border: 2px solid rgba(255, 255, 255, 0.2) !important; 
+  border-radius: 12px !important;
+  font-size: 14px;
+  
+  /* Background transparan */
+  background-color: rgba(255, 255, 255, 0.1) !important; 
+  color: white !important;
+  
+  margin-bottom: 0; /* Diatur oleh gap Bootstrap */
+  transition: all 0.3s ease;
+}
+
+/* Warna Placeholder (Teks samar di dalam input) */
+.contact-input::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+  opacity: 1;
+}
+
+/* Efek saat diklik/fokus */
+.contact-input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+/* Tombol Submit */
+.submit-btn-custom {
+  width: 100%;
+  background-color: #FF6B35;
+  border: none;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.submit-btn-custom:hover {
+  background-color: #e55a2e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
 }
 
 .footer-link { color: #d1d5db; text-decoration: none; }
