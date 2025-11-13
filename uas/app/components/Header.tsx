@@ -4,11 +4,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { UserIcon } from "./UserIcon"; // Pastikan import ini sesuai path file kamu
+import { UserIcon } from "./UserIcon";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -16,13 +16,13 @@ export default function Header() {
 
   return (
     <>
-      {/* Tambahkan position-relative agar absolute child-nya mengacu ke header ini */}
+      {/* Gunakan 'xl' (extra large) sebagai batas breakpoint agar di laptop (1118px) masuk mode mobile */}
       <header className="sticky-top header-gradient py-3 position-relative">
         <div className="container-fluid px-4 px-md-5">
           <div className="d-flex align-items-center justify-content-between">
             
-            {/* Kiri: Navigasi Desktop */}
-            <div className="d-none d-lg-flex align-items-center gap-2">
+            {/* Kiri: Navigasi Desktop (Hanya muncul di XL ke atas) */}
+            <div className="d-none d-xl-flex align-items-center gap-2">
               <Link href="#hero" className="nav-link-custom active">Halaman Utama</Link>
               <Link href="#courses" className="nav-link-custom">Kursus</Link>
               <Link href="#contact" className="nav-link-custom">Hubungi Kami</Link>
@@ -31,15 +31,17 @@ export default function Header() {
             {/* Tengah: Logo */}
             <div className="position-absolute top-50 start-50 translate-middle">
               <Link href="#hero" className="d-flex align-items-center">
-                <Image src="/Logo.png" alt="SkillUp! Logo" width={150} height={50} style={{ height: '40px', width: 'auto' }} className="d-lg-none" />
-                <Image src="/Logo.png" alt="SkillUp! Logo" width={150} height={50} style={{ height: '50px', width: 'auto' }} className="d-none d-lg-block" />
+                {/* Logo Mobile (muncul di bawah XL) */}
+                <Image src="/Logo.png" alt="SkillUp! Logo" width={150} height={50} style={{ height: '40px', width: 'auto' }} className="d-xl-none" />
+                {/* Logo Desktop (muncul di XL ke atas) */}
+                <Image src="/Logo.png" alt="SkillUp! Logo" width={150} height={50} style={{ height: '50px', width: 'auto' }} className="d-none d-xl-block" />
               </Link>
             </div>
 
             {/* Kanan: Auth / Hamburger */}
             <div className="d-flex align-items-center gap-2 ms-auto">
-              {/* Desktop Auth */}
-              <div className="d-none d-lg-flex align-items-center gap-2">
+              {/* Desktop Auth (Hanya muncul di XL ke atas) */}
+              <div className="d-none d-xl-flex align-items-center gap-2">
                 {isLoggedIn ? (
                   <>
                     <span className="text-white fw-bold small me-2">Halo, User!</span>
@@ -55,9 +57,9 @@ export default function Header() {
                 )}
               </div>
 
-              {/* Mobile Hamburger */}
+              {/* Mobile Hamburger (Muncul di bawah XL) */}
               <button 
-                className="d-lg-none btn border-0 p-0 d-flex flex-column gap-1 justify-content-center align-items-end"
+                className="d-xl-none btn border-0 p-0 d-flex flex-column gap-1 justify-content-center align-items-end"
                 onClick={toggleMobileMenu}
                 style={{ width: '30px', height: '30px' }}
               >
@@ -69,11 +71,11 @@ export default function Header() {
           </div>
         </div>
 
-        {/* --- MOBILE MENU DROPDOWN (DIPINDAHKAN KE SINI) --- */}
+        {/* --- MOBILE MENU DROPDOWN --- */}
+        {/* Menu ini muncul jika toggle aktif DAN layar di bawah XL */}
         {isMobileMenuOpen && (
-          <div className="mobile-menu-wrapper p-4 shadow d-lg-none">
+          <div className="mobile-menu-wrapper p-4 shadow d-xl-none">
             <div className="d-flex flex-column gap-2 mb-3">
-              {/* Tambahkan text-white eksplisit */}
               <Link href="#hero" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Halaman Utama</Link>
               <Link href="#courses" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Kursus</Link>
               <Link href="#contact" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Hubungi Kami</Link>

@@ -269,3 +269,34 @@ header.sticky-top {
 
 .footer-link { color: #d1d5db; text-decoration: none; }
 .footer-link:hover { color: var(--primary-orange); }
+
+.footer-custom {
+  background-color: #1F2937; /* Warna latar gelap original */
+  color: white;
+}
+
+.text-footer-gray {
+  color: #d1d5db; /* Warna teks abu-abu terang */
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* Link di footer saat di-hover jadi oranye */
+a.text-footer-gray:hover {
+  color: var(--primary-orange);
+}
+
+/* Ukuran Icon di footer */
+.footer-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0; /* Agar icon tidak gepeng */
+  color: inherit;
+}
+
+/* Garis pemisah copyright */
+.footer-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
