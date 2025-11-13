@@ -4,12 +4,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { UserIcon } from "./UserIcon";
+import { UserIcon } from "./UserIcon"; // Pastikan import ini sesuai path file kamu
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
-  // Saya set 'false' agar Anda bisa melihat tampilan logged-out
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   const toggleMobileMenu = () => {
@@ -18,196 +16,88 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 h-[70px] bg-gradient-to-r from-[#4FD1C5] via-[#63B3ED] via-[#667EEA] via-[#9F7AEA] to-[#B794F4] px-5 py-4 shadow-md md:px-10">
-        <div className="relative mx-auto flex h-full w-full max-w-7xl items-center justify-between">
-          
-          {/* Header Kiri: Tampil di 'lg' (936px) ke atas */}
-          <div className="flex-1 lg:flex-none">
-            <nav className="hidden items-center gap-1 lg:flex"> {/* Ganti md: menjadi lg: */}
-              <Link
-                href="#hero"
-                className="nav-btn bg-[#FF6B35]"
+      {/* Tambahkan position-relative agar absolute child-nya mengacu ke header ini */}
+      <header className="sticky-top header-gradient py-3 position-relative">
+        <div className="container-fluid px-4 px-md-5">
+          <div className="d-flex align-items-center justify-content-between">
+            
+            {/* Kiri: Navigasi Desktop */}
+            <div className="d-none d-lg-flex align-items-center gap-2">
+              <Link href="#hero" className="nav-link-custom active">Halaman Utama</Link>
+              <Link href="#courses" className="nav-link-custom">Kursus</Link>
+              <Link href="#contact" className="nav-link-custom">Hubungi Kami</Link>
+            </div>
+
+            {/* Tengah: Logo */}
+            <div className="position-absolute top-50 start-50 translate-middle">
+              <Link href="#hero" className="d-flex align-items-center">
+                <Image src="/Logo.png" alt="SkillUp! Logo" width={150} height={50} style={{ height: '40px', width: 'auto' }} className="d-lg-none" />
+                <Image src="/Logo.png" alt="SkillUp! Logo" width={150} height={50} style={{ height: '50px', width: 'auto' }} className="d-none d-lg-block" />
+              </Link>
+            </div>
+
+            {/* Kanan: Auth / Hamburger */}
+            <div className="d-flex align-items-center gap-2 ms-auto">
+              {/* Desktop Auth */}
+              <div className="d-none d-lg-flex align-items-center gap-2">
+                {isLoggedIn ? (
+                  <>
+                    <span className="text-white fw-bold small me-2">Halo, User!</span>
+                    <Link href="/riwayat" className="btn-custom-orange">Riwayat</Link>
+                    <Link href="/profile" className="btn-custom-orange rounded-circle d-flex align-items-center justify-content-center p-0" style={{width: '35px', height: '35px'}}><UserIcon className="text-white" /></Link>
+                    <button onClick={() => setIsLoggedIn(false)} className="btn-custom-outline">Keluar</button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" className="btn-custom-outline">Masuk</Link>
+                    <Link href="/signup" className="btn-custom-orange">Daftar</Link>
+                  </>
+                )}
+              </div>
+
+              {/* Mobile Hamburger */}
+              <button 
+                className="d-lg-none btn border-0 p-0 d-flex flex-column gap-1 justify-content-center align-items-end"
+                onClick={toggleMobileMenu}
+                style={{ width: '30px', height: '30px' }}
               >
-                Halaman Utama
-              </Link>
-              <Link href="#courses" className="nav-btn">
-                Kursus
-              </Link>
-              <Link href="#contact" className="nav-btn">
-                Hubungi Kami
-              </Link>
-            </nav>
-          </div>
-
-          {/* Header Tengah: Logo */}
-          <div className="flex-shrink-0 lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"> {/* Ganti md: menjadi lg: */}
-            <Link href="#hero" className="flex items-center">
-              <Image
-                src="/Logo.png"
-                alt="SkillUp! Logo"
-                width={150} 
-                height={50} 
-                className="h-[40px] w-auto lg:h-[50px]" // h-[40px] di mobile, lg:h-[50px] di desktop
-                priority
-              />
-            </Link>
-          </div>
-
-          {/* Header Kanan: Tampil di 'lg' (936px) ke atas */}
-          <div className="flex flex-1 items-center justify-end gap-1.5 lg:flex-none"> {/* Ganti md: menjadi lg: */}
-            {isLoggedIn ? (
-              // Tampilan Logged In
-              <div className="hidden items-center gap-1.5 lg:flex"> {/* Ganti md: menjadi lg: */}
-                <span className="hidden text-xs font-semibold text-white lg:block">
-                  Halo, Mohammad Yusuf B!
-                </span>
-                <Link
-                  href="/riwayat" 
-                  className="rounded-full bg-[#FF6B35] px-3 py-1.5 text-xs font-semibold text-white transition-all duration-300 ease-in-out hover:bg-[#e55a2e]"
-                >
-                  Riwayat Pembayaran
-                </Link>
-                <Link
-                  href="/profile" 
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FF6B35] text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-[#e55a2e]"
-                >
-                  <UserIcon className="h-3.5 w-3.5" />
-                </Link>
-                <button
-                  onClick={() => setIsLoggedIn(false)} 
-                  className="rounded-full border-2 border-white px-3 py-1.5 text-xs font-semibold text-white transition-all duration-300 ease-in-out hover:bg-white/20"
-                >
-                  Keluar
-                </button>
-              </div>
-            ) : (
-              // Tampilan Logged Out
-              <div className="hidden items-center gap-1.5 lg:flex"> {/* Ganti md: menjadi lg: */}
-                <Link
-                  href="/login" 
-                  className="rounded-full border-2 border-white px-4 py-2 text-xs font-semibold text-white transition-all duration-300 ease-in-out hover:bg-white/20"
-                >
-                  Masuk
-                </Link>
-                <Link
-                  href="/signup" 
-                  className="rounded-full border-2 border-[#FF6B35] bg-[#FF6B35] px-4 py-2 text-xs font-semibold text-white transition-all duration-300 ease-in-out hover:border-[#e55a2e] hover:bg-[#e55a2e]"
-                >
-                  Daftar
-                </Link>
-              </div>
-            )}
-
-            {/* Tombol Hamburger: Sembunyi di 'lg' (936px) ke atas */}
-            <button
-              className="flex flex-col gap-1.5 lg:hidden" // Ganti md: menjadi lg:
-              onClick={toggleMobileMenu}
-              aria-label="Toggle menu"
-            >
-              <span className="h-0.5 w-6 rounded-full bg-white transition-all duration-300 ease-in-out"></span>
-              <span className="h-0.5 w-6 rounded-full bg-white transition-all duration-300 ease-in-out"></span>
-              <span className="h-0.5 w-6 rounded-full bg-white transition-all duration-300 ease-in-out"></span>
-            </button>
+                <span className="w-100 bg-white rounded" style={{ height: '3px' }}></span>
+                <span className="w-100 bg-white rounded" style={{ height: '3px' }}></span>
+                <span className="w-100 bg-white rounded" style={{ height: '3px' }}></span>
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* --- MOBILE MENU DROPDOWN (DIPINDAHKAN KE SINI) --- */}
+        {isMobileMenuOpen && (
+          <div className="mobile-menu-wrapper p-4 shadow d-lg-none">
+            <div className="d-flex flex-column gap-2 mb-3">
+              {/* Tambahkan text-white eksplisit */}
+              <Link href="#hero" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Halaman Utama</Link>
+              <Link href="#courses" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Kursus</Link>
+              <Link href="#contact" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Hubungi Kami</Link>
+            </div>
+            
+            <hr className="border-white opacity-50 my-3"/>
+
+            <div className="d-grid gap-3">
+              {isLoggedIn ? (
+                <>
+                  <Link href="/profile" className="btn-custom-orange" onClick={toggleMobileMenu}>Profil Saya</Link>
+                  <Link href="/riwayat" className="btn-custom-orange" onClick={toggleMobileMenu}>Riwayat Pembayaran</Link>
+                  <button onClick={() => { setIsLoggedIn(false); toggleMobileMenu(); }} className="btn-custom-outline">Keluar</button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="btn-custom-outline" onClick={toggleMobileMenu}>Masuk</Link>
+                  <Link href="/signup" className="btn-custom-orange" onClick={toggleMobileMenu}>Daftar</Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </header>
-
-      {/* Menu Mobile: Sembunyi di 'lg' (936px) ke atas */}
-      {isMobileMenuOpen && (
-        <div className="fixed left-0 right-0 top-[70px] z-40 bg-gradient-to-r from-[#4FD1C5] via-[#63B3ED] via-[#667EEA] via-[#9F7AEA] to-[#B794F4] p-5 shadow-lg lg:hidden"> {/* Ganti md: menjadi lg: */}
-          <nav className="flex flex-col gap-2.5">
-            <Link
-              href="#hero"
-              className="nav-btn w-full px-5 py-3 text-left"
-              onClick={toggleMobileMenu}
-            >
-              Halaman Utama
-            </Link>
-            <Link
-              href="#courses"
-              className="nav-btn w-full px-5 py-3 text-left"
-              onClick={toggleMobileMenu}
-            >
-              Kursus
-            </Link>
-            <Link
-              href="#contact"
-              className="nav-btn w-full px-5 py-3 text-left"
-              onClick={toggleMobileMenu}
-            >
-              Hubungi Kami
-            </Link>
-          </nav>
-          
-          <div className="mt-4 flex flex-col gap-2.5 border-t border-white/20 pt-4">
-            {isLoggedIn ? (
-              // Tampilan Logged In (Mobile)
-              <>
-                <Link
-                  href="/profile"
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-[#FF6B35] px-5 py-2.5 text-center text-sm font-semibold text-white"
-                  onClick={toggleMobileMenu}
-                >
-                  <UserIcon className="h-4 w-4" />
-                  Profil Saya
-                </Link>
-                <Link
-                  href="/riwayat"
-                  className="w-full rounded-full bg-[#FF6B35] px-5 py-2.5 text-center text-sm font-semibold text-white"
-                  onClick={toggleMobileMenu}
-                >
-                  Riwayat Pembayaran
-                </Link>
-                <button
-                  onClick={() => {
-                    setIsLoggedIn(false);
-                    toggleMobileMenu();
-                  }}
-                  className="w-full rounded-full border-2 border-white px-5 py-2.5 text-center text-sm font-semibold text-white"
-                >
-                  Keluar
-                </button>
-              </>
-            ) : (
-              // Tampilan Logged Out (Mobile)
-              <>
-                <Link
-                  href="/login"
-                  className="w-full rounded-full border-2 border-white px-5 py-2.5 text-center text-sm font-semibold text-white"
-                  onClick={toggleMobileMenu}
-                >
-                  Masuk
-                </Link>
-                <Link
-                  href="/signup"
-                  className="w-full rounded-full border-2 border-[#FF6B35] bg-[#FF6B35] px-5 py-2.5 text-center text-sm font-semibold text-white"
-                  onClick={toggleMobileMenu}
-                >
-                  Daftar
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Style global untuk .nav-btn */}
-      <style jsx global>{`
-        .nav-btn {
-          color: white;
-          padding: 10px 15px;
-          border-radius: 20px;
-          font-weight: 600;
-          font-size: 13px;
-          transition: all 0.3s ease;
-          text-decoration: none;
-          display: inline-block;
-          white-space: nowrap;
-        }
-        .nav-btn:hover {
-          background-color: rgba(255, 255, 255, 0.2);
-        }
-      `}</style>
     </>
   );
 }
