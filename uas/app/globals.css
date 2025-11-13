@@ -1,26 +1,302 @@
-@import "tailwindcss";
+/* app/globals.css */
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary-orange: #FF6B35;
+  --primary-orange-hover: #e55a2e;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: linear-gradient(to bottom, #a8c0ff, #d4c3f8);
+  background-attachment: fixed;
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* --- HEADER STYLES --- */
+
+/* Gradient Header */
+.header-gradient {
+  background: linear-gradient(to right, #4FD1C5, #63B3ED, #667EEA, #9F7AEA, #B794F4);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Link Navigasi (Desktop & Mobile) */
+.nav-link-custom {
+  color: #ffffff !important; /* Putih Murni */
+  opacity: 1 !important;     /* Hapus transparansi */
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 700;          /* Lebih tebal agar jelas */
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: block;            /* Agar rapi di mobile */
+}
+
+.nav-link-custom:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+}
+
+.nav-link-custom.active {
+  background-color: var(--primary-orange);
+}
+
+/* Tombol Oranye (Daftar / Riwayat) */
+.btn-custom-orange {
+  background-color: var(--primary-orange);
+  border: 2px solid var(--primary-orange);
+  color: white !important;
+  border-radius: 50px;
+  padding: 8px 25px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.btn-custom-orange:hover {
+  background-color: var(--primary-orange-hover);
+  border-color: var(--primary-orange-hover);
+  color: white !important;
+}
+
+/* Tombol Outline (Masuk / Keluar) - REVERSED HOVER */
+.btn-custom-outline {
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  color: #ffffff !important;
+  border-radius: 50px;
+  padding: 8px 25px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+/* Efek Hover: Background jadi Putih, Teks jadi Oranye */
+.btn-custom-outline:hover {
+  background-color: #ffffff;
+  color: var(--primary-orange) !important;
+  border-color: #ffffff;
+}
+
+/* --- LAYOUT UTAMA --- */
+
+/* Posisi Logo Desktop */
+@media (min-width: 992px) { 
+  .logo-center-desktop {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Mobile Menu Wrapper */
+.mobile-menu-wrapper {
+  position: absolute; /* Ubah dari fixed ke absolute */
+  top: 100%;          /* Tempelkan persis di batas bawah header */
+  left: 0;
+  right: 0;
+  z-index: 9998;      /* Sedikit di bawah header utama */
+  
+  /* Background */
+  background-color: #667EEA; 
+  background-image: linear-gradient(to right, #4FD1C5, #63B3ED, #667EEA, #9F7AEA, #B794F4) !important;
+  
+  /* Tampilan */
+  box-shadow: 0 15px 20px rgba(0,0,0,0.1);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 25px;
+  
+  /* Animasi halus (opsional) */
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Nav Link Custom - Agar Lebih Putih & Tegas */
+.nav-link-custom {
+  color: #ffffff !important; /* Paksa Putih */
+  opacity: 1 !important;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: block;
+  
+  /* Tambahan agar tidak pudar */
+  text-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+}
+
+.mobile-menu-wrapper .nav-link-custom,
+.mobile-menu-wrapper .btn-custom-outline {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+
+}
+
+
+/* Pastikan header utama juga punya z-index tinggi agar tombol hamburger tetap bisa diklik */
+header.sticky-top {
+  z-index: 10000; /* Lebih tinggi dari menu mobile */
+  background: linear-gradient(to right, #4FD1C5, #63B3ED, #667EEA, #9F7AEA, #B794F4); /* Pastikan background header juga solid */
+}
+
+/* --- MAIN CARD WRAPPER (Container Putih Besar) --- */
+.main-card-wrapper {
+  background-color: white;
+  border-radius: 30px;
+  padding: 60px 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
+/* --- CARD KURSUS (UPDATE DISINI) --- */
+.course-card {
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  /* Gunakan warna standar yang diminta */
+  background-color: #5b21b6; 
+}
+
+.course-card:hover {
+  transform: translateY(-8px); /* Efek naik sedikit saat hover */
+  box-shadow: 0 12px 30px rgba(96, 37, 225, 0.4); /* Shadow ungu halus */
+}
+
+/* Bagian Bawah Kartu (Teks) */
+.course-info-bg {
+  /* Pastikan background menyatu dengan kartu */
+  background-color: #5b21b6; 
+  color: #ffffff; /* Kontras Teks Putih */
+  padding: 24px; /* Padding diperbesar sedikit agar lebih lega */
+}
+
+/* Judul Kursus */
+.course-info-bg h5 {
+  font-weight: 700;
+  color: #ffffff !important;
+  margin-bottom: 8px;
+}
+
+/* Nama Instruktur */
+.course-info-bg p {
+  color: rgba(255, 255, 255, 0.9) !important; /* Putih agak transparan sedikit */
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+/* Tag Beginner / Video */
+.course-info-bg small {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.8) !important; /* Putih transparan */
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.contact-form-wrapper {
+  background-color: #5B21B6;
+  padding: 32px;
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(91, 33, 182, 0.3);
+}
+
+/* Input Field Custom */
+.contact-input {
+  width: 100%;
+  padding: 16px;
+  /* Border tipis putih transparan */
+  border: 2px solid rgba(255, 255, 255, 0.2) !important; 
+  border-radius: 12px !important;
+  font-size: 14px;
+  
+  /* Background transparan */
+  background-color: rgba(255, 255, 255, 0.1) !important; 
+  color: white !important;
+  
+  margin-bottom: 0; /* Diatur oleh gap Bootstrap */
+  transition: all 0.3s ease;
+}
+
+/* Warna Placeholder (Teks samar di dalam input) */
+.contact-input::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+  opacity: 1;
+}
+
+/* Efek saat diklik/fokus */
+.contact-input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+/* Tombol Submit */
+.submit-btn-custom {
+  width: 100%;
+  background-color: #FF6B35;
+  border: none;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.submit-btn-custom:hover {
+  background-color: #e55a2e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.footer-link { color: #d1d5db; text-decoration: none; }
+.footer-link:hover { color: var(--primary-orange); }
+
+.footer-custom {
+  background-color: #1F2937; /* Warna latar gelap original */
+  color: white;
+}
+
+.text-footer-gray {
+  color: #d1d5db; /* Warna teks abu-abu terang */
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* Link di footer saat di-hover jadi oranye */
+a.text-footer-gray:hover {
+  color: var(--primary-orange);
+}
+
+/* Ukuran Icon di footer */
+.footer-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0; /* Agar icon tidak gepeng */
+  color: inherit;
+}
+
+/* Garis pemisah copyright */
+.footer-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
