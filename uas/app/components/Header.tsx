@@ -5,10 +5,12 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { UserIcon } from "./UserIcon";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const pathname = usePathname();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -23,9 +25,9 @@ export default function Header() {
             
             {/* Kiri: Navigasi Desktop (Hanya muncul di XL ke atas) */}
             <div className="d-none d-xl-flex align-items-center gap-2">
-              <Link href="#hero" className="nav-link-custom active">Halaman Utama</Link>
-              <Link href="#courses" className="nav-link-custom">Kursus</Link>
-              <Link href="#contact" className="nav-link-custom">Hubungi Kami</Link>
+              <Link href="/" className={`nav-link-custom ${pathname === '/' ? 'active' : ''}`}>Halaman Utama</Link>
+              <Link href="/kursus" className={`nav-link-custom ${pathname === '/kursus' ? 'active' : ''}`}>Kursus</Link>
+              <Link href="/#contact" className="nav-link-custom">Hubungi Kami</Link>
             </div>
 
             {/* Tengah: Logo */}
@@ -71,14 +73,12 @@ export default function Header() {
           </div>
         </div>
 
-        {/* --- MOBILE MENU DROPDOWN --- */}
-        {/* Menu ini muncul jika toggle aktif DAN layar di bawah XL */}
         {isMobileMenuOpen && (
           <div className="mobile-menu-wrapper p-4 shadow d-xl-none">
             <div className="d-flex flex-column gap-2 mb-3">
-              <Link href="#hero" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Halaman Utama</Link>
-              <Link href="#courses" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Kursus</Link>
-              <Link href="#contact" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Hubungi Kami</Link>
+              <Link href="/" className={`nav-link-custom ps-3 text-white ${pathname === '/' ? 'active' : ''}`} onClick={toggleMobileMenu}>Halaman Utama</Link>
+              <Link href="/kursus" className={`nav-link-custom ps-3 text-white ${pathname === '/kursus' ? 'active' : ''}`} onClick={toggleMobileMenu}>Kursus</Link>
+              <Link href="/#contact" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Hubungi Kami</Link>
             </div>
             
             <hr className="border-white opacity-50 my-3"/>
