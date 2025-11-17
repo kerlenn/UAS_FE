@@ -1,0 +1,232 @@
+/* CATATAN: 
+   Style untuk <html>, <body>, <header>, <footer>, dan .container 
+   dari file asli produkList.css DIBUANG 
+   karena sudah di-handle oleh layout.tsx dan globals.css (Bootstrap).
+*/
+
+/* ===== PENGATURAN DASAR & VARIABEL WARNA (dapat disesuaikan) ===== */
+:root {
+    --primary-orange: #FE5E00; 
+    --light-blue: #D6E4F0;
+    --dark-blue: #1A2836;
+    --text-color: #333;
+    --bg-color: #F0F4F8;
+    --white: #FFFFFF;
+    --border-color: #E0E0E0;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== MAIN CONTENT ===== */
+/* Pastikan main content di dalam wrapper */
+.container main {
+    padding: 30px 0;
+}
+
+.container .main-header {
+    background-color: var(--white);
+    padding: 30px 35px; 
+    border-radius: 20px; 
+    margin-bottom: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.container .breadcrumbs p {
+    color: #333; 
+    font-weight: 600; 
+    margin-bottom: 5px; 
+    font-size: 1.1em;
+}
+
+.container .main-header h2 {
+    font-size: 3em; 
+    font-weight: 800; 
+    margin-bottom: 8px;
+    color: #1A2836;
+}
+
+.container .main-header p {
+    color: #555; 
+    font-size: 1.1em;
+}
+
+/* CATATAN: 
+   Class '.content-wrapper' tidak diperlukan lagi 
+   karena kita sudah pakai grid Bootstrap (row/col)
+*/
+
+
+/* ===== SIDEBAR FILTER ===== */
+.container .filters {
+    background-color: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    height: fit-content;
+    width: 100%; /* Biarkan Bootstrap yg mengatur lebar via col-* */
+}
+
+.container .filter-group {
+    margin-bottom: 25px;
+}
+
+.container .filter-group h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.container .filter-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.container .filter-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    cursor: pointer;
+    accent-color: var(--primary-orange);
+}
+
+.container .filter-option label {
+    font-size: 0.95em;
+    cursor: pointer;
+    color: #555;
+}
+
+.container .list-header {
+  background-color: var(--white);
+  padding: 8px 16px; 
+  border-radius: 12px;
+  margin-bottom: 20px;
+  width: fit-content;
+  margin-left: auto; 
+  margin-right: 0;   
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.container .list-header p {
+  margin-bottom: 0;
+  font-weight: 500;
+  color: #555;
+}
+
+
+.container .course-card {
+    display: flex; 
+    gap: 25px;
+    background-color: #6025E1;
+    color: var(--white);
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    max-width: 100%; /* Ubah agar responsif di dalam kolom */
+}
+
+.container .card-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 40%; /* Izinkan gambar mengecil */
+    min-width: 150px; /* Agar tidak terlalu kecil */
+}
+
+/* Target img di dalam wrapper next/image */
+.container .card-left img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: contain; /* Sesuai CSS asli */
+}
+
+.container .card-left .price {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.container .card-right {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 60%; /* Beri lebih banyak ruang untuk teks */
+}
+
+.container .course-info {
+    flex-grow: 1; 
+}
+.container .course-info h4 { font-size: 1.6em; font-weight: 700; margin-bottom: 10px; }
+.container .course-info .description { font-size: 0.95em; opacity: 0.9; margin-bottom: 12px; line-height: 1.6; }
+.container .course-info .instructor { font-size: 0.9em; font-weight: 500; opacity: 0.8; }
+.container .course-info .meta-info { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.85em; opacity: 0.7; margin-top: 15px; }
+
+.container .buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    align-self: flex-end;
+}
+
+.container .btn-card {
+    background-color: var(--primary-orange);
+    color: var(--white);
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1em;
+    text-decoration: none;
+    border: 2px solid var(--primary-orange);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.container .btn-card:hover {
+    background-color: var(--white);
+    color: var(--primary-orange);
+}
+
+
+@media (max-width: 991px) { 
+    .container .list-header {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .container .course-list {
+        width: 100%;           
+        max-width: 550px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .container .course-card {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .container .card-left {
+        flex-basis: auto; 
+        align-items: center;
+    }
+
+    .container .card-left img {
+        width: 100%;
+        height: auto; 
+    }
+
+    .container .card-left .price {
+        font-size: 1.8em; 
+    }
+
+    .container .card-right {
+        align-items: center; 
+        text-align: center;  
+    }
+
+    .container .buttons {
+        align-self: center;
+    }
+}

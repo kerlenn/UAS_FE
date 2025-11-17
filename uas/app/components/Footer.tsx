@@ -1,4 +1,3 @@
-// app/components/Footer.tsx
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,11 +10,8 @@ export default function Footer() {
   return (
     <footer className="footer-custom pt-5 pb-4 mt-5">
       <div className="container">
-        {/* Gunakan row dan justify-content-between agar layout rapi */}
         <div className="row gy-4 justify-content-between">
           
-          {/* Section 1: Logo & About (Lebar 5/12) */}
-          {/* col-md-5: Di layar laptop/tablet akan makan 5 kolom, jadi sejajar */}
           <div className="col-12 col-md-5 mb-2">
             <Link href="#hero" className="d-inline-block mb-3">
               <Image
@@ -31,7 +27,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Section 2: Kursus (Lebar 2/12) */}
           <div className="col-6 col-md-2">
             <h5 className="fw-bold mb-3 text-white">Kursus</h5>
             <ul className="list-unstyled d-flex flex-column gap-2">
@@ -42,7 +37,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Section 3: Media Sosial (Lebar 2/12) */}
           <div className="col-6 col-md-2">
             <h5 className="fw-bold mb-3 text-white">Media Sosial</h5>
             <ul className="list-unstyled d-flex flex-column gap-2">
@@ -54,7 +48,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Section 4: Hubungi Kami (Lebar 3/12) */}
           <div className="col-12 col-md-3">
             <h5 className="fw-bold mb-3 text-white">Hubungi Kami</h5>
             <ul className="list-unstyled d-flex flex-column gap-3">
@@ -67,7 +60,6 @@ export default function Footer() {
 
         </div>
         
-        {/* Footer Bottom */}
         <div className="footer-divider mt-5 pt-4 text-center">
           <p className="text-secondary small mb-0">© SkillUp. All rights reserved</p>
         </div>

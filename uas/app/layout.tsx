@@ -29,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true} 
       >
         <Header />
         <main className="container-fluid px-4 px-md-5 mt-4">

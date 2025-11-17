@@ -3,9 +3,10 @@
 
 import { useState, FormEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
+
 
 export default function HomePage() {
-  // ... (Bagian logic state & handler handleContactSubmit JANGAN DIUBAH, tetap sama) ...
   const [contactMessage, setContactMessage] = useState<{
     text: string;
     type: "success" | "error";
@@ -131,9 +132,9 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-5">
-            <a href="produkList.html" className="btn-custom-orange">
+            <Link href="/kursus" className="btn-custom-orange">
               Lebih Banyak...
-            </a>
+            </Link>
           </div>
         </section>
 
