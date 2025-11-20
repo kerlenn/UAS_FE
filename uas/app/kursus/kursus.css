@@ -1,10 +1,3 @@
-/* CATATAN: 
-   Style untuk <html>, <body>, <header>, <footer>, dan .container 
-   dari file asli produkList.css DIBUANG 
-   karena sudah di-handle oleh layout.tsx dan globals.css (Bootstrap).
-*/
-
-/* ===== PENGATURAN DASAR & VARIABEL WARNA (dapat disesuaikan) ===== */
 :root {
     --primary-orange: #FE5E00; 
     --light-blue: #D6E4F0;
@@ -16,8 +9,6 @@
     --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* ===== MAIN CONTENT ===== */
-/* Pastikan main content di dalam wrapper */
 .container main {
     padding: 30px 0;
 }
@@ -49,19 +40,12 @@
     font-size: 1.1em;
 }
 
-/* CATATAN: 
-   Class '.content-wrapper' tidak diperlukan lagi 
-   karena kita sudah pakai grid Bootstrap (row/col)
-*/
-
-
-/* ===== SIDEBAR FILTER ===== */
 .container .filters {
     background-color: var(--white);
     padding: 25px;
     border-radius: 12px;
     height: fit-content;
-    width: 100%; /* Biarkan Bootstrap yg mengatur lebar via col-* */
+    width: 100%; 
 }
 
 .container .filter-group {
@@ -123,23 +107,22 @@
     margin-bottom: 25px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     padding: 25px;
-    max-width: 100%; /* Ubah agar responsif di dalam kolom */
+    max-width: 100%; 
 }
 
 .container .card-left {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex: 1 1 40%; /* Izinkan gambar mengecil */
-    min-width: 150px; /* Agar tidak terlalu kecil */
+    flex: 1 1 40%; 
+    min-width: 150px; 
 }
 
-/* Target img di dalam wrapper next/image */
 .container .card-left img {
     width: 100%;
     height: auto;
     border-radius: 8px;
-    object-fit: contain; /* Sesuai CSS asli */
+    object-fit: contain; 
 }
 
 .container .card-left .price {
@@ -151,7 +134,7 @@
 .container .card-right {
     display: flex;
     flex-direction: column;
-    flex: 1 1 60%; /* Beri lebih banyak ruang untuk teks */
+    flex: 1 1 60%; 
 }
 
 .container .course-info {
