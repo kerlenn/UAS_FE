@@ -49,7 +49,6 @@ export default function HomePage() {
     <div className="py-4">
       <main className="container">
         
-        {/* === HERO SECTION === */}
         <section className="main-card-wrapper p-4 p-lg-5" id="hero">
           <div className="row align-items-center gy-4">
             <div className="col-12 col-lg-6 text-center text-lg-start">
@@ -74,7 +73,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* === COURSES SECTION === */}
         <section className="main-card-wrapper" id="courses">
           <div className="text-center mb-5">
             <h2 className="fw-bold mb-3 text-dark" style={{ fontSize: '1.75rem' }}>Siap Menata Ulang Karier Anda?</h2>
@@ -82,7 +80,6 @@ export default function HomePage() {
           </div>
 
           <div className="row g-4 justify-content-center">
-            {/* Course 1 */}
             <div className="col-12 col-md-6 col-lg-4">
               <a href="/DetailBlender.html" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
@@ -98,7 +95,6 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* Course 2 */}
             <div className="col-12 col-md-6 col-lg-4">
               <a href="/DetailAdobe.html" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
@@ -114,7 +110,6 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* Course 3 */}
             <div className="col-12 col-md-6 col-lg-4">
               <a href="/DetailStruktur.html" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
@@ -138,11 +133,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* === CONTACT SECTION === */}
         <section className="main-card-wrapper" id="contact">
           <div className="row g-5 align-items-start">
             
-            {/* PERUBAHAN DISINI: Added ps-lg-5 ps-4 untuk geser teks ke kanan */}
             <div className="col-12 col-lg-6 ps-lg-5 ps-4">
               <h2 className="fw-bold mb-3 text-dark" style={{ fontSize: '1.75rem' }}>Hubungi Kami</h2>
               <p className="text-secondary">Kami siap membantu anda untuk menjawab pertanyaan.</p>

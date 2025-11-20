@@ -1,4 +1,3 @@
-/* app/globals.css */
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
 :root {
@@ -13,25 +12,21 @@ body {
   min-height: 100vh;
 }
 
-/* --- HEADER STYLES --- */
-
-/* Gradient Header */
 .header-gradient {
   background: linear-gradient(to right, #4FD1C5, #63B3ED, #667EEA, #9F7AEA, #B794F4);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* Link Navigasi (Desktop & Mobile) */
 .nav-link-custom {
-  color: #ffffff !important; /* Putih Murni */
-  opacity: 1 !important;     /* Hapus transparansi */
+  color: #ffffff !important;
+  opacity: 1 !important;    
   padding: 10px 20px;
   border-radius: 50px;
-  font-weight: 700;          /* Lebih tebal agar jelas */
+  font-weight: 700;          
   font-size: 15px;
   text-decoration: none;
   transition: all 0.3s ease;
-  display: block;            /* Agar rapi di mobile */
+  display: block;        
 }
 
 .nav-link-custom:hover {
@@ -43,7 +38,7 @@ body {
   background-color: var(--primary-orange);
 }
 
-/* Tombol Oranye (Daftar / Riwayat) */
+
 .btn-custom-orange {
   background-color: var(--primary-orange);
   border: 2px solid var(--primary-orange);
@@ -63,7 +58,6 @@ body {
   color: white !important;
 }
 
-/* Tombol Outline (Masuk / Keluar) - REVERSED HOVER */
 .btn-custom-outline {
   background-color: transparent;
   border: 2px solid #ffffff;
@@ -77,7 +71,6 @@ body {
   text-align: center;
 }
 
-/* Efek Hover: Background jadi Putih, Teks jadi Oranye */
 .btn-custom-outline:hover {
   background-color: #ffffff;
   color: var(--primary-orange) !important;
@@ -86,7 +79,6 @@ body {
 
 /* --- LAYOUT UTAMA --- */
 
-/* Posisi Logo Desktop */
 @media (min-width: 992px) { 
   .logo-center-desktop {
     position: absolute;
@@ -96,25 +88,20 @@ body {
   }
 }
 
-/* Mobile Menu Wrapper */
 .mobile-menu-wrapper {
-  position: absolute; /* Ubah dari fixed ke absolute */
-  top: 100%;          /* Tempelkan persis di batas bawah header */
+  position: absolute; 
+  top: 100%;          
   left: 0;
   right: 0;
-  z-index: 9998;      /* Sedikit di bawah header utama */
-  
-  /* Background */
+  z-index: 9998;      
   background-color: #667EEA; 
   background-image: linear-gradient(to right, #4FD1C5, #63B3ED, #667EEA, #9F7AEA, #B794F4) !important;
   
-  /* Tampilan */
   box-shadow: 0 15px 20px rgba(0,0,0,0.1);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   padding: 25px;
   
-  /* Animasi halus (opsional) */
   animation: slideDown 0.3s ease-out;
 }
 
@@ -123,9 +110,8 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Nav Link Custom - Agar Lebih Putih & Tegas */
 .nav-link-custom {
-  color: #ffffff !important; /* Paksa Putih */
+  color: #ffffff !important; 
   opacity: 1 !important;
   padding: 10px 20px;
   border-radius: 50px;
@@ -134,8 +120,6 @@ body {
   text-decoration: none;
   transition: all 0.3s ease;
   display: block;
-  
-  /* Tambahan agar tidak pudar */
   text-shadow: 0 1px 3px rgba(0,0,0,0.1); 
 }
 
@@ -147,13 +131,11 @@ body {
 }
 
 
-/* Pastikan header utama juga punya z-index tinggi agar tombol hamburger tetap bisa diklik */
 header.sticky-top {
-  z-index: 10000; /* Lebih tinggi dari menu mobile */
-  background: linear-gradient(to right, #4FD1C5, #63B3ED, #667EEA, #9F7AEA, #B794F4); /* Pastikan background header juga solid */
+  z-index: 10000; 
+  background: linear-gradient(to right, #4FD1C5, #63B3ED, #667EEA, #9F7AEA, #B794F4); 
 }
 
-/* --- MAIN CARD WRAPPER (Container Putih Besar) --- */
 .main-card-wrapper {
   background-color: white;
   border-radius: 30px;
@@ -162,27 +144,24 @@ header.sticky-top {
   box-shadow: 0 15px 35px rgba(0,0,0,0.05);
 }
 
-/* --- CARD KURSUS (UPDATE DISINI) --- */
 .course-card {
   border-radius: 20px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: none;
-  /* Gunakan warna standar yang diminta */
   background-color: #5b21b6; 
 }
 
 .course-card:hover {
-  transform: translateY(-8px); /* Efek naik sedikit saat hover */
-  box-shadow: 0 12px 30px rgba(96, 37, 225, 0.4); /* Shadow ungu halus */
+  transform: translateY(-8px); 
+  box-shadow: 0 12px 30px rgba(96, 37, 225, 0.4); 
 }
 
-/* Bagian Bawah Kartu (Teks) */
+
 .course-info-bg {
-  /* Pastikan background menyatu dengan kartu */
   background-color: #5b21b6; 
-  color: #ffffff; /* Kontras Teks Putih */
-  padding: 24px; /* Padding diperbesar sedikit agar lebih lega */
+  color: #ffffff;
+  padding: 24px; 
 }
 
 /* Judul Kursus */
@@ -199,7 +178,6 @@ header.sticky-top {
   margin-bottom: 16px;
 }
 
-/* Tag Beginner / Video */
 .course-info-bg small {
   display: inline-block;
   color: rgba(255, 255, 255, 0.8) !important; /* Putih transparan */
@@ -215,30 +193,25 @@ header.sticky-top {
   box-shadow: 0 4px 15px rgba(91, 33, 182, 0.3);
 }
 
-/* Input Field Custom */
 .contact-input {
   width: 100%;
   padding: 16px;
-  /* Border tipis putih transparan */
   border: 2px solid rgba(255, 255, 255, 0.2) !important; 
   border-radius: 12px !important;
   font-size: 14px;
   
-  /* Background transparan */
   background-color: rgba(255, 255, 255, 0.1) !important; 
   color: white !important;
   
-  margin-bottom: 0; /* Diatur oleh gap Bootstrap */
+  margin-bottom: 0;
   transition: all 0.3s ease;
 }
 
-/* Warna Placeholder (Teks samar di dalam input) */
 .contact-input::placeholder {
   color: rgba(255, 255, 255, 0.7) !important;
   opacity: 1;
 }
 
-/* Efek saat diklik/fokus */
 .contact-input:focus {
   outline: none;
   background-color: rgba(255, 255, 255, 0.2) !important;
@@ -246,7 +219,6 @@ header.sticky-top {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
-/* Tombol Submit */
 .submit-btn-custom {
   width: 100%;
   background-color: #FF6B35;
@@ -271,32 +243,29 @@ header.sticky-top {
 .footer-link:hover { color: var(--primary-orange); }
 
 .footer-custom {
-  background-color: #1F2937; /* Warna latar gelap original */
+  background-color: #1F2937;
   color: white;
 }
 
 .text-footer-gray {
-  color: #d1d5db; /* Warna teks abu-abu terang */
+  color: #d1d5db; 
   font-size: 0.9rem;
   font-weight: 400;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-/* Link di footer saat di-hover jadi oranye */
 a.text-footer-gray:hover {
   color: var(--primary-orange);
 }
 
-/* Ukuran Icon di footer */
 .footer-icon {
   width: 18px;
   height: 18px;
-  flex-shrink: 0; /* Agar icon tidak gepeng */
+  flex-shrink: 0; 
   color: inherit;
 }
 
-/* Garis pemisah copyright */
 .footer-divider {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }

@@ -1,27 +1,23 @@
-// 1. Ubah menjadi Client Component
 "use client";
 
-// 2. Import useMemo, hilangkan useEffect
 import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import './kursus.css';
 
-// --- Tipe Data untuk Kursus ---
 type Course = {
   id: number;
   title: string;
   description: string;
   instructor: string;
   image: string;
-  price: number; // Gunakan angka untuk filter
+  price: number; 
   level: 'Beginner' | 'Intermediate' | 'Professional';
   videoCount: number;
   materi: 'Adobe' | 'Blender' | 'Roblox' | 'Programming';
-  slug: string; // Untuk link (contoh: /DetailAdobe.html)
+  slug: string;
 };
 
-// --- Database Kursus (Hardcoded) ---
 const allCourses: Course[] = [
   {
     id: 1,
@@ -33,7 +29,7 @@ const allCourses: Course[] = [
     level: "Beginner",
     videoCount: 9,
     materi: "Adobe",
-    slug: "/DetailAdobe.html"
+    slug: "/kursus_adobe"
   },
   {
     id: 2,
@@ -85,7 +81,6 @@ const allCourses: Course[] = [
   }
 ];
 
-// --- Tipe Data untuk Filter ---
 type Filters = {
   video: string[];
   materi: string[];
@@ -101,7 +96,6 @@ export default function KursusPage() {
     level: [],
   });
 
-  // 5. Fungsi untuk menangani perubahan checkbox
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
     
@@ -122,13 +116,9 @@ export default function KursusPage() {
     });
   };
 
-  // 3. GANTI 'useState' + 'useEffect' DENGAN 'useMemo'
-  //    'filteredCourses' sekarang adalah variabel hasil kalkulasi, bukan state.
-  //    Dia akan otomatis dihitung ulang HANYA JIKA 'filters' berubah.
   const filteredCourses = useMemo(() => {
     let tempCourses = [...allCourses];
 
-    // Filter Logika: Video
     if (filters.video.length > 0) {
       tempCourses = tempCourses.filter(course => 
         filters.video.some(range => {
@@ -139,14 +129,12 @@ export default function KursusPage() {
       );
     }
 
-    // Filter Logika: Materi
     if (filters.materi.length > 0) {
       tempCourses = tempCourses.filter(course => 
         filters.materi.includes(course.materi)
       );
     }
 
-    // Filter Logika: Harga
     if (filters.harga.length > 0) {
       tempCourses = tempCourses.filter(course => 
         filters.harga.some(range => {
@@ -158,21 +146,18 @@ export default function KursusPage() {
       );
     }
 
-    // Filter Logika: Level
     if (filters.level.length > 0) {
       tempCourses = tempCourses.filter(course => 
         filters.level.includes(course.level)
       );
     }
 
-    // 4. Kembalikan hasil kalkulasi
     return tempCourses;
 
-  }, [filters]); // <-- Dependency array: jalankan ini saat 'filters' berubah
+  }, [filters]);
 
-  // (Wrapper .kursus-page-wrapper sudah dihapus)
   return (
-    <div className="container my-4"> {/* Menggunakan container Bootstrap */}
+    <div className="container my-4">
       <main>
         <div className="main-header">
           <div className="breadcrumbs">
@@ -183,10 +168,8 @@ export default function KursusPage() {
         </div>
 
         <div className="row g-4">
-          {/* Kolom Filter (Sidebar) */}
           <div className="col-lg-4 col-xl-3">
             <aside className="filters">
-              {/* --- Filter Video --- */}
               <div className="filter-group">
                 <h3>Banyak Video</h3>
                 <div className="filter-option">
@@ -199,7 +182,6 @@ export default function KursusPage() {
                 </div>
               </div>
 
-              {/* --- Filter Materi --- */}
               <div className="filter-group">
                 <h3>Materi</h3>
                 <div className="filter-option">
@@ -220,7 +202,6 @@ export default function KursusPage() {
                 </div>
               </div>
               
-              {/* --- Filter Harga --- */}
               <div className="filter-group">
                 <h3>Harga</h3>
                 <div className="filter-option">
@@ -237,7 +218,6 @@ export default function KursusPage() {
                 </div>
               </div>
 
-              {/* --- Filter Level --- */}
               <div className="filter-group">
                 <h3>Level</h3>
                 <div className="filter-option">
@@ -256,7 +236,6 @@ export default function KursusPage() {
             </aside>
           </div>
 
-          {/* Kolom Daftar Kursus (Konten Utama) */}
           <div className="col-lg-8 col-xl-9">
             <section className="course-list">
               <div className="list-header">
