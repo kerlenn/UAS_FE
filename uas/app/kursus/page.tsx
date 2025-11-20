@@ -41,7 +41,7 @@ const allCourses: Course[] = [
     level: "Intermediate",
     videoCount: 13,
     materi: "Programming",
-    slug: "/DetailStruktur.html"
+    slug: "/kursus_data_struktur"
   },
   {
     id: 3,

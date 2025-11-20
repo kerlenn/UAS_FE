@@ -1,4 +1,4 @@
-// uas/app/kursus/adobe-after-effects/page.tsx
+// uas/app/kursus_data_struktur/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "../styles/course-detail.css";
 
-export default function DetailAdobePage() {
+export default function DetailDataStrukturPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSection, setActiveSection] = useState("manfaat"); 
   const pathname = usePathname(); 
@@ -47,25 +47,20 @@ export default function DetailAdobePage() {
                 <span>&gt;</span>
                 <Link href="/kursus">Kursus</Link>
                 <span>&gt;</span>
-                <p>Adobe After Effects [2020]</p>
+                <p>Struktur Data [2020]</p>
             </div>
 
             <div className="detail-content-wrapper">
                 <div className="course-text-info">
-                <h2>Adobe After Effects [2020]</h2>
+                <h2>Kuliah Struktur Data [2020]</h2>
                 <p className="course-description">
-                    Adobe After Effects 2020 adalah salah satu platform pengeditan
-                    grafis gerak tercanggih di pasar multimedia saat ini. Dengan
-                    serangkaian fitur terbaru yang ditambahkan ke platform andalan
-                    ini, hadir pula serangkaian fitur yang bertujuan untuk
-                    menciptakan alur kerja yang lebih efisien. Membuat konten yang
-                    bermakna untuk berbagai format tujuan kini semakin mudah.
+                    Struktur data adalah fondasi dari ilmu komputer modern dan merupakan komponen inti dalam rekayasa perangkat lunak yang efisien. Dengan memahami bagaimana cara menyimpan, mengatur, dan mengelola data secara efektif, seorang pengembang dapat merancang algoritma yang lebih cepat dan solusi yang lebih optimal. Menguasai konsep fundamental seperti array, linked list, stack, dan tree akan membuka jalan untuk membangun aplikasi yang kuat dan berskala besar.
                 </p>
                 </div>
                 <div className="course-media-placeholder">
                 <Image
-                    src="/AdobeEA.jpeg"
-                    alt="adobe after Effect"
+                    src="/StrukturData.jpg"
+                    alt="Struktur Data"
                     width={800}
                     height={450}
                     style={{ width: "100%", height: "auto" }}
@@ -75,8 +70,8 @@ export default function DetailAdobePage() {
 
             <div className="course-meta-info">
                 <span>Instruktur: Darius</span>
-                <span>Waktu Total: 58 menit</span>
-                <span>Rilis: 20 Juni 2020</span>
+                <span>Waktu Total: 1 jam 10 menit</span>
+                <span>Rilis: 25 November 2020</span>
             </div>
             </section>
 
@@ -103,18 +98,16 @@ export default function DetailAdobePage() {
                 <h2>Yang akan Anda pelajari:</h2>
                 <ul>
                   <li>
-                    Menguasai teknik-teknik praktis dan modern yang digunakan
-                    oleh para profesional motion graphics dalam pekerjaan mereka
-                    sehari-hari.
+                    Memahami konsep dasar dan pentingnya struktur data dalam pemrograman yang efisien.
                   </li>
                   <li>
-                    Mempelajari tools, panel, dan fitur-fitur esensial yang
-                    dipakai animator profesional, termasuk layers, keyframes,
-                    efek, dan masking.
+                    Mempelajari implementasi Array, termasuk penggunaan Array di dalam Structure untuk mengelola data yang kompleks.
                   </li>
                   <li>
-                    Menerapkan keahlian baru Anda pada proyek-proyek dunia nyata
-                    dan membangun portofolio motion graphics yang kuat.
+                    Menguasai konsep struktur data non-linear seperti Tree, Binary Tree, dan Graph serta aplikasinya dalam menyelesaikan masalah.
+                  </li>
+                  <li>
+                    Membangun fondasi yang kuat untuk mempelajari algoritma dan struktur data tingkat lanjut.
                   </li>
                 </ul>
               </div>
@@ -122,18 +115,18 @@ export default function DetailAdobePage() {
               <div className="skills-acquired">
                 <h2>Keahlian yang akan Anda dapatkan:</h2>
                 <div className="skills-tags">
-                  <span className="skill-tag">Motion Graphics</span>
-                  <span className="skill-tag">Komposisi Video</span>
-                  <span className="skill-tag">Green Screen</span>
-                  <span className="skill-tag">Color Grading</span>
-                  <span className="skill-tag">Animasi 2D</span>
-                  <span className="skill-tag">Efek Visual (VFX)</span>
-                  <span className="skill-tag">Masking</span>
-                  <span className="skill-tag">Rendering</span>
-                  <span className="skill-tag">Keyframe Animation</span>
-                  <span className="skill-tag">Motion Tracking</span>
-                  <span className="skill-tag">Tipografi Kinetik</span>
-                  <span className="skill-tag">Visual Storytelling</span>
+                  <span className="skill-tag">Analisis Algoritma</span>
+                  <span className="skill-tag">Struktur Data</span>
+                  <span className="skill-tag">Manajemen Memori</span>
+                  <span className="skill-tag">Problem Solving</span>
+                  <span className="skill-tag">Array & Linked List</span>
+                  <span className="skill-tag">Stack & Queue</span>
+                  <span className="skill-tag">Trees & Graphs</span>
+                  <span className="skill-tag">Hash Tables</span>
+                  <span className="skill-tag">Kompleksitas Waktu (Big O)</span>
+                  <span className="skill-tag">Rekursi</span>
+                  <span className="skill-tag">Optimasi Kode</span>
+                  <span className="skill-tag">Dasar C++</span>
                 </div>
               </div>
 
@@ -141,7 +134,7 @@ export default function DetailAdobePage() {
                 <div className="course-content-header">
                   <div className="header-text">
                     <h2>Konten Kursus:</h2>
-                    <p>9 Video - Total 58 menit</p>
+                    <p>13 Video - Total 1 jam 10 menit</p>
                   </div>
                   <span className="promo-btn">Dua Video Pertama Gratis!</span>
                 </div>
@@ -149,71 +142,99 @@ export default function DetailAdobePage() {
                 <div className="video-list-container">
                   <ul className="video-list">
                     <li>
-                      <a href="https://www.youtube.com/watch?v=n3pQoPflhF0" target="_blank" rel="noopener noreferrer">
+                      <a href="https://youtu.be/RoKfhtE2G6c?si=VZ1XG8UyOwp0oi-c" target="_blank" rel="noopener noreferrer">
                         <i className="fas fa-play-circle me-2"></i>
-                        <span className="video-title">Import & Play Video - Tutorial After Effects</span>
+                        <span className="video-title">Stack - Struktur Data</span>
                         <span className="video-label">Gratis</span>
-                        <span className="video-duration">06:44</span>
+                        <span className="video-duration">07:16</span>
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.youtube.com/watch?v=Z4sm8UObRxc" target="_blank" rel="noopener noreferrer">
+                      <a href="https://youtu.be/GC3jA6Cym1E?si=4zavVRDqhFNtbE-c" target="_blank" rel="noopener noreferrer">
                         <i className="fas fa-play-circle me-2"></i>
-                        <span className="video-title">Main Efek - Tutorial After Effects</span>
+                        <span className="video-title">Queue - Struktur Data</span>
                         <span className="video-label">Gratis</span>
-                        <span className="video-duration">05:57</span>
+                        <span className="video-duration">06:23</span>
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.youtube.com/watch?v=GOz38pr3Cbw" target="_blank" rel="noopener noreferrer">
+                      <a href="https://youtu.be/M9i_-UVpRmE?si=IwMe7Ag7I-hRnGZf" target="_blank" rel="noopener noreferrer">
                         <i className="fas fa-play-circle me-2"></i>
-                        <span className="video-title">Ganti Warna Pakaian - Tutorial After Effects</span>
-                        <span className="video-duration">05:13</span>
+                        <span className="video-title">Hash - Struktur Data</span>
+                        <span className="video-duration">08:29</span>
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.youtube.com/watch?v=1-ke7XeMgIk" target="_blank" rel="noopener noreferrer">
+                      <a href="https://youtu.be/uX1HmvKbaU8?si=RBlEK47GN-4D3mlZ" target="_blank" rel="noopener noreferrer">
                         <i className="fas fa-play-circle me-2"></i>
-                        <span className="video-title">Time Vary Animation Untuk Objek & Efek</span>
-                        <span className="video-duration">10:31</span>
+                        <span className="video-title">Binary Search Tree - Struktur Data</span>
+                        <span className="video-duration">03:13</span>
                       </a>
                     </li>
 
                     {isExpanded && (
                       <>
                         <li>
-                          <a href="https://www.youtube.com/watch?v=87xmhun_2GM" target="_blank" rel="noopener noreferrer">
+                          <a href="https://youtu.be/4eBfmPa4124?si=3O0dVxkOwVZCcgBg" target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Green Screen Mudah - Tutorial After Effects</span>
-                            <span className="video-duration">03:04</span>
+                            <span className="video-title">Tree Travelsal - Struktur Data</span>
+                            <span className="video-duration">05:35</span>
                           </a>
                         </li>
                         <li>
-                          <a href="https://www.youtube.com/watch?v=C8n0sBkpjVc" target="_blank" rel="noopener noreferrer">
+                          <a href="https://youtu.be/d5C1MqDZDZQ?si=vkbk_fKQlSv7ZQNL" target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Manipulasi Waktu, Slow Motion, Stop Time & Reverse</span>
-                            <span className="video-duration">03:52</span>
+                            <span className="video-title">Avl Tree - Struktur Data</span>
+                            <span className="video-duration">04:47</span>
                           </a>
                         </li>
                         <li>
-                          <a href="https://www.youtube.com/watch?v=tP2GYEvBJlo" target="_blank" rel="noopener noreferrer">
+                          <a href="https://youtu.be/_gq_t5byFcU?si=QhpFe2NB315erjpr" target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Motion Tracking - Tutorial After Effects</span>
-                            <span className="video-duration">07:02</span>
+                            <span className="video-title">Heap - Struktur Data</span>
+                            <span className="video-duration">02:49</span>
                           </a>
                         </li>
                         <li>
-                          <a href="https://www.youtube.com/watch?v=PdgiQPtq-G4" target="_blank" rel="noopener noreferrer">
+                          <a href="https://youtu.be/9PR8tl3KspQ?si=4HEwQ-i6423V1_Nx" target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Camera Tracking - Tutorial After Effects</span>
-                            <span className="video-duration">06:04</span>
+                            <span className="video-title">Huffman Code - Struktur Data</span>
+                            <span className="video-duration">03:03</span>
                           </a>
                         </li>
                         <li>
-                          <a href="https://www.youtube.com/watch?v=j19XQ8bAhPI" target="_blank" rel="noopener noreferrer">
+                          <a href="https://youtu.be/xtcna3thBYI?si=iuyru-fpBU4Qz011" target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Parallax Effect, 2.5D dan Animasi Puppet</span>
-                            <span className="video-duration">09:44</span>
+                            <span className="video-title">Graph BFS & DFS - Struktur Data</span>
+                            <span className="video-duration">06:48</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://youtu.be/sX7x54uyPzY?si=6F1bDumVr7qmPlXf" target="_blank" rel="noopener noreferrer">
+                            <i className="fas fa-play-circle me-2"></i>
+                            <span className="video-title">Algoritma Dijikstra Graph - Struktur Data</span>
+                            <span className="video-duration">07:31</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://youtu.be/MgdeDVP2CvU?si=gWmoF_i76J6FMq-4" target="_blank" rel="noopener noreferrer">
+                            <i className="fas fa-play-circle me-2"></i>
+                            <span className="video-title">Minimum Spanning Tree - Struktur Data</span>
+                            <span className="video-duration">04:22</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://youtu.be/455nDoUvbw4?si=6-ej9u5UN7ewwcQW" target="_blank" rel="noopener noreferrer">
+                            <i className="fas fa-play-circle me-2"></i>
+                            <span className="video-title">Topological Ordering Sort - Struktur Data</span>
+                            <span className="video-duration">03:01</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://youtu.be/LrQUQCjkFJ0?si=xktj98NSGzRFojQR" target="_blank" rel="noopener noreferrer">
+                            <i className="fas fa-play-circle me-2"></i>
+                            <span className="video-title">Critical Path Analysis Pada Task Network - Struktur Data</span>
+                            <span className="video-duration">05:44</span>
                           </a>
                         </li>
                       </>
@@ -234,22 +255,16 @@ export default function DetailAdobePage() {
                 <h2>Syarat:</h2>
                 <ul>
                   <li>
-                    Tidak dibutuhkan pengalaman di bidang desain atau animasi.
-                    Kursus ini dirancang khusus untuk pemula dan semua materi akan
-                    diajarkan dari nol.
+                    Memiliki pemahaman dasar tentang logika pemrograman. Pengalaman dengan bahasa C++ akan sangat membantu, meskipun konsepnya dapat diterapkan ke bahasa lain.
                   </li>
                   <li>
-                    Komputer PC (64-bit) dengan koneksi internet. Sangat
-                    disarankan memiliki RAM minimal 16GB agar software berjalan
-                    dengan lancar.
+                    Komputer atau laptop dengan koneksi internet untuk mengakses video dan materi pembelajaran.
                   </li>
                   <li>
-                    Software Adobe After Effects sudah terinstal. Anda bisa
-                    memanfaatkan versi uji coba (free trial) gratis yang resmi
-                    dari Adobe untuk memulai kursus ini.
+                    Sebuah code editor (seperti Visual Studio Code, Sublime Text, dll.) dan compiler C++ yang sudah terinstal untuk dapat mengikuti dan mencoba langsung contoh-contoh kode.
                   </li>
                   <li>
-                    Kemauan dan semangat yang tinggi untuk belajar dan berkreasi!
+                    Keinginan kuat untuk memecahkan masalah, berpikir secara logis, dan memahami bagaimana cara menulis kode yang efisien.
                   </li>
                 </ul>
               </div>
@@ -275,7 +290,7 @@ export default function DetailAdobePage() {
                   <p>Sudah termasuk:</p>
                   <ul>
                     <li>
-                      <i className="fas fa-circle-play me-2"></i> 9 Video Pembelajaran
+                      <i className="fas fa-circle-play me-2"></i> 13 Video Pembelajaran
                     </li>
                     <li>
                       <i className="fas fa-infinity me-2"></i> Akses Selamanya
