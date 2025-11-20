@@ -8,7 +8,6 @@
   padding: 20px;
 }
 
-/* Container utama */
 .login-page .auth-container {
   width: 100%;
   max-width: 900px;
@@ -17,7 +16,7 @@
   align-items: center;
 }
 
-/* Back to home */
+
 .login-page .back-home {
   width: 100%;
   margin-bottom: 20px;
@@ -48,7 +47,6 @@
   transform: translateY(-2px);
 }
 
-/* Tabs */
 .login-page .auth-tabs {
   display: flex;
   justify-content: center;
@@ -83,7 +81,6 @@
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* Card utama */
 .login-page .auth-card {
   width: 100%;
   display: grid;
@@ -95,7 +92,6 @@
   min-height: 500px;
 }
 
-/* Bagian kiri */
 .login-page .welcome-section {
   padding: 50px 40px;
   background: linear-gradient(135deg, #74F9D0 0%, #5B21B6 50%, #1F2937 100%);
@@ -130,7 +126,6 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* Bagian kanan form */
 .login-page .form-section {
   padding: 40px 40px 35px;
   display: flex;
@@ -153,7 +148,6 @@
   color: #111827;
 }
 
-/* Input group + label floating */
 .login-page .input-group {
   position: relative;
   margin-bottom: 22px;
@@ -190,14 +184,35 @@
   box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.7);
 }
 
-.login-page .input-group input:focus + label,
-.login-page .input-group input:not(:placeholder-shown) + label {
+.login-page .input-group:focus-within label {
   top: 0;
   transform: translateY(-50%);
   font-size: 11px;
+  opacity: 0.9;
 }
 
-/* Password input dengan icon */
+.login-page .input-group:has(input:not(:placeholder-shown)) label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.signup-page .input-group:focus-within label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.signup-page .input-group:has(input:not(:placeholder-shown)) label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+
 .login-page .password-input {
   position: relative;
 }
@@ -218,7 +233,6 @@
   font-size: 14px;
 }
 
-/* State error/success */
 .login-page .input-group.error input {
   box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.9);
 }
@@ -227,7 +241,6 @@
   box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.9);
 }
 
-/* Options row */
 .login-page .form-options {
   display: flex;
   align-items: center;
@@ -259,7 +272,6 @@
   text-decoration: underline;
 }
 
-/* Error & success messages */
 .login-page .error-message,
 .login-page .success-message {
   margin-top: 4px;
@@ -281,7 +293,6 @@
   color: #047857;
 }
 
-/* Button submit */
 .login-page .btn-submit {
   width: 100%;
   border: none;
@@ -311,12 +322,10 @@
   box-shadow: none;
 }
 
-/* Loading state */
 .login-page .btn-submit.loading span::after {
   content: "...";
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .login-page .auth-card {
     grid-template-columns: 1fr;
