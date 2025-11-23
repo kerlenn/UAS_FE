@@ -1,15 +1,60 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import '../styles/pembayaran.css';
 
-export default function PembayaranPage() {
+const coursesData = [
+  {
+    id: 1,
+    title: "Adobe After Effects [2020]",
+    description: "Kuasai motion graphics dan efek visual dari dasar hingga mahir dengan panduan lengkap dari pakar di bidangnya.",
+    instructor: "Darius",
+    image: "/AdobeEA.jpeg",
+    price: 120000,
+  },
+  {
+    id: 2,
+    title: "Kuliah Struktur Data [2020]",
+    description: "Pelajari konsep fundamental struktur data seperti Array, Linked List, Stack, dan Queue untuk membangun algoritma yang efisien.",
+    instructor: "Darius",
+    image: "/StrukturData.jpg",
+    price: 230000,
+  },
+  {
+    id: 3,
+    title: "Roblox Studio untuk Prototyping Game [2025]",
+    description: "Belajar membuat game pertamamu di platform Roblox. Mulai dari desain level, scripting dasar dengan Lua, hingga publikasi.",
+    instructor: "Darius",
+    image: "/Roblox.jpg",
+    price: 0,
+  },
+  {
+    id: 4,
+    title: "Blender 3D Modelling [2020]",
+    description: "Ciptakan model 3D yang menakjubkan dari nol. Pelajari teknik-teknik sculpting, texturing, dan rendering di Blender.",
+    instructor: "Darius",
+    image: "/Blender.jpg",
+    price: 50000,
+  },
+  {
+    id: 5,
+    title: "Object Oriented Programming [2020]",
+    description: "Pahami pilar-pilar OOP (Encapsulation, Inheritance, Polymorphism) untuk menulis kode yang lebih bersih, modular, dan reusable.",
+    instructor: "Darius",
+    image: "/OOP.jpg",
+    price: 80000,
+  }
+];
+
+function PembayaranContent() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true); // State untuk loading check auth
+  const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
   
-  // State untuk form input
+  const [selectedCourse, setSelectedCourse] = useState(coursesData[0]); 
+
   const [formData, setFormData] = useState({
     nama: '',
     telp: '',
@@ -17,20 +62,11 @@ export default function PembayaranPage() {
     metode: ''
   });
 
-  // --- AUTH GUARD (Pengecekan Login) ---
   useEffect(() => {
-    // Ambil data user dari localStorage (sesuai dengan logika project lama Anda)
+    // 1. Cek Login (Hanya untuk Auto-fill, TIDAK ADA Redirect/Larangan)
     const user = localStorage.getItem('currentUser');
-
-    if (!user) {
-      // Jika tidak ada user, tampilkan pesan dan redirect ke login
-      alert('Anda harus login terlebih dahulu untuk melakukan pembayaran.');
-      router.push('/login'); // Pastikan Anda sudah memiliki halaman /login
-    } else {
-      // Jika user ada, matikan loading dan izinkan akses
-      setIsLoading(false);
-      
-      // Opsional: Otomatis isi data nama/email dari user yang login
+    
+    if (user) {
       try {
         const userData = JSON.parse(user);
         setFormData(prev => ({
@@ -42,9 +78,19 @@ export default function PembayaranPage() {
         console.error("Error parsing user data", e);
       }
     }
-  }, [router]);
 
-  // Handler untuk perubahan input
+    // 2. Cek Kursus yang dipilih berdasarkan ID di URL
+    const courseId = searchParams.get('id');
+    if (courseId) {
+      const foundCourse = coursesData.find(c => c.id === parseInt(courseId));
+      if (foundCourse) {
+        setSelectedCourse(foundCourse);
+      }
+    }
+    
+    setIsLoading(false);
+  }, [router, searchParams]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData(prev => ({
@@ -53,7 +99,6 @@ export default function PembayaranPage() {
     }));
   };
 
-  // Handler tombol bayar
   const handlePay = () => {
     const { nama, telp, email, metode } = formData;
     const errors: string[] = [];
@@ -73,62 +118,33 @@ export default function PembayaranPage() {
       return;
     }
 
-    // Simulasi proses pembayaran berhasil
-    alert('Pembayaran berhasil!');
-    
-    // Redirect ke halaman sukses
+    alert(`Pembayaran untuk kursus ${selectedCourse.title} berhasil!`);
     router.push('/payment-success');
   };
 
-  // Tampilkan loading kosong atau spinner saat sedang mengecek login
-  if (isLoading) {
-    return null; 
-  }
+  if (isLoading) return null;
 
   return (
     <div className="checkout-container">
       <div className="checkout-card">
         <section className="form-section">
+          <h2 className="mb-4 fw-bold">Checkout</h2>
           <div className="form-group">
             <label htmlFor="nama">Nama</label>
-            <input 
-              type="text" 
-              id="nama" 
-              placeholder="Jhon Doe"
-              value={formData.nama}
-              onChange={handleInputChange}
-            />
+            <input type="text" id="nama" placeholder="Jhon Doe" value={formData.nama} onChange={handleInputChange} />
           </div>
           <div className="form-group">
             <label htmlFor="telp">No Telpn</label>
-            <input 
-              type="number" 
-              id="telp" 
-              placeholder="+62 8## - #### - ####"
-              value={formData.telp}
-              onChange={handleInputChange}
-            />
+            <input type="number" id="telp" placeholder="+62 8## - #### - ####" value={formData.telp} onChange={handleInputChange} />
           </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              placeholder="Example@com"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
+            <input type="email" id="email" placeholder="Example@com" value={formData.email} onChange={handleInputChange} />
           </div>
-          
           <hr className="form-divider" />
-          
           <div className="form-group">
             <label htmlFor="metode">Metode Pembayaran</label>
-            <select 
-              id="metode" 
-              value={formData.metode} 
-              onChange={handleInputChange}
-            >
+            <select id="metode" value={formData.metode} onChange={handleInputChange}>
               <option value="">Silahkan Pilih Metode Pembayaran</option>
               <option value="cc">Kartu Kredit</option>
               <option value="va">Virtual Account</option>
@@ -139,25 +155,34 @@ export default function PembayaranPage() {
         </section>
 
         <aside className="summary-section">
-          {/* Pastikan gambar adobeAE.jpg ada di folder public/static/ atau public/ */}
-          <Image 
-            src="/adobeAE.jpg" 
-            alt="Adobe After Effects Course" 
-            width={400} 
-            height={225}
-            className="course-image"
-            style={{ width: '100%', height: 'auto' }}
-          />
-          <h3>Adobe After Effects [2020]</h3>
+          <div className="position-relative w-100 mb-3" style={{ height: '200px' }}>
+            <Image 
+              src={selectedCourse.image} 
+              alt={selectedCourse.title} 
+              fill
+              style={{ objectFit: 'cover', borderRadius: '10px' }}
+            />
+          </div>
+          <h3>{selectedCourse.title}</h3>
           <p className="course-description">
-            Kuasai Adobe After Effects dari dasar hingga mahir untuk mengubah ide-ide Anda dengan panduan lengkap dari pakar di bidangnya.
+            {selectedCourse.description}
           </p>
-          <p className="course-instructor">Dengan Instruktur Darius</p>
-          <p className="course-price">Harga: <strong>Rp120,000</strong></p>
+          <p className="course-instructor">Dengan Instruktur {selectedCourse.instructor}</p>
+          <p className="course-price">
+            Harga: <strong>{selectedCourse.price === 0 ? 'Gratis' : `Rp${selectedCourse.price.toLocaleString('id-ID')}`}</strong>
+          </p>
         </aside>
         
-        <button className="btn-bayar" onClick={handlePay}>Bayar</button>
+        <button className="btn-bayar" onClick={handlePay}>Bayar Sekarang</button>
       </div>
     </div>
+  );
+}
+
+export default function PembayaranPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PembayaranContent />
+    </Suspense>
   );
 }

@@ -79,7 +79,6 @@ export default function DetailDataStrukturPage() {
           <div className="course-content-wrapper">
             <div className="main-content-col">
 
-                {/* STICKY NAV */}
                 <nav className="sticky-nav">
                     <ul>
                     <li>
@@ -273,13 +272,13 @@ export default function DetailDataStrukturPage() {
             <aside className="purchase-sidebar">
               <div className="purchase-box">
                 <h2>Beli Kursus</h2>
-                <p className="price">Rp 120.000</p>
+                <p className="price">Rp 230.000</p>
                 <p className="student-count">
                   <i className="fas fa-fire me-2" style={{color: 'var(--primary-orange)'}}></i>
                   <span>458 Pelajar sudah mendaftar</span>
                 </p>
                 <div className="action-buttons">
-                  <Link href="/pembayaran" className="btn-purchase primary">
+                  <Link href="/pembayaran?id=2" className="btn-purchase primary">
                     Beli Langsung
                   </Link>
                   <Link href="#" className="btn-purchase secondary">

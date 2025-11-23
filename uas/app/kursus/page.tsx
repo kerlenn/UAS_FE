@@ -65,7 +65,7 @@ const allCourses: Course[] = [
     level: "Intermediate",
     videoCount: 9,
     materi: "Blender",
-    slug: "/DetailBlender.html"
+    slug: "/kursus_blender"
   },
   {
     id: 5,
