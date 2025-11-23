@@ -266,7 +266,7 @@ export default function SignUpPage() {
       <div className="auth-container">
         {/* Back to Home */}
         <div className="back-home">
-          <Link href="/home" className="btn-back-home">
+          <Link href="/" className="btn-back-home">
             <i className="fas fa-arrow-left" />
             Kembali ke Beranda
           </Link>

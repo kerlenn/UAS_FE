@@ -165,7 +165,7 @@ export default function LoginPage() {
       setIsSubmitting(false);
       setSuccessMessage(`Selamat datang, ${user.fullname}!`);
       if (typeof window !== "undefined") {
-        window.location.href = "/home"; // ganti dengan route home kamu
+        window.location.href = "/"; // ganti dengan route home kamu
       }
     }, 1000);
   };
