@@ -1,4 +1,3 @@
-// app/components/Footer.tsx
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,69 +6,63 @@ import {
   IconPhone, IconEnvelope, IconMapPin, IconClock
 } from './FooterIcons';
 
-// Kelas helper untuk link agar tidak berulang
-const linkClasses = "text-gray-300 hover:text-[#FF6B35] transition-colors duration-300 flex items-center gap-2 font-normal text-sm";
-const infoClasses = "text-gray-300 flex items-center gap-2 font-normal text-sm";
-
 export default function Footer() {
   return (
-    <footer className="bg-[#1F2937] text-white pt-10 pb-5 mt-10">
-      <div className="max-w-7xl mx-auto px-5 md:px-10 pb-8 grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr] gap-10">
+    <footer className="footer-custom pt-5 pb-4 mt-5">
+      <div className="container">
+        <div className="row gy-4 justify-content-between">
+          
+          <div className="col-12 col-md-5 mb-2">
+            <Link href="#hero" className="d-inline-block mb-3">
+              <Image
+                src="/Logo.png"
+                alt="SkillUp! Logo"
+                width={120}
+                height={40}
+                style={{ height: '40px', width: 'auto' }}
+              />
+            </Link>
+            <p className="text-footer-gray pe-md-5" style={{ lineHeight: '1.6' }}>
+              Jadi kami adalah sebuah organisasi yang learning yang bergerak di bidang pendidikan, yapping yapping yapping yapping yapping yapping yap
+            </p>
+          </div>
+
+          <div className="col-6 col-md-2">
+            <h5 className="fw-bold mb-3 text-white">Kursus</h5>
+            <ul className="list-unstyled d-flex flex-column gap-2">
+              <li><Link href="#" className="text-footer-gray">Web dev</Link></li>
+              <li><Link href="#" className="text-footer-gray">Game dev</Link></li>
+              <li><Link href="#" className="text-footer-gray">Compilation</Link></li>
+              <li><Link href="#" className="text-footer-gray">Database</Link></li>
+            </ul>
+          </div>
+
+          <div className="col-6 col-md-2">
+            <h5 className="fw-bold mb-3 text-white">Media Sosial</h5>
+            <ul className="list-unstyled d-flex flex-column gap-2">
+              <li><a href="#" target="_blank" rel="noopener noreferrer" className="text-footer-gray d-flex align-items-center gap-2"><IconInstagram className="footer-icon" /> Instagram</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer" className="text-footer-gray d-flex align-items-center gap-2"><IconGithub className="footer-icon" /> Github</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer" className="text-footer-gray d-flex align-items-center gap-2"><IconFacebook className="footer-icon" /> Facebook</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer" className="text-footer-gray d-flex align-items-center gap-2"><IconYoutube className="footer-icon" /> Youtube</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer" className="text-footer-gray d-flex align-items-center gap-2"><IconWhatsapp className="footer-icon" /> Whatsapp</a></li>
+            </ul>
+          </div>
+
+          <div className="col-12 col-md-3">
+            <h5 className="fw-bold mb-3 text-white">Hubungi Kami</h5>
+            <ul className="list-unstyled d-flex flex-column gap-3">
+              <li className="text-footer-gray d-flex align-items-center gap-2"><IconPhone className="footer-icon" /> 0812345678</li>
+              <li className="text-footer-gray d-flex align-items-center gap-2"><IconEnvelope className="footer-icon" /> SkillUp@gmail.com</li>
+              <li className="text-footer-gray d-flex align-items-center gap-2"><IconMapPin className="footer-icon" /> Jln ini aja dulu</li>
+              <li className="text-footer-gray d-flex align-items-center gap-2"><IconClock className="footer-icon" /> Senin-Jumat 08:00 - 17:00</li>
+            </ul>
+          </div>
+
+        </div>
         
-        {/* Section 1: Logo & About */}
-        {/* col-span-2 di mobile, col-span-1 di desktop */}
-        <div className="col-span-2 md:col-span-1">
-          <Image
-            src="/Logo.png"
-            alt="SkillUp! Logo"
-            width={100}
-            height={40}
-            className="h-10 w-auto mb-4"
-          />
-          <p className="text-sm leading-relaxed text-gray-300 font-normal">
-            Jadi kami adalah sebuah organisasi yang learning yang bergerak di bidang pendidikan, yapping yapping yapping yapping yapping yapping yap
-          </p>
+        <div className="footer-divider mt-5 pt-4 text-center">
+          <p className="text-secondary small mb-0">© SkillUp. All rights reserved</p>
         </div>
-
-        {/* Section 2: Kursus */}
-        <div>
-          <h4 className="text-lg font-bold mb-4 text-white">Kursus</h4>
-          <ul className="list-none space-y-3">
-            <li><Link href="#" className={linkClasses}>Web dev</Link></li>
-            <li><Link href="#" className={linkClasses}>Game dev</Link></li>
-            <li><Link href="#" className={linkClasses}>Compilation</Link></li>
-            <li><Link href="#" className={linkClasses}>Database</Link></li>
-          </ul>
-        </div>
-
-        {/* Section 3: Media Sosial */}
-        <div>
-          <h4 className="text-lg font-bold mb-4 text-white">Media Sosial</h4>
-          <ul className="list-none space-y-3">
-            <li><a href="#" target="_blank" rel="noopener noreferrer" className={linkClasses}><IconInstagram className="w-4 h-4" /> Instagram</a></li>
-            <li><a href="#" target="_blank" rel="noopener noreferrer" className={linkClasses}><IconGithub className="w-4 h-4" /> Github</a></li>
-            <li><a href="#" target="_blank" rel="noopener noreferrer" className={linkClasses}><IconFacebook className="w-4 h-4" /> Facebook</a></li>
-            <li><a href="#" target="_blank" rel="noopener noreferrer" className={linkClasses}><IconYoutube className="w-4 h-4" /> Youtube</a></li>
-            <li><a href="#" target="_blank" rel="noopener noreferrer" className={linkClasses}><IconWhatsapp className="w-4 h-4" /> Whatsapp</a></li>
-          </ul>
-        </div>
-
-        {/* Section 4: Hubungi Kami */}
-        <div>
-          <h4 className="text-lg font-bold mb-4 text-white">Hubungi Kami</h4>
-          <ul className="list-none space-y-3">
-            <li className={infoClasses}><IconPhone className="w-4 h-4 flex-shrink-0" /> 0812345678</li>
-            <li className={infoClasses}><IconEnvelope className="w-4 h-4 flex-shrink-0" /> SkillUp@gmail.com</li>
-            <li className={infoClasses}><IconMapPin className="w-4 h-4 flex-shrink-0" /> Jln ini aja dulu</li>
-            <li className={infoClasses}><IconClock className="w-4 h-4 flex-shrink-0" /> Senin-Jumat 08:00 - 17:00</li>
-          </ul>
-        </div>
-
-      </div>
-      
-      {/* Footer Bottom */}
-      <div className="border-t border-gray-700 pt-5 text-center max-w-7xl mx-auto px-5 md:px-10 text-gray-400 text-sm">
-        <p>© SkillUp. All rights reserved</p>
       </div>
     </footer>
   );

@@ -27,11 +27,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link 
+          rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true} 
       >
         <Header />
-        <main>
+        <main className="container-fluid px-4 px-md-5 mt-4">
           {children}
         </main>
         <Footer /> 
