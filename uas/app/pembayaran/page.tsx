@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import '../styles/pembayaran.css';
 
 export default function PembayaranPage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true); // State untuk loading check auth
   
   // State untuk form input
   const [formData, setFormData] = useState({
@@ -15,6 +16,33 @@ export default function PembayaranPage() {
     email: '',
     metode: ''
   });
+
+  // --- AUTH GUARD (Pengecekan Login) ---
+  useEffect(() => {
+    // Ambil data user dari localStorage (sesuai dengan logika project lama Anda)
+    const user = localStorage.getItem('currentUser');
+
+    if (!user) {
+      // Jika tidak ada user, tampilkan pesan dan redirect ke login
+      alert('Anda harus login terlebih dahulu untuk melakukan pembayaran.');
+      router.push('/login'); // Pastikan Anda sudah memiliki halaman /login
+    } else {
+      // Jika user ada, matikan loading dan izinkan akses
+      setIsLoading(false);
+      
+      // Opsional: Otomatis isi data nama/email dari user yang login
+      try {
+        const userData = JSON.parse(user);
+        setFormData(prev => ({
+          ...prev,
+          nama: userData.fullname || '',
+          email: userData.email || ''
+        }));
+      } catch (e) {
+        console.error("Error parsing user data", e);
+      }
+    }
+  }, [router]);
 
   // Handler untuk perubahan input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -51,6 +79,11 @@ export default function PembayaranPage() {
     // Redirect ke halaman sukses
     router.push('/payment-success');
   };
+
+  // Tampilkan loading kosong atau spinner saat sedang mengecek login
+  if (isLoading) {
+    return null; 
+  }
 
   return (
     <div className="checkout-container">
@@ -106,6 +139,7 @@ export default function PembayaranPage() {
         </section>
 
         <aside className="summary-section">
+          {/* Pastikan gambar adobeAE.jpg ada di folder public/static/ atau public/ */}
           <Image 
             src="/adobeAE.jpg" 
             alt="Adobe After Effects Course" 
