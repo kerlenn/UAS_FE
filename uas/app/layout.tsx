@@ -1,10 +1,11 @@
-// app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google"; // TAMBAH INI
 import "./globals.css";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer"; // 1. IMPORT FOOTER
+import Footer from "@/app/components/Footer";
+import { AuthProvider } from "@/app/context/AuthContext";
 
+// TAMBAH INI:
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,14 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header />
-        <main>
-          {children}
-        </main>
-        <Footer /> 
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

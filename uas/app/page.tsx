@@ -2,6 +2,8 @@
 
 import { useState, FormEvent } from "react";
 import "./styles/home.css";
+import Header from '@/app/components/Header'
+
 
 export default function HomePage() {
   const [contactMessage, setContactMessage] = useState<{
@@ -64,14 +66,13 @@ export default function HomePage() {
               </p>
             </div>
             <div className="hero-right">
-              <a
-                href="https://youtube.com/watch?v=..."
-                target="_blank"
-                rel="noopener noreferrer"
+              <div
+                onClick={() => window.open("https://youtube.com/watch?v=...", "_blank")}
                 className="video-link"
+                style={{ cursor: "pointer" }}
               >
                 <div className="video-placeholder" />
-              </a>
+              </div>
             </div>
           </section>
 
