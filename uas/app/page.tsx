@@ -2,8 +2,8 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import "./styles/home.css";
+import Header from '@/app/components/Header'
 
 
 export default function HomePage() {
@@ -59,15 +59,13 @@ export default function HomePage() {
                 Belajar keahlian yang paling dicari bersama para mitra dan institusi terbaik.
               </p>
             </div>
-            <div className="col-12 col-lg-6 d-flex justify-content-center justify-content-lg-end">
-              <div className="position-relative bg-dark rounded-4 shadow d-flex align-items-center justify-content-center" 
-                   style={{ width: '100%', maxWidth: '320px', height: '200px', cursor: 'pointer', transition: 'transform 0.3s ease' }}
-                   onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                   onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            <div className="hero-right">
+              <div
+                onClick={() => window.open("https://youtube.com/watch?v=...", "_blank")}
+                className="video-link"
+                style={{ cursor: "pointer" }}
               >
-                <a href="https://youtube.com/watch?v=..." target="_blank" rel="noopener noreferrer" className="text-decoration-none w-100 h-100 d-flex align-items-center justify-content-center">
-                  <div className="text-white" style={{ fontSize: '3rem', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>▶</div>
-                </a>
+                <div className="video-placeholder" />
               </div>
             </div>
           </div>

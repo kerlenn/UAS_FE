@@ -3,6 +3,7 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent, FocusEvent } from "react";
 import Link from "next/link";
 import "../styles/login.css";
+import { useAuth } from "@/app/context/AuthContext";
 
 type User = {
   id: number;
@@ -47,6 +48,7 @@ function isValidEmail(email: string) {
 }
 
 export default function LoginPage() {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -159,6 +161,7 @@ export default function LoginPage() {
     }
 
     setCurrentUser(user);
+    login(user);
     setIsSubmitting(true);
 
     setTimeout(() => {
@@ -175,7 +178,7 @@ export default function LoginPage() {
       <div className="auth-container">
         {/* Back to Home */}
         <div className="back-home">
-          <Link href="/home" className="btn-back-home">
+          <Link href="/" className="btn-back-home">
             <i className="fas fa-arrow-left" />
             Kembali ke Beranda
           </Link>

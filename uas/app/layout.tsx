@@ -1,10 +1,11 @@
-// app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google"; // TAMBAH INI
 import "./globals.css";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer"; // 1. IMPORT FOOTER
+import Footer from "@/app/components/Footer";
+import { AuthProvider } from "@/app/context/AuthContext";
 
+// TAMBAH INI:
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,21 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link 
-          rel="stylesheet" 
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-        />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning={true} 
-      >
-        <Header />
-        <main className="container-fluid px-4 px-md-5 mt-4">
-          {children}
-        </main>
-        <Footer /> 
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
