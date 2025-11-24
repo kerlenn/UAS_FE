@@ -144,6 +144,33 @@ export default function Header() {
             </button>
           </div>
         </div>
+
+        {isMobileMenuOpen && (
+          <div className="mobile-menu-wrapper p-4 shadow d-xl-none">
+            <div className="d-flex flex-column gap-2 mb-3">
+              <Link href="/" className={`nav-link-custom ps-3 text-white ${pathname === '/' ? 'active' : ''}`} onClick={toggleMobileMenu}>Halaman Utama</Link>
+              <Link href="/kursus" className={`nav-link-custom ps-3 text-white ${pathname === '/kursus' ? 'active' : ''}`} onClick={toggleMobileMenu}>Kursus</Link>
+              <Link href="/#contact" className="nav-link-custom ps-3 text-white" onClick={toggleMobileMenu}>Hubungi Kami</Link>
+            </div>
+            
+            <hr className="border-white opacity-50 my-3"/>
+
+            <div className="d-grid gap-3">
+              {isLoggedIn ? (
+                <>
+                  <Link href="/profile" className="btn-custom-orange" onClick={toggleMobileMenu}>Profil Saya</Link>
+                  <Link href="/riwayat" className="btn-custom-orange" onClick={toggleMobileMenu}>Riwayat Pembayaran</Link>
+                  <button onClick={() => { setIsLoggedIn(false); toggleMobileMenu(); }} className="btn-custom-outline">Keluar</button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="btn-custom-outline" onClick={toggleMobileMenu}>Masuk</Link>
+                  <Link href="/signup" className="btn-custom-orange" onClick={toggleMobileMenu}>Daftar</Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Menu Mobile: Sembunyi di 'lg' (936px) ke atas */}
