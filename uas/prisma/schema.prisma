@@ -1,0 +1,43 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")  // <--- INI WAJIB ADA
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  fullname     String
+  email        String        @unique
+  phone        String?
+  password     String
+  createdAt    DateTime      @default(now())
+  transactions Transaction[]
+}
+
+model Course {
+  id           String        @id
+  title        String
+  price        Int
+  description  String
+  thumbnail    String
+  level        String
+  transactions Transaction[]
+}
+
+model Transaction {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  courseId      String
+  amount        Int
+  paymentMethod String
+  status        String   @default("PENDING")
+  createdAt     DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+}
