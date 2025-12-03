@@ -234,9 +234,6 @@ export default function DetailAdobePage() {
                         <Link href="/pembayaran" className="btn-purchase primary">
                             Beli Langsung
                         </Link>
-                        <button className="btn-purchase secondary" onClick={() => alert("Fitur Keranjang belum tersedia")}>
-                            Tambah Keranjang
-                        </button>
                         </div>
                     </>
                 )}
