@@ -1,4 +1,3 @@
-// uas/app/kursus_data_struktur/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -6,27 +5,25 @@ import Image from "next/image";
 import Link from "next/link";
 import "../styles/course-detail.css";
 
+// Data Video berdasarkan DetailBlender.html
 const courseVideos = [
-  { title: "Stack - Struktur Data", url: "https://youtu.be/RoKfhtE2G6c?si=VZ1XG8UyOwp0oi-c", duration: "07:16", isFree: true },
-  { title: "Queue - Struktur Data", url: "https://youtu.be/GC3jA6Cym1E?si=4zavVRDqhFNtbE-c", duration: "06:23", isFree: true },
+  { title: "User Interface - Blender 3D Modeling", url: "https://youtu.be/_l7fshHOsPA?si=Tqy4otutfVb_Q4en", duration: "05:50", isFree: true },
+  { title: "Move, Rotate, Scale Object - Blender 3D Modelling", url: "https://youtu.be/7sJ_jO6NHxA?si=7dTy9ZlrhK_cOOxY", duration: "04:37", isFree: true },
   // Video Berbayar
-  { title: "Hash - Struktur Data", url: "https://youtu.be/M9i_-UVpRmE?si=IwMe7Ag7I-hRnGZf", duration: "08:29", isFree: false },
-  { title: "Binary Search Tree - Struktur Data", url: "https://youtu.be/uX1HmvKbaU8?si=RBlEK47GN-4D3mlZ", duration: "03:13", isFree: false },
-  { title: "Tree Travelsal - Struktur Data", url: "https://youtu.be/4eBfmPa4124?si=3O0dVxkOwVZCcgBg", duration: "05:35", isFree: false },
-  { title: "Avl Tree - Struktur Data", url: "https://youtu.be/d5C1MqDZDZQ?si=vkbk_fKQlSv7ZQNL", duration: "04:47", isFree: false },
-  { title: "Heap - Struktur Data", url: "https://youtu.be/_gq_t5byFcU?si=QhpFe2NB315erjpr", duration: "02:49", isFree: false },
-  { title: "Huffman Code - Struktur Data", url: "https://youtu.be/9PR8tl3KspQ?si=4HEwQ-i6423V1_Nx", duration: "03:03", isFree: false },
-  { title: "Graph BFS & DFS - Struktur Data", url: "https://youtu.be/xtcna3thBYI?si=iuyru-fpBU4Qz011", duration: "06:48", isFree: false },
-  { title: "Algoritma Dijikstra Graph - Struktur Data", url: "https://youtu.be/sX7x54uyPzY?si=6F1bDumVr7qmPlXf", duration: "07:31", isFree: false },
-  { title: "Minimum Spanning Tree - Struktur Data", url: "https://youtu.be/MgdeDVP2CvU?si=gWmoF_i76J6FMq-4", duration: "04:22", isFree: false },
-  { title: "Topological Ordering Sort - Struktur Data", url: "https://youtu.be/455nDoUvbw4?si=6-ej9u5UN7ewwcQW", duration: "03:01", isFree: false },
-  { title: "Critical Path Analysis Pada Task Network", url: "https://youtu.be/LrQUQCjkFJ0?si=xktj98NSGzRFojQR", duration: "05:44", isFree: false },
+  { title: "Edit Mode - Blender 3D Modeling", url: "https://youtu.be/WBQEZwJAWrc?si=xQWkQbuU296-AWR9", duration: "05:03", isFree: false },
+  { title: "Extrude - Blender 3D Modeling", url: "https://youtu.be/hsLD4XkMNO4?si=taCgOeDE5Hcn92N3", duration: "05:10", isFree: false },
+  { title: "Loop Cut & Delete - Blender 3D Modeling", url: "https://youtu.be/0G0Idtn8XlM?si=FQj_QCBzugS5WEyH", duration: "05:23", isFree: false },
+  { title: "Knife, Bisect & Bevel Tool - Blender 3D Modeling", url: "https://youtu.be/pbq0ExxuhCw?si=qowRM0dQcEwQwPA8", duration: "03:20", isFree: false },
+  { title: "Shading, Texturing & UV Unwrap - Blender 3D Modeling", url: "https://youtu.be/R9C7chSsHEY?si=9jYtT_jWyQ9OhP0V", duration: "10:48", isFree: false },
+  { title: "Modifier: Mirror, Boolean, Simple Deform, Subdivision", url: "https://youtu.be/gnngKZj13Yk?si=0TQLPak7IOvlLqjN", duration: "07:11", isFree: false },
+  { title: "Basic Rigging & Posing", url: "https://youtu.be/XWveG_boJdo?si=l1hh5t3X0Z7tApKT", duration: "10:11", isFree: false },
 ];
 
-export default function DetailDataStrukturPage() {
+export default function DetailBlenderPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSection, setActiveSection] = useState("manfaat");
   
+  // State User
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasPurchased] = useState(false); 
 
@@ -34,6 +31,7 @@ export default function DetailDataStrukturPage() {
     setIsExpanded(!isExpanded);
   };
 
+  // Cek Login
   useEffect(() => {
     const checkAuth = setTimeout(() => {
       if (typeof window !== "undefined") {
@@ -41,9 +39,11 @@ export default function DetailDataStrukturPage() {
         setIsLoggedIn(!!user);
       }
     }, 0);
+
     return () => clearTimeout(checkAuth);
   }, []);
 
+  // Scroll Spy
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['manfaat', 'kursus', 'syarat'];
@@ -112,21 +112,22 @@ export default function DetailDataStrukturPage() {
                 <span>&gt;</span>
                 <Link href="/kursus">Kursus</Link>
                 <span>&gt;</span>
-                <p>Struktur Data [2020]</p>
+                <p>Blender 3D Modeling [2020]</p>
             </div>
 
             <div className="detail-content-wrapper">
                 <div className="course-text-info">
-                <h2>Kuliah Struktur Data [2020]</h2>
+                <h2>Blender 3D Modeling [2020]</h2>
                 <p className="course-description">
-                    Struktur data adalah fondasi dari ilmu komputer modern.
-                    Menguasai konsep array, stack, queue, dan tree akan membuka jalan untuk membangun aplikasi yang kuat.
+                    Blender 3D adalah salah satu platform kreasi 3D paling komprehensif yang tersedia di pasar kreatif saat ini. 
+                    Sebagai software open-source yang didukung oleh komunitas global yang masif, Blender menawarkan rangkaian fitur canggih 
+                    yang mencakup keseluruhan alur kerja 3D, mulai dari pemodelan, pematungan digital (sculpting), animasi, hingga rendering fotorealistis.
                 </p>
                 </div>
                 <div className="course-media-placeholder">
                 <Image
-                    src="/StrukturData.jpg"
-                    alt="Struktur Data"
+                    src="/Blender.jpg"
+                    alt="Blender 3D Modeling"
                     width={800}
                     height={450}
                     style={{ width: "100%", height: "auto" }}
@@ -136,8 +137,8 @@ export default function DetailDataStrukturPage() {
 
             <div className="course-meta-info">
                 <span>Instruktur: Darius</span>
-                <span>Waktu Total: 1 jam 10 menit</span>
-                <span>Rilis: 25 November 2020</span>
+                <span>Waktu Total: 58 menit</span>
+                <span>Rilis: 12 Oktober 2021</span>
             </div>
           </section>
 
@@ -154,20 +155,24 @@ export default function DetailDataStrukturPage() {
               <div className="learning-objectives" id="manfaat">
                 <h2>Yang akan Anda pelajari:</h2>
                 <ul>
-                  <li>Memahami konsep dasar struktur data.</li>
-                  <li>Mempelajari implementasi Array dan Structure.</li>
-                  <li>Menguasai konsep Tree, Binary Tree, dan Graph.</li>
+                  <li>Menguasai dasar-dasar navigasi dan antarmuka (interface) di dalam Blender.</li>
+                  <li>Mempelajari teknik-teknik fundamental 3D modeling (Extrude, Loop Cut, Bevel).</li>
+                  <li>Memahami cara memberikan material, tekstur, dan warna pada objek 3D (Shading & UV Unwrapping).</li>
+                  <li>Menerapkan berbagai macam modifier non-destruktif untuk mempercepat proses modeling.</li>
+                  <li>Mendapatkan pengenalan dasar tentang rigging untuk mempersiapkan karakter 3D.</li>
                 </ul>
               </div>
 
               <div className="skills-acquired">
                 <h2>Keahlian yang akan Anda dapatkan:</h2>
                 <div className="skills-tags">
-                  <span className="skill-tag">Struktur Data</span>
-                  <span className="skill-tag">Problem Solving</span>
-                  <span className="skill-tag">Stack & Queue</span>
-                  <span className="skill-tag">Trees & Graphs</span>
-                  <span className="skill-tag">Dasar C++</span>
+                  <span className="skill-tag">3D Modeling</span>
+                  <span className="skill-tag">Digital Sculpting</span>
+                  <span className="skill-tag">UV Unwrapping</span>
+                  <span className="skill-tag">Texturing & Shading</span>
+                  <span className="skill-tag">Lighting</span>
+                  <span className="skill-tag">Rendering</span>
+                  <span className="skill-tag">Rigging Karakter</span>
                 </div>
               </div>
 
@@ -175,7 +180,7 @@ export default function DetailDataStrukturPage() {
                 <div className="course-content-header">
                   <div className="header-text">
                     <h2>Konten Kursus:</h2>
-                    <p>{courseVideos.length} Video - Total 1 jam 10 menit</p>
+                    <p>{courseVideos.length} Video - Total 58 menit</p>
                   </div>
                   {!hasPurchased && <span className="promo-btn">Dua Video Pertama Gratis!</span>}
                 </div>
@@ -205,9 +210,10 @@ export default function DetailDataStrukturPage() {
               <div className="requirements-section" id="syarat">
                 <h2>Syarat:</h2>
                 <ul>
-                  <li>Memiliki pemahaman dasar logika pemrograman.</li>
-                  <li>Komputer atau laptop dengan koneksi internet.</li>
-                  <li>Code editor dan compiler C++ terinstal.</li>
+                  <li>Tidak perlu pengalaman 3D sebelumnya. Kursus ini dirancang untuk pemula sejati.</li>
+                  <li>Komputer atau Laptop (64-bit) dengan koneksi internet.</li>
+                  <li>Software Blender sudah terinstal (Gratis di blender.org).</li>
+                  <li>Rasa ingin tahu dan kesabaran untuk belajar.</li>
                 </ul>
               </div>
             </div>
@@ -221,13 +227,14 @@ export default function DetailDataStrukturPage() {
                 ) : (
                     <>
                         <h2>Beli Kursus</h2>
-                        <p className="price">Rp 230.000</p>
+                        {/* Harga disesuaikan dengan daftar di halaman list (Rp 50.000) agar konsisten */}
+                        <p className="price">Rp 50.000</p>
                         <p className="student-count">
                         <i className="fas fa-fire me-2" style={{color: 'var(--primary-orange)'}}></i>
-                        <span>458 Pelajar sudah mendaftar</span>
+                        <span>556 Pelajar sudah mendaftar</span>
                         </p>
                         <div className="action-buttons">
-                        <Link href="/pembayaran?id=2" className="btn-purchase primary">
+                        <Link href="/pembayaran?id=4" className="btn-purchase primary">
                             Beli Langsung
                         </Link>
                         </div>

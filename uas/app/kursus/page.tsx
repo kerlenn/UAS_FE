@@ -4,83 +4,9 @@ import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import './kursus.css';
+import { allCourses } from '@/lib/courses'; // <--- Import data dari sini
 
-type Course = {
-  id: number;
-  title: string;
-  description: string;
-  instructor: string;
-  image: string;
-  price: number; 
-  level: 'Beginner' | 'Intermediate' | 'Professional';
-  videoCount: number;
-  materi: 'Adobe' | 'Blender' | 'Roblox' | 'Programming';
-  slug: string;
-};
-
-const allCourses: Course[] = [
-  {
-    id: 1,
-    title: "Adobe After Effects [2020]",
-    description: "Kuasai motion graphics dan efek visual dari dasar hingga mahir dengan panduan lengkap dari pakar di bidangnya.",
-    instructor: "Dengan Instruktur Darius",
-    image: "/AdobeEA.jpeg",
-    price: 120000,
-    level: "Beginner",
-    videoCount: 9,
-    materi: "Adobe",
-    slug: "/kursus_adobe"
-  },
-  {
-    id: 2,
-    title: "Kuliah Struktur Data [2020]",
-    description: "Pelajari konsep fundamental struktur data seperti Array, Linked List, Stack, dan Queue untuk membangun algoritma yang efisien.",
-    instructor: "Dengan Instruktur Darius",
-    image: "/StrukturData.jpg",
-    price: 230000,
-    level: "Intermediate",
-    videoCount: 13,
-    materi: "Programming",
-    slug: "/kursus_data_struktur"
-  },
-  {
-    id: 3,
-    title: "Roblox Studio untuk Prototyping Game [2025]",
-    description: "Belajar membuat game pertamamu di platform Roblox. Mulai dari desain level, scripting dasar dengan Lua, hingga publikasi.",
-    instructor: "Dengan Instruktur Darius",
-    image: "/Roblox.jpg",
-    price: 0,
-    level: "Beginner",
-    videoCount: 5,
-    materi: "Roblox",
-    slug: "/DetailRoblox.html"
-  },
-  {
-    id: 4,
-    title: "Blender 3D Modelling [2020]",
-    description: "Ciptakan model 3D yang menakjubkan dari nol. Pelajari teknik-teknik sculpting, texturing, dan rendering di Blender.",
-    instructor: "Dengan Instruktur Darius",
-    image: "/Blender.jpg",
-    price: 50000,
-    level: "Intermediate",
-    videoCount: 9,
-    materi: "Blender",
-    slug: "/DetailBlender.html"
-  },
-  {
-    id: 5,
-    title: "Object Oriented Programming [2020]",
-    description: "Pahami pilar-pilar OOP (Encapsulation, Inheritance, Polymorphism) untuk menulis kode yang lebih bersih, modular, dan reusable.",
-    instructor: "Dengan Instruktur Darius",
-    image: "/OOP.jpg",
-    price: 80000,
-    level: "Professional",
-    videoCount: 10,
-    materi: "Programming",
-    slug: "/DetailOOP.html"
-  }
-];
-
+// Filter Type (tetap diperlukan untuk state filter)
 type Filters = {
   video: string[];
   materi: string[];
@@ -89,6 +15,7 @@ type Filters = {
 };
 
 export default function KursusPage() {
+  // ... (Sisa kode logika filter sama persis, karena allCourses sekarang diimport) ...
   const [filters, setFilters] = useState<Filters>({
     video: [],
     materi: [],
@@ -97,27 +24,29 @@ export default function KursusPage() {
   });
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, checked } = e.target;
+     // ... (Kode handleFilterChange sama seperti sebelumnya) ...
+     const { name, value, checked } = e.target;
     
-    setFilters((prevFilters) => {
-      const currentGroupFilters = prevFilters[name as keyof Filters];
-      
-      let newGroupFilters: string[];
-      if (checked) {
-        newGroupFilters = [...currentGroupFilters, value];
-      } else {
-        newGroupFilters = currentGroupFilters.filter((item) => item !== value);
-      }
-      
-      return {
-        ...prevFilters,
-        [name]: newGroupFilters,
-      };
-    });
+     setFilters((prevFilters) => {
+       const currentGroupFilters = prevFilters[name as keyof Filters];
+       
+       let newGroupFilters: string[];
+       if (checked) {
+         newGroupFilters = [...currentGroupFilters, value];
+       } else {
+         newGroupFilters = currentGroupFilters.filter((item) => item !== value);
+       }
+       
+       return {
+         ...prevFilters,
+         [name]: newGroupFilters,
+       };
+     });
   };
 
   const filteredCourses = useMemo(() => {
-    let tempCourses = [...allCourses];
+    // Logika filter tetap sama
+    let tempCourses = [...allCourses]; // allCourses sekarang berasal dari import
 
     if (filters.video.length > 0) {
       tempCourses = tempCourses.filter(course => 
@@ -158,6 +87,7 @@ export default function KursusPage() {
 
   return (
     <div className="container my-4">
+      {/* ... (JSX Tampilan sama persis seperti file original) ... */}
       <main>
         <div className="main-header">
           <div className="breadcrumbs">
@@ -169,7 +99,8 @@ export default function KursusPage() {
 
         <div className="row g-4">
           <div className="col-lg-4 col-xl-3">
-            <aside className="filters">
+             {/* ... (Bagian Sidebar Filter sama persis) ... */}
+             <aside className="filters">
               <div className="filter-group">
                 <h3>Banyak Video</h3>
                 <div className="filter-option">
@@ -266,8 +197,10 @@ export default function KursusPage() {
                         </div>
                       </div>
                       <div className="buttons">
+                        {/* Tombol Lihat mengarah ke slug masing-masing */}
                         <Link href={course.slug} className="btn btn-card">Lihat</Link>
-                        <Link href="/pembayaran.html" className="btn btn-card">Beli</Link>
+                        {/* Tombol Beli mengarah ke pembayaran dengan ID */}
+                        <Link href={`/pembayaran?id=${course.id}`} className="btn btn-card">Beli</Link>
                       </div>
                     </div>
                   </div>

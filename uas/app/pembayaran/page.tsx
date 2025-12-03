@@ -1,15 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { allCourses } from '@/lib/courses'; // <--- Import data dari file pusat
 import '../styles/pembayaran.css';
 
-export default function PembayaranPage() {
+function PembayaranContent() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true); // State untuk loading check auth
+  const searchParams = useSearchParams();
   
-  // State untuk form input
+  // Ambil ID dari URL
+  const courseIdParam = searchParams.get('id');
+  
+  // Default ke kursus pertama (Adobe) hanya jika ID tidak ditemukan/salah
+  const [selectedCourse, setSelectedCourse] = useState(allCourses[0]);
+
+  // State form
   const [formData, setFormData] = useState({
     nama: '',
     telp: '',
@@ -17,73 +24,64 @@ export default function PembayaranPage() {
     metode: ''
   });
 
-  // --- AUTH GUARD (Pengecekan Login) ---
   useEffect(() => {
-    // Ambil data user dari localStorage (sesuai dengan logika project lama Anda)
+    // 1. Cek Login
     const user = localStorage.getItem('currentUser');
-
     if (!user) {
-      // Jika tidak ada user, tampilkan pesan dan redirect ke login
-      alert('Anda harus login terlebih dahulu untuk melakukan pembayaran.');
-      router.push('/login'); // Pastikan Anda sudah memiliki halaman /login
-    } else {
-      // Jika user ada, matikan loading dan izinkan akses
-      setIsLoading(false);
-      
-      // Opsional: Otomatis isi data nama/email dari user yang login
-      try {
-        const userData = JSON.parse(user);
-        setFormData(prev => ({
-          ...prev,
-          nama: userData.fullname || '',
-          email: userData.email || ''
-        }));
-      } catch (e) {
-        console.error("Error parsing user data", e);
+      alert('Anda harus login terlebih dahulu.');
+      router.push('/login');
+      return;
+    }
+
+    try {
+      const userData = JSON.parse(user);
+      setFormData(prev => ({
+        ...prev,
+        nama: userData.fullname || '',
+        email: userData.email || '',
+        telp: userData.phone || ''
+      }));
+    } catch (e) {
+      console.error(e);
+    }
+
+    // 2. LOGIKA PENTING: Cari kursus berdasarkan ID
+    if (courseIdParam) {
+      const foundCourse = allCourses.find(c => c.id === parseInt(courseIdParam));
+      if (foundCourse) {
+        setSelectedCourse(foundCourse);
       }
     }
-  }, [router]);
+  }, [router, courseIdParam]);
 
-  // Handler untuk perubahan input
+  // Handler input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [id]: value
-    }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
-  // Handler tombol bayar
+  // Handler bayar
   const handlePay = () => {
     const { nama, telp, email, metode } = formData;
-    const errors: string[] = [];
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!nama.trim()) errors.push('Nama');
-    if (!telp.trim()) errors.push('No Telpon');
-    if (!email.trim()) errors.push('Email');
-    else if (!emailRegex.test(email)) {
-      alert('Format email tidak valid.');
-      return;
-    }
-    if (!metode) errors.push('Metode Pembayaran');
-
-    if (errors.length > 0) {
-      alert('Harap isi kolom berikut: ' + errors.join(', '));
-      return;
-    }
-
-    // Simulasi proses pembayaran berhasil
-    alert('Pembayaran berhasil!');
     
-    // Redirect ke halaman sukses
+    // Validasi sederhana
+    if (!nama || !telp || !email) {
+      alert('Harap lengkapi data diri.');
+      return;
+    }
+    if (selectedCourse.price > 0 && !metode) {
+      alert('Harap pilih metode pembayaran.');
+      return;
+    }
+
+    // Sukses
+    if (selectedCourse.price === 0) {
+        alert(`Berhasil mendaftar kursus gratis: ${selectedCourse.title}!`);
+    } else {
+        alert(`Pembayaran Rp${selectedCourse.price.toLocaleString('id-ID')} untuk ${selectedCourse.title} berhasil!`);
+    }
     router.push('/payment-success');
   };
-
-  // Tampilkan loading kosong atau spinner saat sedang mengecek login
-  if (isLoading) {
-    return null; 
-  }
 
   return (
     <div className="checkout-container">
@@ -91,73 +89,74 @@ export default function PembayaranPage() {
         <section className="form-section">
           <div className="form-group">
             <label htmlFor="nama">Nama</label>
-            <input 
-              type="text" 
-              id="nama" 
-              placeholder="Jhon Doe"
-              value={formData.nama}
-              onChange={handleInputChange}
-            />
+            <input type="text" id="nama" value={formData.nama} onChange={handleInputChange} />
           </div>
           <div className="form-group">
-            <label htmlFor="telp">No Telpn</label>
-            <input 
-              type="number" 
-              id="telp" 
-              placeholder="+62 8## - #### - ####"
-              value={formData.telp}
-              onChange={handleInputChange}
-            />
+            <label htmlFor="telp">No. Telepon</label>
+            <input type="tel" id="telp" value={formData.telp} onChange={handleInputChange} />
           </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              placeholder="Example@com"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
+            <input type="email" id="email" value={formData.email} onChange={handleInputChange} />
           </div>
           
           <hr className="form-divider" />
           
-          <div className="form-group">
-            <label htmlFor="metode">Metode Pembayaran</label>
-            <select 
-              id="metode" 
-              value={formData.metode} 
-              onChange={handleInputChange}
-            >
-              <option value="">Silahkan Pilih Metode Pembayaran</option>
-              <option value="cc">Kartu Kredit</option>
-              <option value="va">Virtual Account</option>
-              <option value="ewallet">E-Wallet</option>
-              <option value="qris">Qris</option>
-            </select>
-          </div>
+          {selectedCourse.price > 0 ? (
+            <div className="form-group">
+                <label htmlFor="metode">Metode Pembayaran</label>
+                <select id="metode" value={formData.metode} onChange={handleInputChange}>
+                <option value="">-- Pilih --</option>
+                <option value="cc">Kartu Kredit</option>
+                <option value="va">Virtual Account</option>
+                <option value="ewallet">E-Wallet</option>
+                </select>
+            </div>
+          ) : (
+            <div className="alert alert-success">Kursus ini Gratis!</div>
+          )}
         </section>
 
         <aside className="summary-section">
-          {/* Pastikan gambar adobeAE.jpg ada di folder public/static/ atau public/ */}
+          {/* Gambar Dinamis */}
           <Image 
-            src="/adobeAE.jpg" 
-            alt="Adobe After Effects Course" 
-            width={400} 
-            height={225}
-            className="course-image"
-            style={{ width: '100%', height: 'auto' }}
+            src={selectedCourse.image} 
+            alt={selectedCourse.title} 
+            width={400} height={225} 
+            style={{width: '100%', height: 'auto', borderRadius: '10px', marginBottom: '15px'}}
           />
-          <h3>Adobe After Effects [2020]</h3>
-          <p className="course-description">
-            Kuasai Adobe After Effects dari dasar hingga mahir untuk mengubah ide-ide Anda dengan panduan lengkap dari pakar di bidangnya.
+          
+          {/* Judul */}
+          <h3>{selectedCourse.title}</h3>
+          
+          {/* --- [TAMBAHAN BARU] Deskripsi --- */}
+          <p className="course-description" style={{ fontSize: '0.9em', opacity: 0.9, lineHeight: '1.6', marginBottom: '10px' }}>
+            {selectedCourse.description}
           </p>
-          <p className="course-instructor">Dengan Instruktur Darius</p>
-          <p className="course-price">Harga: <strong>Rp120,000</strong></p>
+
+          {/* Instruktur */}
+          <p className="course-instructor" style={{ marginBottom: 'auto', opacity: 0.8, fontSize: '0.9em' }}>
+            {selectedCourse.instructor}
+          </p>
+
+          {/* Harga */}
+          <p className="course-price">
+            Total: <strong>{selectedCourse.price === 0 ? 'GRATIS' : `Rp${selectedCourse.price.toLocaleString('id-ID')}`}</strong>
+          </p>
         </aside>
         
-        <button className="btn-bayar" onClick={handlePay}>Bayar</button>
+        <button className="btn-bayar" onClick={handlePay}>
+            {selectedCourse.price === 0 ? 'Daftar Sekarang' : 'Bayar Sekarang'}
+        </button>
       </div>
     </div>
+  );
+}
+
+export default function PembayaranPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PembayaranContent />
+    </Suspense>
   );
 }
