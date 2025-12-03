@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import './user.css';
+import '../styles/user.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { UserIcon } from '../components/UserIcon';
