@@ -231,7 +231,7 @@ export default function DetailAdobePage() {
                         <span>458 Pelajar sudah mendaftar</span>
                         </p>
                         <div className="action-buttons">
-                        <Link href="/pembayaran" className="btn-purchase primary">
+                        <Link href="/pembayaran?id=1" className="btn-purchase primary">
                             Beli Langsung
                         </Link>
                         </div>
