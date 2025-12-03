@@ -6,7 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import "../styles/course-detail.css";
 
-// Data Video
+const CURRENT_COURSE_ID = 1; 
+
 const courseVideos = [
   { title: "Import & Play Video - Tutorial After Effects", url: "https://www.youtube.com/watch?v=n3pQoPflhF0", duration: "06:44", isFree: true },
   { title: "Main Efek - Tutorial After Effects", url: "https://www.youtube.com/watch?v=Z4sm8UObRxc", duration: "05:57", isFree: true },
@@ -27,7 +28,7 @@ export default function DetailAdobePage() {
   // State User
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // Hapus 'setHasPurchased' dari destructuring agar tidak kena warning 'unused vars'
-  const [hasPurchased] = useState(false); 
+  const [hasPurchased, setHasPurchased] = useState(false); 
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -35,13 +36,23 @@ export default function DetailAdobePage() {
 
   // EFFECT 1: Cek Login (Dibungkus setTimeout untuk fix error ESLint)
   useEffect(() => {
+    // 1. Cek Login
     const checkAuth = setTimeout(() => {
       if (typeof window !== "undefined") {
         const user = localStorage.getItem("currentUser");
-        setIsLoggedIn(!!user); // true jika user ada, false jika null
+        setIsLoggedIn(!!user);
+
+        // 2. Cek Pembelian dari LocalStorage
+        const savedPurchases = localStorage.getItem('purchasedCourses');
+        if (savedPurchases) {
+            const purchasedList = JSON.parse(savedPurchases);
+            // Cek apakah ID kursus saat ini ada di daftar pembelian
+            if (purchasedList.includes(CURRENT_COURSE_ID)) {
+                setHasPurchased(true);
+            }
+        }
       }
     }, 0);
-
     return () => clearTimeout(checkAuth);
   }, []);
 
@@ -70,17 +81,20 @@ export default function DetailAdobePage() {
   const renderVideoList = () => {
     const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 4);
 
-    return videosToShow.map((video, index) => {
-      // SYARAT AKSES: (Sudah Login) DAN (Video Gratis ATAU Sudah Beli)
+        return videosToShow.map((video, index) => {
+      // LOGIKA UTAMA: Video terbuka jika login DAN (gratis ATAU sudah beli)
       const isAccessible = isLoggedIn && (video.isFree || hasPurchased);
 
       let statusBadge;
       if (!isLoggedIn) {
         statusBadge = <span className="badge bg-warning text-dark ms-auto">Login</span>;
       } else if (!isAccessible) {
-        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>;
+        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>; // Terkunci
       } else if (video.isFree) {
         statusBadge = <span className="video-label ms-auto">Gratis</span>;
+      } else {
+        // Jika berbayar tapi sudah dibeli
+        statusBadge = <span className="badge bg-success ms-auto">Terbuka</span>;
       }
 
       return (
@@ -219,8 +233,10 @@ export default function DetailAdobePage() {
             <aside className="purchase-sidebar">
               <div className="purchase-box">
                 {hasPurchased ? (
-                    <div className="alert alert-success fw-bold">
-                        <i className="fas fa-check-circle me-2"></i> Anda sudah membeli kursus ini
+                    <div className="alert alert-success fw-bold text-center">
+                        <i className="fas fa-check-circle me-2 mb-2" style={{fontSize: '2rem'}}></i><br/>
+                        Anda sudah membeli kursus ini. <br/>
+                        <span className="fw-normal small">Silakan akses materi di samping.</span>
                     </div>
                 ) : (
                     <>
@@ -231,7 +247,7 @@ export default function DetailAdobePage() {
                         <span>458 Pelajar sudah mendaftar</span>
                         </p>
                         <div className="action-buttons">
-                        <Link href="/pembayaran?id=1" className="btn-purchase primary">
+                        <Link href={`/pembayaran?id=${CURRENT_COURSE_ID}`} className="btn-purchase primary">
                             Beli Langsung
                         </Link>
                         </div>
