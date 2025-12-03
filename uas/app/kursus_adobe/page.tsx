@@ -1,21 +1,51 @@
-// uas/app/kursus/adobe-after-effects/page.tsx
+// uas/app/kursus_adobe/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import "../styles/course-detail.css";
+
+// Data Video
+const courseVideos = [
+  { title: "Import & Play Video - Tutorial After Effects", url: "https://www.youtube.com/watch?v=n3pQoPflhF0", duration: "06:44", isFree: true },
+  { title: "Main Efek - Tutorial After Effects", url: "https://www.youtube.com/watch?v=Z4sm8UObRxc", duration: "05:57", isFree: true },
+  // Video Berbayar
+  { title: "Ganti Warna Pakaian - Tutorial After Effects", url: "https://www.youtube.com/watch?v=GOz38pr3Cbw", duration: "05:13", isFree: false },
+  { title: "Time Vary Animation Untuk Objek & Efek", url: "https://www.youtube.com/watch?v=1-ke7XeMgIk", duration: "10:31", isFree: false },
+  { title: "Green Screen Mudah - Tutorial After Effects", url: "https://www.youtube.com/watch?v=87xmhun_2GM", duration: "03:04", isFree: false },
+  { title: "Manipulasi Waktu, Slow Motion, Stop Time & Reverse", url: "https://www.youtube.com/watch?v=C8n0sBkpjVc", duration: "03:52", isFree: false },
+  { title: "Motion Tracking - Tutorial After Effects", url: "https://www.youtube.com/watch?v=tP2GYEvBJlo", duration: "07:02", isFree: false },
+  { title: "Camera Tracking - Tutorial After Effects", url: "https://www.youtube.com/watch?v=PdgiQPtq-G4", duration: "06:04", isFree: false },
+  { title: "Parallax Effect, 2.5D dan Animasi Puppet", url: "https://www.youtube.com/watch?v=j19XQ8bAhPI", duration: "09:44", isFree: false },
+];
 
 export default function DetailAdobePage() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeSection, setActiveSection] = useState("manfaat"); 
-  const pathname = usePathname(); 
+  const [activeSection, setActiveSection] = useState("manfaat");
+  
+  // State User
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // Hapus 'setHasPurchased' dari destructuring agar tidak kena warning 'unused vars'
+  const [hasPurchased] = useState(false); 
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  // EFFECT 1: Cek Login (Dibungkus setTimeout untuk fix error ESLint)
+  useEffect(() => {
+    const checkAuth = setTimeout(() => {
+      if (typeof window !== "undefined") {
+        const user = localStorage.getItem("currentUser");
+        setIsLoggedIn(!!user); // true jika user ada, false jika null
+      }
+    }, 0);
+
+    return () => clearTimeout(checkAuth);
+  }, []);
+
+  // EFFECT 2: Scroll Spy
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['manfaat', 'kursus', 'syarat'];
@@ -35,7 +65,45 @@ export default function DetailAdobePage() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []); 
+  }, []);
+
+  const renderVideoList = () => {
+    const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 4);
+
+    return videosToShow.map((video, index) => {
+      // SYARAT AKSES: (Sudah Login) DAN (Video Gratis ATAU Sudah Beli)
+      const isAccessible = isLoggedIn && (video.isFree || hasPurchased);
+
+      let statusBadge;
+      if (!isLoggedIn) {
+        statusBadge = <span className="badge bg-warning text-dark ms-auto">Login</span>;
+      } else if (!isAccessible) {
+        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>;
+      } else if (video.isFree) {
+        statusBadge = <span className="video-label ms-auto">Gratis</span>;
+      }
+
+      return (
+        <li key={index} className={!isAccessible ? "locked-video" : ""}>
+          {isAccessible ? (
+            <a href={video.url} target="_blank" rel="noopener noreferrer">
+              <i className="fas fa-play-circle me-2"></i>
+              <span className="video-title">{video.title}</span>
+              {statusBadge}
+              <span className="video-duration ms-3">{video.duration}</span>
+            </a>
+          ) : (
+            <div className="d-flex align-items-center p-3 text-muted" style={{cursor: 'not-allowed', opacity: 0.7}}>
+              <i className="fas fa-lock me-2"></i>
+              <span className="video-title">{video.title}</span>
+              {statusBadge}
+              <span className="video-duration ms-3">{video.duration}</span>
+            </div>
+          )}
+        </li>
+      );
+    });
+  };
 
   return (
     <div className="detail-page-wrapper">
@@ -55,11 +123,7 @@ export default function DetailAdobePage() {
                 <h2>Adobe After Effects [2020]</h2>
                 <p className="course-description">
                     Adobe After Effects 2020 adalah salah satu platform pengeditan
-                    grafis gerak tercanggih di pasar multimedia saat ini. Dengan
-                    serangkaian fitur terbaru yang ditambahkan ke platform andalan
-                    ini, hadir pula serangkaian fitur yang bertujuan untuk
-                    menciptakan alur kerja yang lebih efisien. Membuat konten yang
-                    bermakna untuk berbagai format tujuan kini semakin mudah.
+                    grafis gerak tercanggih di pasar multimedia saat ini.
                 </p>
                 </div>
                 <div className="course-media-placeholder">
@@ -78,44 +142,24 @@ export default function DetailAdobePage() {
                 <span>Waktu Total: 58 menit</span>
                 <span>Rilis: 20 Juni 2020</span>
             </div>
-            </section>
-
+          </section>
 
           <div className="course-content-wrapper">
             <div className="main-content-col">
-
-                {/* STICKY NAV */}
                 <nav className="sticky-nav">
                     <ul>
-                    <li>
-                        <a href="#manfaat" className={activeSection === 'manfaat' ? 'active' : ''}>Manfaat</a>
-                    </li>
-                    <li>
-                        <a href="#kursus" className={activeSection === 'kursus' ? 'active' : ''}>Kursus</a>
-                    </li>
-                    <li>
-                        <a href="#syarat" className={activeSection === 'syarat' ? 'active' : ''}>Syarat</a>
-                    </li>
+                    <li><a href="#manfaat" className={activeSection === 'manfaat' ? 'active' : ''}>Manfaat</a></li>
+                    <li><a href="#kursus" className={activeSection === 'kursus' ? 'active' : ''}>Kursus</a></li>
+                    <li><a href="#syarat" className={activeSection === 'syarat' ? 'active' : ''}>Syarat</a></li>
                     </ul>
                 </nav>
 
               <div className="learning-objectives" id="manfaat">
                 <h2>Yang akan Anda pelajari:</h2>
                 <ul>
-                  <li>
-                    Menguasai teknik-teknik praktis dan modern yang digunakan
-                    oleh para profesional motion graphics dalam pekerjaan mereka
-                    sehari-hari.
-                  </li>
-                  <li>
-                    Mempelajari tools, panel, dan fitur-fitur esensial yang
-                    dipakai animator profesional, termasuk layers, keyframes,
-                    efek, dan masking.
-                  </li>
-                  <li>
-                    Menerapkan keahlian baru Anda pada proyek-proyek dunia nyata
-                    dan membangun portofolio motion graphics yang kuat.
-                  </li>
+                  <li>Menguasai teknik-teknik praktis dan modern.</li>
+                  <li>Mempelajari tools, panel, dan fitur-fitur esensial.</li>
+                  <li>Menerapkan keahlian baru pada proyek dunia nyata.</li>
                 </ul>
               </div>
 
@@ -128,12 +172,6 @@ export default function DetailAdobePage() {
                   <span className="skill-tag">Color Grading</span>
                   <span className="skill-tag">Animasi 2D</span>
                   <span className="skill-tag">Efek Visual (VFX)</span>
-                  <span className="skill-tag">Masking</span>
-                  <span className="skill-tag">Rendering</span>
-                  <span className="skill-tag">Keyframe Animation</span>
-                  <span className="skill-tag">Motion Tracking</span>
-                  <span className="skill-tag">Tipografi Kinetik</span>
-                  <span className="skill-tag">Visual Storytelling</span>
                 </div>
               </div>
 
@@ -141,83 +179,21 @@ export default function DetailAdobePage() {
                 <div className="course-content-header">
                   <div className="header-text">
                     <h2>Konten Kursus:</h2>
-                    <p>9 Video - Total 58 menit</p>
+                    <p>{courseVideos.length} Video - Total 58 menit</p>
                   </div>
-                  <span className="promo-btn">Dua Video Pertama Gratis!</span>
+                  {!hasPurchased && <span className="promo-btn">Dua Video Pertama Gratis!</span>}
                 </div>
 
                 <div className="video-list-container">
-                  <ul className="video-list">
-                    <li>
-                      <a href="https://www.youtube.com/watch?v=n3pQoPflhF0" target="_blank" rel="noopener noreferrer">
-                        <i className="fas fa-play-circle me-2"></i>
-                        <span className="video-title">Import & Play Video - Tutorial After Effects</span>
-                        <span className="video-label">Gratis</span>
-                        <span className="video-duration">06:44</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.youtube.com/watch?v=Z4sm8UObRxc" target="_blank" rel="noopener noreferrer">
-                        <i className="fas fa-play-circle me-2"></i>
-                        <span className="video-title">Main Efek - Tutorial After Effects</span>
-                        <span className="video-label">Gratis</span>
-                        <span className="video-duration">05:57</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.youtube.com/watch?v=GOz38pr3Cbw" target="_blank" rel="noopener noreferrer">
-                        <i className="fas fa-play-circle me-2"></i>
-                        <span className="video-title">Ganti Warna Pakaian - Tutorial After Effects</span>
-                        <span className="video-duration">05:13</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.youtube.com/watch?v=1-ke7XeMgIk" target="_blank" rel="noopener noreferrer">
-                        <i className="fas fa-play-circle me-2"></i>
-                        <span className="video-title">Time Vary Animation Untuk Objek & Efek</span>
-                        <span className="video-duration">10:31</span>
-                      </a>
-                    </li>
+                  {!isLoggedIn && (
+                    <div className="alert alert-warning mb-3 text-center" role="alert">
+                      <i className="fas fa-exclamation-circle me-2"></i>
+                      Silakan <Link href="/login" className="fw-bold text-dark text-decoration-underline">Login</Link> untuk mengakses video gratis.
+                    </div>
+                  )}
 
-                    {isExpanded && (
-                      <>
-                        <li>
-                          <a href="https://www.youtube.com/watch?v=87xmhun_2GM" target="_blank" rel="noopener noreferrer">
-                            <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Green Screen Mudah - Tutorial After Effects</span>
-                            <span className="video-duration">03:04</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://www.youtube.com/watch?v=C8n0sBkpjVc" target="_blank" rel="noopener noreferrer">
-                            <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Manipulasi Waktu, Slow Motion, Stop Time & Reverse</span>
-                            <span className="video-duration">03:52</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://www.youtube.com/watch?v=tP2GYEvBJlo" target="_blank" rel="noopener noreferrer">
-                            <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Motion Tracking - Tutorial After Effects</span>
-                            <span className="video-duration">07:02</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://www.youtube.com/watch?v=PdgiQPtq-G4" target="_blank" rel="noopener noreferrer">
-                            <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Camera Tracking - Tutorial After Effects</span>
-                            <span className="video-duration">06:04</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://www.youtube.com/watch?v=j19XQ8bAhPI" target="_blank" rel="noopener noreferrer">
-                            <i className="fas fa-play-circle me-2"></i>
-                            <span className="video-title">Parallax Effect, 2.5D dan Animasi Puppet</span>
-                            <span className="video-duration">09:44</span>
-                          </a>
-                        </li>
-                      </>
-                    )}
+                  <ul className="video-list">
+                    {renderVideoList()}
                   </ul>
                   
                   <button className="show-more-btn" onClick={toggleExpand}>
@@ -233,64 +209,46 @@ export default function DetailAdobePage() {
               <div className="requirements-section" id="syarat">
                 <h2>Syarat:</h2>
                 <ul>
-                  <li>
-                    Tidak dibutuhkan pengalaman di bidang desain atau animasi.
-                    Kursus ini dirancang khusus untuk pemula dan semua materi akan
-                    diajarkan dari nol.
-                  </li>
-                  <li>
-                    Komputer PC (64-bit) dengan koneksi internet. Sangat
-                    disarankan memiliki RAM minimal 16GB agar software berjalan
-                    dengan lancar.
-                  </li>
-                  <li>
-                    Software Adobe After Effects sudah terinstal. Anda bisa
-                    memanfaatkan versi uji coba (free trial) gratis yang resmi
-                    dari Adobe untuk memulai kursus ini.
-                  </li>
-                  <li>
-                    Kemauan dan semangat yang tinggi untuk belajar dan berkreasi!
-                  </li>
+                  <li>Tidak dibutuhkan pengalaman di bidang desain atau animasi.</li>
+                  <li>Komputer PC (64-bit) dengan koneksi internet.</li>
+                  <li>Software Adobe After Effects sudah terinstal.</li>
                 </ul>
               </div>
             </div>
 
             <aside className="purchase-sidebar">
               <div className="purchase-box">
-                <h2>Beli Kursus</h2>
-                <p className="price">Rp 120.000</p>
-                <p className="student-count">
-                  <i className="fas fa-fire me-2" style={{color: 'var(--primary-orange)'}}></i>
-                  <span>458 Pelajar sudah mendaftar</span>
-                </p>
-                <div className="action-buttons">
-                  <Link href="/pembayaran" className="btn-purchase primary">
-                    Beli Langsung
-                  </Link>
-                  <Link href="#" className="btn-purchase secondary">
-                    Tambah Keranjang
-                  </Link>
-                </div>
+                {hasPurchased ? (
+                    <div className="alert alert-success fw-bold">
+                        <i className="fas fa-check-circle me-2"></i> Anda sudah membeli kursus ini
+                    </div>
+                ) : (
+                    <>
+                        <h2>Beli Kursus</h2>
+                        <p className="price">Rp 120.000</p>
+                        <p className="student-count">
+                        <i className="fas fa-fire me-2" style={{color: 'var(--primary-orange)'}}></i>
+                        <span>458 Pelajar sudah mendaftar</span>
+                        </p>
+                        <div className="action-buttons">
+                        <Link href="/pembayaran" className="btn-purchase primary">
+                            Beli Langsung
+                        </Link>
+                        <button className="btn-purchase secondary" onClick={() => alert("Fitur Keranjang belum tersedia")}>
+                            Tambah Keranjang
+                        </button>
+                        </div>
+                    </>
+                )}
+                
                 <div className="includes-section">
                   <p>Sudah termasuk:</p>
                   <ul>
-                    <li>
-                      <i className="fas fa-circle-play me-2"></i> 9 Video Pembelajaran
-                    </li>
-                    <li>
-                      <i className="fas fa-infinity me-2"></i> Akses Selamanya
-                    </li>
-                    <li>
-                      <i className="fas fa-file-arrow-down me-2"></i> File Aset
-                    </li>
-                    <li>
-                      <i className="fas fa-trophy me-2"></i> Sertifikat Penyelesaian
-                    </li>
+                    <li><i className="fas fa-circle-play me-2"></i> {courseVideos.length} Video Pembelajaran</li>
+                    <li><i className="fas fa-infinity me-2"></i> Akses Selamanya</li>
+                    <li><i className="fas fa-file-arrow-down me-2"></i> File Aset</li>
+                    <li><i className="fas fa-trophy me-2"></i> Sertifikat Penyelesaian</li>
                   </ul>
-                </div>
-                <div className="share-link mt-3">
-                  <i className="fas fa-share-nodes me-2"></i>
-                  Bagikan Kursus Ini
                 </div>
               </div>
             </aside>
