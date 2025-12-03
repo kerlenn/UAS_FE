@@ -74,13 +74,21 @@ function PembayaranContent() {
       return;
     }
 
+    const savedPurchases = localStorage.getItem('purchasedCourses');
+    let purchasedCourses: number[] = savedPurchases ? JSON.parse(savedPurchases) : [];
+
+    if (!purchasedCourses.includes(selectedCourse.id)) {
+        purchasedCourses.push(selectedCourse.id);
+        localStorage.setItem('purchasedCourses', JSON.stringify(purchasedCourses));
+    }
+
     // Sukses
     if (selectedCourse.price === 0) {
         alert(`Berhasil mendaftar kursus gratis: ${selectedCourse.title}!`);
     } else {
         alert(`Pembayaran Rp${selectedCourse.price.toLocaleString('id-ID')} untuk ${selectedCourse.title} berhasil!`);
     }
-    router.push('/payment-success');
+    router.push(`/payment-success?courseId=${selectedCourse.id}`);
   };
 
   return (
