@@ -3,6 +3,8 @@
 
 import { useState, FormEvent } from "react";
 import "./styles/home.css";
+import Link from 'next/link';
+import Image from "next/image";
 import Header from '@/app/components/Header'
 
 
