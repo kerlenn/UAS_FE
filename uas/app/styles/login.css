@@ -16,7 +16,6 @@
   align-items: center;
 }
 
-
 .login-page .back-home {
   width: 100%;
   margin-bottom: 20px;
@@ -55,6 +54,8 @@
   border-radius: 25px;
   padding: 4px;
   backdrop-filter: blur(20px);
+  width: 100%;
+  max-width: 400px;
 }
 
 .login-page .tab-btn {
@@ -118,12 +119,14 @@
 .login-page .welcome-title {
   font-size: 28px;
   font-weight: 700;
+  margin: 0;
 }
 
 .login-page .welcome-text {
   font-size: 13px;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.9);
+  margin: 0;
 }
 
 .login-page .form-section {
@@ -146,6 +149,7 @@
   font-size: 22px;
   font-weight: 600;
   color: #111827;
+  margin: 0;
 }
 
 .login-page .input-group {
@@ -163,6 +167,7 @@
   font-size: 14px;
   outline: none;
   transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
 .login-page .input-group input::placeholder {
@@ -184,13 +189,7 @@
   box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.7);
 }
 
-.login-page .input-group:focus-within label {
-  top: 0;
-  transform: translateY(-50%);
-  font-size: 11px;
-  opacity: 0.9;
-}
-
+.login-page .input-group:focus-within label,
 .login-page .input-group:has(input:not(:placeholder-shown)) label {
   top: 0;
   transform: translateY(-50%);
@@ -198,39 +197,32 @@
   opacity: 0.9;
 }
 
-.signup-page .input-group:focus-within label {
-  top: 0;
-  transform: translateY(-50%);
-  font-size: 11px;
-  opacity: 0.9;
-}
-
-.signup-page .input-group:has(input:not(:placeholder-shown)) label {
-  top: 0;
-  transform: translateY(-50%);
-  font-size: 11px;
-  opacity: 0.9;
-}
-
-
 .login-page .password-input {
   position: relative;
 }
 
 .login-page .password-input input {
-  padding-right: 40px;
+  padding-right: 45px;
 }
 
 .login-page .toggle-password {
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: transparent;
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-page .toggle-password:hover {
+  color: rgba(255, 255, 255, 1);
 }
 
 .login-page .input-group.error input {
@@ -260,6 +252,7 @@
 
 .login-page .checkbox-container input {
   accent-color: #4C1D95;
+  cursor: pointer;
 }
 
 .login-page .forgot-password {
@@ -337,5 +330,9 @@
 
   .login-page .form-section {
     padding: 30px 24px 24px;
+  }
+  
+  .login-page .auth-tabs {
+    max-width: 100%;
   }
 }

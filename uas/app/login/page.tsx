@@ -9,6 +9,8 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -18,7 +20,7 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      // Panggil API Login yang baru kita buat
+      // Panggil API Login
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,8 +36,7 @@ export default function LoginPage() {
       // Jika sukses
       alert(`Selamat datang kembali, ${data.user.fullname}!`);
       
-      // Simpan data user sederhana ke localStorage (opsional, buat nampilin nama di home)
-      // Nanti idealnya pakai Context/Session
+      // Simpan data user ke localStorage
       if (typeof window !== "undefined") {
         localStorage.setItem("currentUser", JSON.stringify(data.user));
       }
@@ -43,7 +44,6 @@ export default function LoginPage() {
       router.push("/"); // Pindah ke Home
 
     } catch (error) {
-      // Cek apakah error ini benar-benar sebuah Error standard
       if (error instanceof Error) {
         setErrorMessage(error.message);
       } else {
@@ -57,21 +57,49 @@ export default function LoginPage() {
   return (
     <div className="login-page">
       <div className="auth-container">
+        {/* Back to Home Button */}
         <div className="back-home">
-          <Link href="/" className="btn-back-home">Kembali ke Beranda</Link>
+          <Link href="/" className="btn-back-home">
+            ← Kembali ke Beranda
+          </Link>
         </div>
 
+        {/* Tab Toggle */}
+        <div className="auth-tabs">
+          <button className="tab-btn active">Login</button>
+          <Link href="/signup">
+            <button className="tab-btn">Sign Up</button>
+          </Link>
+        </div>
+
+        {/* Auth Card */}
         <div className="auth-card">
+          {/* Welcome Section (Kiri) */}
+          <div className="welcome-section">
+            <div className="logo-badge">Logo</div>
+            <h1 className="welcome-title">Selamat Datang!</h1>
+            <p className="welcome-text">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+              Sed non risus. Suspendisse lectus tortor, dignissim sit amet, 
+              adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+            </p>
+          </div>
+
+          {/* Form Section (Kanan) */}
           <div className="form-section">
             <form className="auth-form" onSubmit={handleSubmit}>
-              <h2 className="form-title">Login</h2>
+              <div className="form-header">
+                <h2 className="form-title">Login</h2>
+              </div>
 
+              {/* Error Message */}
               {errorMessage && (
-                <div className="error-message" style={{ color: 'red', marginBottom: '15px' }}>
+                <div className="error-message" style={{ display: 'block' }}>
                   {errorMessage}
                 </div>
               )}
 
+              {/* Email Input */}
               <div className="input-group">
                 <input 
                   type="email" 
@@ -84,9 +112,10 @@ export default function LoginPage() {
                 <label htmlFor="loginEmail">Email</label>
               </div>
 
-              <div className="input-group">
+              {/* Password Input */}
+              <div className="input-group password-input">
                 <input 
-                  type="password" 
+                  type={showPassword ? "text" : "password"} 
                   id="loginPassword" 
                   required 
                   placeholder=" " 
@@ -94,14 +123,43 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <label htmlFor="loginPassword">Password</label>
+                <button 
+                  type="button" 
+                  className="toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                </button>
               </div>
 
-              <button type="submit" className="btn-submit" disabled={isSubmitting}>
+              {/* Form Options */}
+              <div className="form-options">
+                <label className="checkbox-container">
+                  <input 
+                    type="checkbox" 
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <span>Remember me</span>
+                </label>
+                <a href="#" className="forgot-password">Lupa password?</a>
+              </div>
+
+              {/* Submit Button */}
+              <button 
+                type="submit" 
+                className={`btn-submit ${isSubmitting ? 'loading' : ''}`}
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Memproses..." : "Login"}
               </button>
 
-              <p style={{ marginTop: "14px", textAlign: "center" }}>
-                Belum punya akun? <Link href="/signup" style={{ color: "#4C1D95" }}>Sign Up</Link>
+              {/* Link to Sign Up */}
+              <p style={{ marginTop: "20px", textAlign: "center", fontSize: "13px", color: "#6B7280" }}>
+                Belum punya akun?{" "}
+                <Link href="/signup" style={{ color: "#4C1D95", fontWeight: "600" }}>
+                  Sign Up
+                </Link>
               </p>
             </form>
           </div>

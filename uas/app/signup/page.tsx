@@ -3,12 +3,14 @@
 import React, { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import "../styles/signUp.css"; // Pastikan CSS kamu ada di sini
+import "../styles/signUp.css";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   // State untuk form
   const [formData, setFormData] = useState({
@@ -44,7 +46,7 @@ export default function SignUpPage() {
     }
 
     try {
-      // Kirim data ke API yang baru kita buat di langkah 1
+      // Kirim data ke API
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -80,65 +82,155 @@ export default function SignUpPage() {
   return (
     <div className="signup-page">
       <div className="auth-container">
+        {/* Back to Home Button */}
         <div className="back-home">
           <Link href="/" className="btn-back-home">
-             Kembali ke Beranda
+            ← Kembali ke Beranda
           </Link>
         </div>
 
+        {/* Tab Toggle */}
+        <div className="auth-tabs">
+          <Link href="/login">
+            <button className="tab-btn">Login</button>
+          </Link>
+          <button className="tab-btn active">Sign Up</button>
+        </div>
+
+        {/* Auth Card */}
         <div className="auth-card">
+          {/* Welcome Section (Kiri) */}
+          <div className="welcome-section">
+            <div className="logo-badge">Logo</div>
+            <h1 className="welcome-title">Selamat Datang!</h1>
+            <p className="welcome-text">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+              Sed non risus. Suspendisse lectus tortor, dignissim sit amet, 
+              adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+            </p>
+          </div>
+
+          {/* Form Section (Kanan) */}
           <div className="form-section">
             <form className="auth-form" onSubmit={handleSubmit}>
-              <h2 className="form-title">Sign Up</h2>
+              <div className="form-header">
+                <h2 className="form-title">Sign Up</h2>
+              </div>
               
+              {/* Error Message */}
               {errorMessage && (
-                <div className="error-message" style={{ color: 'red', marginBottom: '10px' }}>
+                <div className="error-message" style={{ display: 'block' }}>
                   {errorMessage}
                 </div>
               )}
 
+              {/* Nama Lengkap */}
               <div className="input-group">
-                <input type="text" id="fullname" required placeholder=" " onChange={handleChange} />
+                <input 
+                  type="text" 
+                  id="fullname" 
+                  required 
+                  placeholder=" " 
+                  value={formData.fullname}
+                  onChange={handleChange} 
+                />
                 <label htmlFor="fullname">Nama Lengkap</label>
               </div>
 
+              {/* Email */}
               <div className="input-group">
-                <input type="email" id="email" required placeholder=" " onChange={handleChange} />
+                <input 
+                  type="email" 
+                  id="email" 
+                  required 
+                  placeholder=" " 
+                  value={formData.email}
+                  onChange={handleChange} 
+                />
                 <label htmlFor="email">Email</label>
               </div>
 
+              {/* No. Handphone */}
               <div className="input-group">
-                <input type="text" id="phone" required placeholder=" " onChange={handleChange} />
-                <label htmlFor="phone">No. Handphone</label>
+                <input 
+                  type="text" 
+                  id="phone" 
+                  required 
+                  placeholder=" " 
+                  value={formData.phone}
+                  onChange={handleChange} 
+                />
+                <label htmlFor="phone">No Telepon</label>
               </div>
 
-              <div className="input-group">
-                <input type="password" id="password" required placeholder=" " onChange={handleChange} />
+              {/* Password */}
+              <div className="input-group password-input">
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  id="password" 
+                  required 
+                  placeholder=" " 
+                  value={formData.password}
+                  onChange={handleChange} 
+                />
                 <label htmlFor="password">Password</label>
+                <button 
+                  type="button" 
+                  className="toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                </button>
               </div>
 
-              <div className="input-group">
-                <input type="password" id="confirmPassword" required placeholder=" " onChange={handleChange} />
+              {/* Confirm Password */}
+              <div className="input-group password-input">
+                <input 
+                  type={showConfirmPassword ? "text" : "password"} 
+                  id="confirmPassword" 
+                  required 
+                  placeholder=" " 
+                  value={formData.confirmPassword}
+                  onChange={handleChange} 
+                />
                 <label htmlFor="confirmPassword">Confirm Password</label>
+                <button 
+                  type="button" 
+                  className="toggle-password"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
+                </button>
               </div>
 
-              <div className="form-options">
+              {/* Checkbox Terms */}
+              <div className="form-options" style={{ marginTop: '16px' }}>
                 <label className="checkbox-container">
                   <input 
                     type="checkbox" 
                     id="agreeTerms" 
+                    checked={agreeTerms}
                     onChange={(e) => setAgreeTerms(e.target.checked)} 
                   />
-                  Saya menyetujui syarat dan ketentuan
+                  <span>Saya menyetujui syarat dan ketentuan</span>
                 </label>
               </div>
 
-              <button type="submit" className="btn-submit" disabled={isSubmitting}>
+              {/* Submit Button */}
+              <button 
+                type="submit" 
+                className={`btn-submit ${isSubmitting ? 'loading' : ''}`}
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Memproses..." : "Sign Up"}
               </button>
 
-              <p style={{ marginTop: "14px", textAlign: "center" }}>
-                Sudah punya akun? <Link href="/login" style={{ color: "#4C1D95" }}>Login</Link>
+              {/* Link to Login */}
+              <p style={{ marginTop: "20px", textAlign: "center", fontSize: "13px", color: "#6B7280" }}>
+                Sudah punya akun?{" "}
+                <Link href="/login" style={{ color: "#4C1D95", fontWeight: "600" }}>
+                  Login
+                </Link>
               </p>
             </form>
           </div>
