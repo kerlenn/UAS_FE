@@ -5,9 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import "../styles/course-detail.css";
 
-const CURRENT_COURSE_ID = 3; // ID Roblox di courses.ts
+const CURRENT_COURSE_ID = 3; 
 
-// Data Video berdasarkan DetailRoblox.html
 const courseVideos = [
   { title: "Instalasi & Basic Roblox Studio", url: "https://www.youtube.com/watch?v=bRSWT-UEeCU", duration: "06:46", isFree: true },
   { title: "Terrain Editor & Generator", url: "https://www.youtube.com/watch?v=_hQAXqfT5O0", duration: "06:04", isFree: true },
@@ -20,7 +19,6 @@ export default function DetailRobloxPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSection, setActiveSection] = useState("manfaat");
   
-  // State User
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasPurchased, setHasPurchased] = useState(false); 
 
@@ -28,19 +26,15 @@ export default function DetailRobloxPage() {
     setIsExpanded(!isExpanded);
   };
 
-  // Cek Login
   useEffect(() => {
-    // 1. Cek Login
     const checkAuth = setTimeout(() => {
       if (typeof window !== "undefined") {
         const user = localStorage.getItem("currentUser");
         setIsLoggedIn(!!user);
 
-        // 2. Cek Pembelian dari LocalStorage
         const savedPurchases = localStorage.getItem('purchasedCourses');
         if (savedPurchases) {
             const purchasedList = JSON.parse(savedPurchases);
-            // Cek apakah ID kursus saat ini ada di daftar pembelian
             if (purchasedList.includes(CURRENT_COURSE_ID)) {
                 setHasPurchased(true);
             }
@@ -50,7 +44,6 @@ export default function DetailRobloxPage() {
     return () => clearTimeout(checkAuth);
   }, []);
 
-  // Scroll Spy
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['manfaat', 'kursus', 'syarat'];
@@ -73,7 +66,7 @@ export default function DetailRobloxPage() {
   }, []);
 
   const renderVideoList = () => {
-    const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 2);
+    const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 3);
 
     return videosToShow.map((video, index) => {
       const isAccessible = isLoggedIn && (video.isFree || hasPurchased);
@@ -86,7 +79,6 @@ export default function DetailRobloxPage() {
       } else if (video.isFree) {
         statusBadge = <span className="video-label ms-auto">Gratis</span>;
       } else {
-        // Jika berbayar tapi sudah dibeli
         statusBadge = <span className="badge bg-success ms-auto">Terbuka</span>;
       }
 
@@ -122,7 +114,7 @@ export default function DetailRobloxPage() {
                 <span>&gt;</span>
                 <Link href="/kursus">Kursus</Link>
                 <span>&gt;</span>
-                <p>Roblox Studio untuk Prototyping Game [2025]</p>
+                <p>Roblox Studio untuk Prototyping Game</p>
             </div>
 
             <div className="detail-content-wrapper">
@@ -130,7 +122,7 @@ export default function DetailRobloxPage() {
                 <h2>Roblox Studio untuk Prototyping Game [2025]</h2>
                 <p className="course-description">
                     Belajar membuat game pertamamu di platform Roblox. Mulai dari desain level, scripting dasar dengan Lua, hingga publikasi. 
-                    Kursus ini dirancang untuk pemula absolut yang ingin terjun ke dunia pengembangan game dengan cara yang menyenangkan dan interaktif.
+                    Kursus ini dirancang untuk pemula absolut.
                 </p>
                 </div>
                 <div className="course-media-placeholder">
@@ -164,11 +156,10 @@ export default function DetailRobloxPage() {
               <div className="learning-objectives" id="manfaat">
                 <h2>Yang akan Anda pelajari:</h2>
                 <ul>
-                  <li>Menguasai navigasi dan antarmuka (interface) di dalam Roblox Studio untuk alur kerja yang cepat.</li>
-                  <li>Mempelajari dasar-dasar membangun dunia game, mulai dari menempatkan part hingga mengedit terrain (medan).</li>
-                  <li>Memahami konsep scripting fundamental menggunakan bahasa pemrograman Lua untuk membuat objek interaktif.</li>
-                  <li>Menerbitkan dan membagikan game pertama Anda ke jutaan pemain di platform Roblox.</li>
-                  <li>Membangun fondasi yang kuat untuk proyek game yang lebih kompleks di masa depan.</li>
+                  <li>Menguasai navigasi dan antarmuka Roblox Studio.</li>
+                  <li>Dasar membangun dunia game & terrain editor.</li>
+                  <li>Scripting fundamental menggunakan Lua.</li>
+                  <li>Menerbitkan game ke platform Roblox.</li>
                 </ul>
               </div>
 
@@ -178,11 +169,7 @@ export default function DetailRobloxPage() {
                   <span className="skill-tag">Game Prototyping</span>
                   <span className="skill-tag">Level Design</span>
                   <span className="skill-tag">Lua Scripting</span>
-                  <span className="skill-tag">Roblox Studio UI</span>
-                  <span className="skill-tag">3D Environment Design</span>
-                  <span className="skill-tag">Game Publishing</span>
-                  <span className="skill-tag">Problem Solving</span>
-                  <span className="skill-tag">Dasar Game Development</span>
+                  <span className="skill-tag">3D Environment</span>
                 </div>
               </div>
 
@@ -199,7 +186,7 @@ export default function DetailRobloxPage() {
                   {!isLoggedIn && (
                     <div className="alert alert-warning mb-3 text-center" role="alert">
                       <i className="fas fa-exclamation-circle me-2"></i>
-                      Silakan <Link href="/login" className="fw-bold text-dark text-decoration-underline">Login</Link> untuk mengakses video gratis.
+                      Silakan <Link href="/login" className="fw-bold text-dark text-decoration-underline">Login</Link> untuk mengakses video.
                     </div>
                   )}
 
@@ -220,11 +207,9 @@ export default function DetailRobloxPage() {
               <div className="requirements-section" id="syarat">
                 <h2>Syarat:</h2>
                 <ul>
-                  <li>Tidak perlu memiliki pengalaman coding atau pengembangan game sebelumnya. Kursus ini dibuat untuk pemula.</li>
-                  <li>Komputer atau Laptop (Windows atau Mac) yang mampu menjalankan Roblox Studio dengan koneksi internet.</li>
-                  <li>Software Roblox Studio yang sudah terinstal. Roblox Studio sepenuhnya gratis untuk diunduh dari situs web resmi Roblox.</li>
-                  <li>Memiliki akun Roblox untuk dapat menyimpan dan mempublikasikan game Anda.</li>
-                  <li>Antusiasme dan imajinasi untuk menciptakan dunia virtual Anda sendiri!</li>
+                  <li>Komputer/Laptop yang mampu menjalankan Roblox Studio.</li>
+                  <li>Akun Roblox (Gratis).</li>
+                  <li>Koneksi Internet stabil.</li>
                 </ul>
               </div>
             </div>
@@ -234,20 +219,20 @@ export default function DetailRobloxPage() {
                 {hasPurchased ? (
                     <div className="alert alert-success fw-bold text-center">
                         <i className="fas fa-check-circle me-2 mb-2" style={{fontSize: '2rem'}}></i><br/>
-                        Anda sudah membeli kursus ini. <br/>
+                        Anda sudah terdaftar. <br/>
                         <span className="fw-normal small">Silakan akses materi di samping.</span>
                     </div>
                 ) : (
                     <>
-                        <h2>Beli Kursus</h2>
+                        <h2>Daftar Kursus</h2>
                         <p className="price">Gratis</p>
                         <p className="student-count">
                         <i className="fas fa-fire me-2" style={{color: 'var(--primary-orange)'}}></i>
                         <span>783 Pelajar sudah mendaftar</span>
                         </p>
                         <div className="action-buttons">
-                        <Link href="/pembayaran?id=3" className="btn-purchase primary">
-                            Beli Langsung
+                        <Link href={`/pembayaran?id=${CURRENT_COURSE_ID}`} className="btn-purchase primary">
+                            Daftar Sekarang
                         </Link>
                         </div>
                     </>

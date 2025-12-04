@@ -1,4 +1,3 @@
-// uas/app/kursus_adobe/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -11,7 +10,6 @@ const CURRENT_COURSE_ID = 1;
 const courseVideos = [
   { title: "Import & Play Video - Tutorial After Effects", url: "https://www.youtube.com/watch?v=n3pQoPflhF0", duration: "06:44", isFree: true },
   { title: "Main Efek - Tutorial After Effects", url: "https://www.youtube.com/watch?v=Z4sm8UObRxc", duration: "05:57", isFree: true },
-  // Video Berbayar
   { title: "Ganti Warna Pakaian - Tutorial After Effects", url: "https://www.youtube.com/watch?v=GOz38pr3Cbw", duration: "05:13", isFree: false },
   { title: "Time Vary Animation Untuk Objek & Efek", url: "https://www.youtube.com/watch?v=1-ke7XeMgIk", duration: "10:31", isFree: false },
   { title: "Green Screen Mudah - Tutorial After Effects", url: "https://www.youtube.com/watch?v=87xmhun_2GM", duration: "03:04", isFree: false },
@@ -25,28 +23,22 @@ export default function DetailAdobePage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSection, setActiveSection] = useState("manfaat");
   
-  // State User
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // Hapus 'setHasPurchased' dari destructuring agar tidak kena warning 'unused vars'
   const [hasPurchased, setHasPurchased] = useState(false); 
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  // EFFECT 1: Cek Login (Dibungkus setTimeout untuk fix error ESLint)
   useEffect(() => {
-    // 1. Cek Login
     const checkAuth = setTimeout(() => {
       if (typeof window !== "undefined") {
         const user = localStorage.getItem("currentUser");
         setIsLoggedIn(!!user);
 
-        // 2. Cek Pembelian dari LocalStorage
         const savedPurchases = localStorage.getItem('purchasedCourses');
         if (savedPurchases) {
             const purchasedList = JSON.parse(savedPurchases);
-            // Cek apakah ID kursus saat ini ada di daftar pembelian
             if (purchasedList.includes(CURRENT_COURSE_ID)) {
                 setHasPurchased(true);
             }
@@ -56,7 +48,6 @@ export default function DetailAdobePage() {
     return () => clearTimeout(checkAuth);
   }, []);
 
-  // EFFECT 2: Scroll Spy
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['manfaat', 'kursus', 'syarat'];
@@ -81,8 +72,7 @@ export default function DetailAdobePage() {
   const renderVideoList = () => {
     const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 4);
 
-        return videosToShow.map((video, index) => {
-      // LOGIKA UTAMA: Video terbuka jika login DAN (gratis ATAU sudah beli)
+    return videosToShow.map((video, index) => {
       const isAccessible = isLoggedIn && (video.isFree || hasPurchased);
 
       let statusBadge;
@@ -93,7 +83,6 @@ export default function DetailAdobePage() {
       } else if (video.isFree) {
         statusBadge = <span className="video-label ms-auto">Gratis</span>;
       } else {
-        // Jika berbayar tapi sudah dibeli
         statusBadge = <span className="badge bg-success ms-auto">Terbuka</span>;
       }
 
