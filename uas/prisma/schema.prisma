@@ -16,6 +16,7 @@ model User {
   password     String
   createdAt    DateTime      @default(now())
   transactions Transaction[]
+  Feedback     Feedback[]
   
   @@map("users")
 }
@@ -43,3 +44,11 @@ model Course {
   instructor  String?
   
   }
+
+  model Feedback {
+  id          Int      @id @default(autoincrement())
+  content     String
+  userEmail   String
+  user        User     @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
