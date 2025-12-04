@@ -19,10 +19,8 @@ export default function UserPage() {
     feedback: ''
   });
 
-  // Ambil email dari localStorage (di-set saat login berhasil)
   const userEmail = getCurrentUserEmail() || '';
 
-  // Fetch data user saat page load
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -51,7 +49,6 @@ export default function UserPage() {
     if (userEmail) {
       fetchUserData();
     } else {
-      // Jika tidak ada userEmail, redirect ke login
       setLoading(false);
       alert('Anda belum login. Silakan login terlebih dahulu.');
       router.push('/login');
@@ -112,9 +109,7 @@ export default function UserPage() {
 
         if (response.ok) {
           alert('Akun berhasil dihapus');
-          // Hapus session menggunakan helper function
           clearUserSession();
-          // Redirect ke halaman login
           router.push('/login');
         } else {
           alert(data.error || 'Gagal menghapus akun');

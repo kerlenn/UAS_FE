@@ -1,8 +1,6 @@
-// app/api/user/delete/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// DELETE - Hapus akun user
 export async function DELETE(request: Request) {
   try {
     const body = await request.json();
@@ -15,7 +13,6 @@ export async function DELETE(request: Request) {
       );
     }
 
-    // Cek apakah user ada
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -27,17 +24,14 @@ export async function DELETE(request: Request) {
       );
     }
 
-    // Hapus semua feedback user terlebih dahulu (karena ada relasi)
     await prisma.feedback.deleteMany({
       where: { userEmail: email },
     });
 
-    // Hapus semua transaksi user
     await prisma.transaction.deleteMany({
       where: { userId: existingUser.id },
     });
 
-    // Hapus user
     await prisma.user.delete({
       where: { email },
     });

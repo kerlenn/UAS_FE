@@ -1,8 +1,6 @@
-// app/api/user/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// GET - Ambil data user berdasarkan email
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -44,7 +42,6 @@ export async function GET(request: Request) {
   }
 }
 
-// PUT - Update data user
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
@@ -57,7 +54,6 @@ export async function PUT(request: Request) {
       );
     }
 
-    // Cek apakah user ada
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -69,7 +65,6 @@ export async function PUT(request: Request) {
       );
     }
 
-    // Update data user
     const updatedUser = await prisma.user.update({
       where: { email },
       data: {

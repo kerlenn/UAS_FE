@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")  // <--- INI WAJIB ADA
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -17,7 +17,7 @@ model User {
   password      String
   createdAt     DateTime       @default(now())
   transactions  Transaction[]
-  Feedback      Feedback[] // Relasi baru ke model Feedback
+  Feedback      Feedback[]
 }
 
 model Course {

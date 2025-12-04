@@ -1,14 +1,11 @@
-// app/api/feedback/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// POST - Kirim feedback
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { userEmail, content } = body;
 
-    // Validasi input
     if (!userEmail || !content) {
       return NextResponse.json(
         { error: 'Email dan isi feedback wajib diisi' },
@@ -16,7 +13,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Cek apakah user ada
     const existingUser = await prisma.user.findUnique({
       where: { email: userEmail },
     });
@@ -28,7 +24,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Simpan feedback ke database
     const newFeedback = await prisma.feedback.create({
       data: {
         content,

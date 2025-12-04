@@ -10,17 +10,14 @@ export default function LogoutButton() {
   const handleLogout = async () => {
     if (window.confirm('Apakah Anda yakin ingin logout?')) {
       try {
-        // Optional: Panggil API logout jika ada server-side session
         await fetch('/api/auth/logout', {
           method: 'POST',
         });
 
-        // Hapus localStorage
         clearUserSession();
 
         alert('Logout berhasil');
-        
-        // Redirect ke login
+
         router.push('/login');
         
       } catch (error) {
@@ -30,7 +27,6 @@ export default function LogoutButton() {
     }
   };
 
-  // Hanya tampilkan tombol jika user sudah login
   if (!isLoggedIn()) {
     return null;
   }

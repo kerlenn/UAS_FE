@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    // Cek apakah user sudah login
+
     if (!isLoggedIn()) {
       alert('Anda belum login. Silakan login terlebih dahulu.');
       router.push('/login');
@@ -22,7 +22,6 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [router]);
 
-  // Tampilkan loading saat mengecek auth
   if (isChecking) {
     return (
       <div style={{ 
@@ -36,6 +35,5 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  // Jika sudah login, tampilkan children
   return <>{children}</>;
 }
