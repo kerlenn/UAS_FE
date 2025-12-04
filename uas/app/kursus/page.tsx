@@ -14,10 +14,8 @@ type Filters = {
 };
 
 export default function KursusPage() {
-  // 1. STATE UNTUK MENYIMPAN ID KURSUS YANG SUDAH DIBELI
   const [purchasedIds, setPurchasedIds] = useState<number[]>([]);
 
-  // 2. EFFECT UNTUK LOAD DATA DARI LOCALSTORAGE
   useEffect(() => {
     const savedPurchases = localStorage.getItem('purchasedCourses');
     if (savedPurchases) {
@@ -185,7 +183,6 @@ export default function KursusPage() {
 
               {filteredCourses.length > 0 ? (
                 filteredCourses.map((course) => {
-                  // 3. CEK APAKAH KURSUS SUDAH DIBELI DI DALAM LOOP
                   const isPurchased = purchasedIds.includes(course.id);
 
                   return (
