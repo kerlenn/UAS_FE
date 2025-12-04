@@ -25,21 +25,20 @@ export default function ChangePasswordModal({ isOpen, onClose, userEmail }: Chan
       ...formData,
       [e.target.name]: e.target.value,
     });
-    setErrorMessage(''); // Clear error saat user mengetik
+    setErrorMessage('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
-    // Validasi password baru dan konfirmasi
     if (formData.newPassword !== formData.confirmPassword) {
       setErrorMessage('Password baru dan konfirmasi password tidak sama');
       return;
     }
 
-    if (formData.newPassword.length < 6) {
-      setErrorMessage('Password baru minimal 6 karakter');
+    if (formData.newPassword.length < 8) {
+      setErrorMessage('Password baru minimal 8 karakter');
       return;
     }
 
@@ -145,8 +144,8 @@ export default function ChangePasswordModal({ isOpen, onClose, userEmail }: Chan
                 {showNewPassword ? '👁️' : '👁️‍🗨️'}
               </button>
             </div>
-            <small style={{ color: '#666', fontSize: '0.85rem' }}>
-              Minimal 6 karakter
+            <small style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.85rem' }}>
+              Minimal 8 karakter
             </small>
           </div>
 

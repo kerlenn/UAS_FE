@@ -62,6 +62,19 @@ function UserPageContent() {
 
   const handleSimpanPerubahan = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (formData.namaLengkap.trim().length < 3) {
+      alert('Nama minimal 3 huruf');
+      return;
+    }
+
+    if (formData.noTelepon) {
+      const phoneRegex = /^(62|08)\d{9,}$/;
+      if (!phoneRegex.test(formData.noTelepon)) {
+        alert('No telepon harus minimal 11 digit dan dimulai dengan 62 atau 08');
+        return;
+      }
+    }
     
     try {
       const response = await fetch('/api/user', {
@@ -220,9 +233,10 @@ function UserPageContent() {
                       type="text"
                       name="namaLengkap"
                       className="form-input-user"
-                      placeholder="Masukkan nama lengkap"
+                      placeholder="Masukkan nama lengkap (min 3 huruf)"
                       value={formData.namaLengkap}
                       onChange={handleChange}
+                      minLength={3}
                       required
                     />
                   </div>
@@ -238,9 +252,9 @@ function UserPageContent() {
                       value={formData.email}
                       onChange={handleChange}
                       disabled
-                      style={{ backgroundColor: '#f5f5f5', cursor: 'not-allowed' }}
+                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', cursor: 'not-allowed' }}
                     />
-                    <small style={{ color: '#666', fontSize: '0.85rem' }}>
+                    <small style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.85rem' }}>
                       Email tidak dapat diubah
                     </small>
                   </div>
@@ -252,10 +266,15 @@ function UserPageContent() {
                       type="tel"
                       name="noTelepon"
                       className="form-input-user"
-                      placeholder="081234567890"
+                      placeholder="08xxxxxxxxxx atau 62xxxxxxxxxx"
                       value={formData.noTelepon}
                       onChange={handleChange}
+                      pattern="^(62|08)\d{9,}$"
+                      title="No telepon harus minimal 11 digit dan dimulai dengan 62 atau 08"
                     />
+                    <small style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.85rem' }}>
+                      Minimal 11 digit, dimulai dengan 08 atau 62
+                    </small>
                   </div>
 
                   {/* Tombol Aksi */}
@@ -296,7 +315,6 @@ function UserPageContent() {
   );
 }
 
-// Wrap dengan ProtectedRoute untuk memastikan hanya user yang login bisa akses
 export default function UserPage() {
   return (
     <ProtectedRoute>

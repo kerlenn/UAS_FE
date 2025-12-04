@@ -5,9 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import "../styles/course-detail.css";
 
-const CURRENT_COURSE_ID = 5; // ID OOP di courses.ts
+const CURRENT_COURSE_ID = 5;
 
-// Data Video berdasarkan DetailOOP.html
 const courseVideos = [
   { title: "Tutorial Menggunakan Oracle Academy Dari Sisi Learner Mahasiswa atau Pelajar", url: "https://youtu.be/OaO26DDkUrg?si=Y8zmAl8_egm-wI3D", duration: "08:23", isFree: true },
   { title: "Membedakan Object Oriented dengan Sequential Programming - Belajar OOP Dengan Java", url: "https://youtu.be/sxYlPsOUdms?si=mj4Mq_n4qrwwVfwh", duration: "07:53", isFree: true },
@@ -25,8 +24,7 @@ const courseVideos = [
 export default function DetailOOPPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSection, setActiveSection] = useState("manfaat");
-  
-  // State User
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasPurchased, setHasPurchased] = useState(false); 
 
@@ -34,19 +32,15 @@ export default function DetailOOPPage() {
     setIsExpanded(!isExpanded);
   };
 
-  // Cek Login
   useEffect(() => {
-    // 1. Cek Login
     const checkAuth = setTimeout(() => {
       if (typeof window !== "undefined") {
         const user = localStorage.getItem("currentUser");
         setIsLoggedIn(!!user);
 
-        // 2. Cek Pembelian dari LocalStorage
         const savedPurchases = localStorage.getItem('purchasedCourses');
         if (savedPurchases) {
             const purchasedList = JSON.parse(savedPurchases);
-            // Cek apakah ID kursus saat ini ada di daftar pembelian
             if (purchasedList.includes(CURRENT_COURSE_ID)) {
                 setHasPurchased(true);
             }
@@ -56,7 +50,6 @@ export default function DetailOOPPage() {
     return () => clearTimeout(checkAuth);
   }, []);
 
-  // Scroll Spy
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['manfaat', 'kursus', 'syarat'];

@@ -1,14 +1,11 @@
-// app/api/user/change-password/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// PUT - Ubah password user
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
     const { email, oldPassword, newPassword } = body;
 
-    // Validasi input
     if (!email || !oldPassword || !newPassword) {
       return NextResponse.json(
         { error: 'Semua field wajib diisi' },
@@ -16,15 +13,13 @@ export async function PUT(request: Request) {
       );
     }
 
-    // Validasi panjang password baru
-    if (newPassword.length < 6) {
+    if (newPassword.length < 8) {
       return NextResponse.json(
-        { error: 'Password baru minimal 6 karakter' },
+        { error: 'Password baru minimal 8 karakter' },
         { status: 400 }
       );
     }
 
-    // Cari user berdasarkan email
     const user = await prisma.user.findUnique({
       where: { email },
     });
@@ -36,8 +31,6 @@ export async function PUT(request: Request) {
       );
     }
 
-    // Validasi password lama
-    // CATATAN: Di real app pakai bcrypt.compare()
     if (user.password !== oldPassword) {
       return NextResponse.json(
         { error: 'Password lama tidak sesuai' },
@@ -45,8 +38,6 @@ export async function PUT(request: Request) {
       );
     }
 
-    // Update password
-    // CATATAN: Di real app, hash password baru dengan bcrypt sebelum disimpan
     await prisma.user.update({
       where: { email },
       data: {

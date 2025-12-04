@@ -4,6 +4,7 @@ import React, { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import "../styles/signUp.css";
+import Image from "next/image";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -12,7 +13,6 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // State untuk form
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -32,16 +32,12 @@ export default function SignUpPage() {
     setErrorMessage("");
     setIsSubmitting(true);
 
-    // --- VALIDASI BARU DITAMBAHKAN DI SINI ---
-
-    // 1. Validasi Nama: Minimal 3 karakter
     if (formData.fullname.trim().length < 3) {
       setErrorMessage("Nama lengkap harus terdiri dari minimal 3 karakter.");
       setIsSubmitting(false);
       return;
     }
 
-    // 2. Validasi Nomor Telepon: Harus dimulai dengan 08
     if (!formData.phone.startsWith("08")) {
       setErrorMessage("Nomor telepon harus dimulai dengan 08.");
       setIsSubmitting(false);
@@ -49,15 +45,12 @@ export default function SignUpPage() {
     }
 
 
-    if (formData.phone.length !== 11) {
-      setErrorMessage("Nomor telepon harus terdiri dari 11 digit.");
+    if (formData.phone.length < 11) {
+      setErrorMessage("Nomor telepon harus minimal 11 digit.");
       setIsSubmitting(false);
       return;
     }
 
-    // --- AKHIR VALIDASI BARU ---
-
-    // Validasi konfirmasi password
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Konfirmasi password tidak cocok.");
       setIsSubmitting(false);
@@ -71,7 +64,6 @@ export default function SignUpPage() {
     }
 
     try {
-      // Kirim data ke API
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -89,7 +81,6 @@ export default function SignUpPage() {
         throw new Error(data.error || 'Gagal mendaftar');
       }
 
-      // Jika sukses
       alert("Akun berhasil dibuat! Silakan login.");
       router.push("/login");
 
@@ -126,12 +117,18 @@ export default function SignUpPage() {
         <div className="auth-card">
           {/* Welcome Section (Kiri) */}
           <div className="welcome-section">
-            <div className="logo-badge">Logo</div>
+            <div style={{ marginBottom: '20px' }}>
+              <Image
+                src="/Logo.png"
+                alt="SkillUp! Logo"
+                width={150}
+                height={50}
+                style={{ height: '60px', width: 'auto' }}
+              />
+            </div>
             <h1 className="welcome-title">Selamat Datang!</h1>
             <p className="welcome-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Sed non risus. Suspendisse lectus tortor, dignissim sit amet,
-              adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+              Selamat datang di SkillUp! Mulai perjalanan belajarmu hari ini. Kami menyediakan berbagai kursus interaktif yang dirancang untuk membantumu menguasai keterampilan baru dengan mudah, kapan saja dan di mana saja.
             </p>
           </div>
 
