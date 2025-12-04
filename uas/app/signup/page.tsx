@@ -11,7 +11,7 @@ export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   // State untuk form
   const [formData, setFormData] = useState({
     fullname: "",
@@ -48,9 +48,9 @@ export default function SignUpPage() {
       return;
     }
 
-    // 3. Validasi Password: Minimal 8 karakter
-    if (formData.password.length < 8) {
-      setErrorMessage("Password harus terdiri dari minimal 8 karakter.");
+
+    if (formData.phone.length !== 11) {
+      setErrorMessage("Nomor telepon harus terdiri dari 11 digit.");
       setIsSubmitting(false);
       return;
     }
@@ -129,8 +129,8 @@ export default function SignUpPage() {
             <div className="logo-badge">Logo</div>
             <h1 className="welcome-title">Selamat Datang!</h1>
             <p className="welcome-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-              Sed non risus. Suspendisse lectus tortor, dignissim sit amet, 
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Sed non risus. Suspendisse lectus tortor, dignissim sit amet,
               adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
             </p>
           </div>
@@ -141,7 +141,7 @@ export default function SignUpPage() {
               <div className="form-header">
                 <h2 className="form-title">Sign Up</h2>
               </div>
-              
+
               {/* Error Message */}
               {errorMessage && (
                 <div className="error-message" style={{ display: 'block' }}>
@@ -151,56 +151,56 @@ export default function SignUpPage() {
 
               {/* Nama Lengkap */}
               <div className="input-group">
-                <input 
-                  type="text" 
-                  id="fullname" 
-                  required 
-                  placeholder=" " 
+                <input
+                  type="text"
+                  id="fullname"
+                  required
+                  placeholder=" "
                   value={formData.fullname}
-                  onChange={handleChange} 
+                  onChange={handleChange}
                 />
                 <label htmlFor="fullname">Nama Lengkap</label>
               </div>
 
               {/* Email */}
               <div className="input-group">
-                <input 
-                  type="email" 
-                  id="email" 
-                  required 
-                  placeholder=" " 
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  placeholder=" "
                   value={formData.email}
-                  onChange={handleChange} 
+                  onChange={handleChange}
                 />
                 <label htmlFor="email">Email</label>
               </div>
 
               {/* No. Handphone */}
               <div className="input-group">
-                <input 
-                  type="text" 
-                  id="phone" 
-                  required 
-                  placeholder=" " 
+                <input
+                  type="text"
+                  id="phone"
+                  required
+                  placeholder=" "
                   value={formData.phone}
-                  onChange={handleChange} 
+                  onChange={handleChange}
                 />
                 <label htmlFor="phone">No Telepon</label>
               </div>
 
               {/* Password */}
               <div className="input-group password-input">
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  id="password" 
-                  required 
-                  placeholder=" " 
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  required
+                  placeholder=" "
                   value={formData.password}
-                  onChange={handleChange} 
+                  onChange={handleChange}
                 />
                 <label htmlFor="password">Password</label>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
@@ -210,17 +210,17 @@ export default function SignUpPage() {
 
               {/* Confirm Password */}
               <div className="input-group password-input">
-                <input 
-                  type={showConfirmPassword ? "text" : "password"} 
-                  id="confirmPassword" 
-                  required 
-                  placeholder=" " 
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  required
+                  placeholder=" "
                   value={formData.confirmPassword}
-                  onChange={handleChange} 
+                  onChange={handleChange}
                 />
                 <label htmlFor="confirmPassword">Confirm Password</label>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="toggle-password"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
@@ -231,19 +231,19 @@ export default function SignUpPage() {
               {/* Checkbox Terms */}
               <div className="form-options" style={{ marginTop: '16px' }}>
                 <label className="checkbox-container">
-                  <input 
-                    type="checkbox" 
-                    id="agreeTerms" 
+                  <input
+                    type="checkbox"
+                    id="agreeTerms"
                     checked={agreeTerms}
-                    onChange={(e) => setAgreeTerms(e.target.checked)} 
+                    onChange={(e) => setAgreeTerms(e.target.checked)}
                   />
                   <span>Saya menyetujui syarat dan ketentuan</span>
                 </label>
               </div>
 
               {/* Submit Button */}
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className={`btn-submit ${isSubmitting ? 'loading' : ''}`}
                 disabled={isSubmitting}
               >
