@@ -108,7 +108,7 @@ export default function Header() {
                     
                     {/* Tombol Histori Pembelian - Dipercantik */}
                     <Link 
-                      href="/pembayaran" 
+                      href="/histori" 
                       className="btn-custom-outline px-3 py-1 rounded-pill fw-semibold"
                       style={{
                         transition: 'all 0.3s ease',
