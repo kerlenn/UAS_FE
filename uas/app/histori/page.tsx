@@ -37,7 +37,7 @@ export default function HistoriPembelianPage() {
         setUserName(userData.fullname || 'User');
 
         // Panggil API Histori
-        const res = await fetch(`/api/transaction/list?email=${userData.email}`);
+        const res = await fetch(`/api/transactions/list?email=${userData.email}`);
         if (res.ok) {
           const data = await res.json();
           setTransactions(data);

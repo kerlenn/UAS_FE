@@ -15,16 +15,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'User tidak ditemukan' }, { status: 404 });
     }
 
-    // 2. Simpan Transaksi ke Database
+    // 2. CEK APAKAH SUDAH PERNAH BELI (TAMBAHAN INI)
+    const existingTransaction = await prisma.transaction.findFirst({
+      where: {
+        userId: user.id,
+        courseId: String(courseId),
+        status: 'SUCCESS'
+      }
+    });
+
+    if (existingTransaction) {
+      return NextResponse.json(
+        { error: 'Anda sudah membeli kursus ini' },
+        { status: 400 }
+      );
+    }
+
+    // 3. Simpan Transaksi ke Database
     const newTransaction = await prisma.transaction.create({
       data: {
         userId: user.id,
-        courseId: String(courseId), // Pastikan string
+        courseId: String(courseId),
         amount: Number(amount),
-        paymentMethod: paymentMethod,
-        status: 'SUCCESS', // Kita anggap langsung sukses
+        paymentMethod: paymentMethod || 'free',
+        status: 'SUCCESS',
       },
     });
+
+    console.log('✅ Transaction created:', newTransaction);
 
     return NextResponse.json(
       { message: 'Transaksi berhasil', data: newTransaction },

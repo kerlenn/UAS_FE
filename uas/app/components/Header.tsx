@@ -286,7 +286,7 @@ export default function Header() {
                     👤 Profil Saya
                   </Link>
                   <Link 
-                    href="/pembayaran" 
+                    href="/histori" 
                     className="btn-custom-orange rounded-pill py-3 fw-semibold" 
                     onClick={toggleMobileMenu}
                     style={{
