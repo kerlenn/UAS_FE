@@ -50,7 +50,7 @@ export default function LoginPage() {
         throw new Error(data.error || 'Gagal login');
       }
 
-      alert(`Eh ketemu lagi ${data.user.fullname}!`);
+      alert(`Oke udah bisa masuk ya ${data.user.fullname}!`);
 
       if (typeof window !== "undefined") {
         localStorage.setItem("currentUser", JSON.stringify(data.user));
