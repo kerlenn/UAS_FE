@@ -6,27 +6,28 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")  // <--- INI WAJIB ADA
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  fullname     String
-  email        String        @unique
-  phone        String?
-  password     String
-  createdAt    DateTime      @default(now())
-  transactions Transaction[]
+  id            Int            @id @default(autoincrement())
+  fullname      String
+  email         String         @unique
+  phone         String?
+  password      String
+  createdAt     DateTime       @default(now())
+  transactions  Transaction[]
+  Feedback      Feedback[]
 }
 
 model Course {
-  id           String        @id
-  title        String
-  price        Int
-  description  String
-  thumbnail    String
-  level        String
-  transactions Transaction[]
+  id            String         @id
+  title         String
+  price         Int
+  description   String
+  thumbnail     String
+  level         String
+  transactions  Transaction[]
 }
 
 model Transaction {
@@ -40,4 +41,12 @@ model Transaction {
 
   user   User   @relation(fields: [userId], references: [id])
   course Course @relation(fields: [courseId], references: [id])
+}
+
+model Feedback {
+  id          Int      @id @default(autoincrement()) // ID Feedback
+  content     String
+  userEmail   String
+  user        User     @relation(fields: [userEmail], references: [email])
+  createdAt   DateTime @default(now())
 }

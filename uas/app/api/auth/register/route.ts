@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma'; // Pastikan import ini mengarah ke file prisma.ts
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { fullname, email, phone, password } = body;
 
-    // Validasi input kosong
     if (!fullname || !email || !password) {
       return NextResponse.json(
         { error: 'Nama, Email, dan Password wajib diisi' },
@@ -14,7 +13,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Cek apakah email sudah dipakai
     const existingUser = await prisma.user.findUnique({
       where: { email: email },
     });
@@ -26,13 +24,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // Simpan ke Database
     const newUser = await prisma.user.create({
       data: {
         fullname,
         email,
         phone,
-        password, // Nanti di real project harus di-hash!
+        password,
       },
     });
 

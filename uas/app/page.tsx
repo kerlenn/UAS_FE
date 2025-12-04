@@ -81,7 +81,7 @@ export default function HomePage() {
 
           <div className="row g-4 justify-content-center">
             <div className="col-12 col-md-6 col-lg-4">
-              <a href="/DetailBlender.html" className="text-decoration-none">
+              <a href="/kursus_blender" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
                   <div className="position-relative w-100" style={{ height: '180px' }}>
                     <Image src="/Blender.jpg" alt="Blender 3D" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
@@ -96,7 +96,7 @@ export default function HomePage() {
             </div>
 
             <div className="col-12 col-md-6 col-lg-4">
-              <a href="/DetailAdobe.html" className="text-decoration-none">
+              <a href="/kursus_adobe" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
                   <div className="position-relative w-100" style={{ height: '180px' }}>
                     <Image src="/AdobeEA.jpeg" alt="Adobe After Effects" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
@@ -111,7 +111,7 @@ export default function HomePage() {
             </div>
 
             <div className="col-12 col-md-6 col-lg-4">
-              <a href="/DetailStruktur.html" className="text-decoration-none">
+              <a href="/kursus_data_struktur" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
                   <div className="position-relative w-100" style={{ height: '180px' }}>
                     <Image src="/StrukturData.jpg" alt="Struktur Data" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
