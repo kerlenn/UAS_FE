@@ -42,5 +42,4 @@ model Course {
   price       Int
   instructor  String?
   
-  @@map("courses")
-}
+  }

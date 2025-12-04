@@ -51,6 +51,12 @@ export default function SignUpPage() {
       return;
     }
 
+    if (formData.password.length < 8) {
+      setErrorMessage("Password harus minimal 8 karakter.");
+      setIsSubmitting(false);
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Konfirmasi password tidak cocok.");
       setIsSubmitting(false);
