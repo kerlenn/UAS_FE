@@ -68,7 +68,6 @@ function UserPageContent() {
       return;
     }
 
-    // ✅ VALIDASI CLIENT-SIDE: No HP minimal 11 digit dan dimulai dengan 62 atau 08
     if (formData.noTelepon) {
       const phoneRegex = /^(62|08)\d{9,}$/;
       if (!phoneRegex.test(formData.noTelepon)) {

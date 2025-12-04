@@ -12,7 +12,6 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // State untuk form
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -32,16 +31,12 @@ export default function SignUpPage() {
     setErrorMessage("");
     setIsSubmitting(true);
 
-    // --- VALIDASI BARU DITAMBAHKAN DI SINI ---
-
-    // 1. Validasi Nama: Minimal 3 karakter
     if (formData.fullname.trim().length < 3) {
       setErrorMessage("Nama lengkap harus terdiri dari minimal 3 karakter.");
       setIsSubmitting(false);
       return;
     }
 
-    // 2. Validasi Nomor Telepon: Harus dimulai dengan 08
     if (!formData.phone.startsWith("08")) {
       setErrorMessage("Nomor telepon harus dimulai dengan 08.");
       setIsSubmitting(false);
@@ -49,15 +44,12 @@ export default function SignUpPage() {
     }
 
 
-    if (formData.phone.length !== 11) {
-      setErrorMessage("Nomor telepon harus terdiri dari 11 digit.");
+    if (formData.phone.length < 11) {
+      setErrorMessage("Nomor telepon harus minimal 11 digit.");
       setIsSubmitting(false);
       return;
     }
 
-    // --- AKHIR VALIDASI BARU ---
-
-    // Validasi konfirmasi password
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Konfirmasi password tidak cocok.");
       setIsSubmitting(false);
@@ -71,7 +63,6 @@ export default function SignUpPage() {
     }
 
     try {
-      // Kirim data ke API
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -89,7 +80,6 @@ export default function SignUpPage() {
         throw new Error(data.error || 'Gagal mendaftar');
       }
 
-      // Jika sukses
       alert("Akun berhasil dibuat! Silakan login.");
       router.push("/login");
 
