@@ -32,7 +32,32 @@ export default function SignUpPage() {
     setErrorMessage("");
     setIsSubmitting(true);
 
-    // Validasi sederhana di frontend
+    // --- VALIDASI BARU DITAMBAHKAN DI SINI ---
+
+    // 1. Validasi Nama: Minimal 3 karakter
+    if (formData.fullname.trim().length < 3) {
+      setErrorMessage("Nama lengkap harus terdiri dari minimal 3 karakter.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // 2. Validasi Nomor Telepon: Harus dimulai dengan 08
+    if (!formData.phone.startsWith("08")) {
+      setErrorMessage("Nomor telepon harus dimulai dengan 08.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // 3. Validasi Password: Minimal 8 karakter
+    if (formData.password.length < 8) {
+      setErrorMessage("Password harus terdiri dari minimal 8 karakter.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // --- AKHIR VALIDASI BARU ---
+
+    // Validasi konfirmasi password
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Konfirmasi password tidak cocok.");
       setIsSubmitting(false);

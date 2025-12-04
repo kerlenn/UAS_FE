@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { allCourses } from '@/lib/courses'; // <--- Import data dari file pusat
+import { allCourses } from '@/lib/courses'; // Import data dari file pusat
 import '../styles/pembayaran.css';
 
 function PembayaranContent() {
@@ -45,7 +45,7 @@ function PembayaranContent() {
       console.error(e);
     }
 
-    // 2. LOGIKA PENTING: Cari kursus berdasarkan ID
+    // 2. Cari kursus berdasarkan ID
     if (courseIdParam) {
       const foundCourse = allCourses.find(c => c.id === parseInt(courseIdParam));
       if (foundCourse) {
@@ -61,34 +61,57 @@ function PembayaranContent() {
   };
 
   // Handler bayar
-  const handlePay = () => {
+  const handlePay = async () => {
     const { nama, telp, email, metode } = formData;
     
-    // Validasi sederhana
+    // Validasi
     if (!nama || !telp || !email) {
       alert('Harap lengkapi data diri.');
       return;
     }
+    // Jika berbayar tapi metode kosong
     if (selectedCourse.price > 0 && !metode) {
       alert('Harap pilih metode pembayaran.');
       return;
     }
 
-    const savedPurchases = localStorage.getItem('purchasedCourses');
-    let purchasedCourses: number[] = savedPurchases ? JSON.parse(savedPurchases) : [];
+    try {
+      // 1. Panggil API untuk simpan ke Database
+      const response = await fetch('/api/transaction/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email, // Email user yg login
+          courseId: selectedCourse.id,
+          amount: selectedCourse.price,
+          paymentMethod: selectedCourse.price === 0 ? 'FREE' : metode,
+        }),
+      });
 
-    if (!purchasedCourses.includes(selectedCourse.id)) {
-        purchasedCourses.push(selectedCourse.id);
-        localStorage.setItem('purchasedCourses', JSON.stringify(purchasedCourses));
-    }
+      const result = await response.json();
 
-    // Sukses
-    if (selectedCourse.price === 0) {
-        alert(`Berhasil mendaftar kursus gratis: ${selectedCourse.title}!`);
-    } else {
-        alert(`Pembayaran Rp${selectedCourse.price.toLocaleString('id-ID')} untuk ${selectedCourse.title} berhasil!`);
+      if (!response.ok) {
+        throw new Error(result.error || 'Gagal memproses pembayaran');
+      }
+
+      // 2. Simpan ke LocalStorage (Opsional: untuk backup client-side state)
+      const savedPurchases = localStorage.getItem('purchasedCourses');
+      let purchasedCourses: number[] = savedPurchases ? JSON.parse(savedPurchases) : [];
+      if (!purchasedCourses.includes(selectedCourse.id)) {
+          purchasedCourses.push(selectedCourse.id);
+          localStorage.setItem('purchasedCourses', JSON.stringify(purchasedCourses));
+      }
+
+      // 3. Sukses & Redirect
+      alert(`Pembayaran berhasil!`);
+      router.push(`/payment-success?courseId=${selectedCourse.id}`);
+
+    } catch (error) {
+      console.error(error);
+      alert('Terjadi kesalahan saat memproses transaksi.');
     }
-    router.push(`/payment-success?courseId=${selectedCourse.id}`);
   };
 
   return (
@@ -137,7 +160,7 @@ function PembayaranContent() {
           {/* Judul */}
           <h3>{selectedCourse.title}</h3>
           
-          {/* --- [TAMBAHAN BARU] Deskripsi --- */}
+          {/* Deskripsi */}
           <p className="course-description" style={{ fontSize: '0.9em', opacity: 0.9, lineHeight: '1.6', marginBottom: '10px' }}>
             {selectedCourse.description}
           </p>

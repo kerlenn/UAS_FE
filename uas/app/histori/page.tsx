@@ -4,235 +4,168 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import './histori.css';
+import { allCourses } from '@/lib/courses'; // Import data statis kursus
 
-// Interface untuk data pembelian
-interface HistoriPembelian {
-  id: string;
-  courseTitle: string;
-  courseImage: string;
-  purchaseDate: string;
-  price: number;
-  status: 'success' | 'pending' | 'failed';
-  transactionId: string;
-  courseSlug?: string;
+// Tipe data dari API
+interface Transaction {
+  id: number;
+  courseId: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+  paymentMethod: string;
 }
 
 export default function HistoriPembelianPage() {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'success' | 'pending' | 'failed'>('all');
-  const [userName, setUserName] = useState('User');
-  
-  // Data dummy - nanti bisa diganti dengan fetch dari API
-  const [historiData] = useState<HistoriPembelian[]>([
-    {
-      id: '1',
-      courseTitle: 'Web Development Masterclass 2024',
-      courseImage: '/courses/web-dev.jpg', // Ganti dengan path image kamu
-      purchaseDate: '2024-01-15',
-      price: 299000,
-      status: 'success',
-      transactionId: 'TRX-001-2024',
-      courseSlug: 'web-development'
-    },
-    {
-      id: '2',
-      courseTitle: 'Digital Marketing Complete Course',
-      courseImage: '/courses/digital-marketing.jpg',
-      purchaseDate: '2024-01-10',
-      price: 199000,
-      status: 'success',
-      transactionId: 'TRX-002-2024',
-      courseSlug: 'digital-marketing'
-    },
-    {
-      id: '3',
-      courseTitle: 'UI/UX Design Fundamentals',
-      courseImage: '/courses/uiux.jpg',
-      purchaseDate: '2024-01-08',
-      price: 249000,
-      status: 'pending',
-      transactionId: 'TRX-003-2024',
-      courseSlug: 'uiux-design'
-    },
-    {
-      id: '4',
-      courseTitle: 'Python Programming for Beginners',
-      courseImage: '/courses/python.jpg',
-      purchaseDate: '2024-01-05',
-      price: 179000,
-      status: 'failed',
-      transactionId: 'TRX-004-2024',
-      courseSlug: 'python-programming'
-    }
-  ]);
+  const [activeFilter, setActiveFilter] = useState<'all' | 'SUCCESS' | 'PENDING' | 'FAILED'>('all');
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState('');
 
-  // Get user name from localStorage
+  // 1. Fetch Data saat halaman dimuat
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const user = localStorage.getItem('currentUser');
-      if (user) {
-        try {
-          const userData = JSON.parse(user);
-          setUserName(userData.fullname || 'User');
-        } catch (error) {
-          console.error('Error parsing user data:', error);
+    const fetchData = async () => {
+      try {
+        // Ambil data user dari localStorage
+        const userJson = localStorage.getItem('currentUser');
+        if (!userJson) {
+            setLoading(false);
+            return;
         }
+
+        const userData = JSON.parse(userJson);
+        setUserName(userData.fullname || 'User');
+
+        // Panggil API Histori
+        const res = await fetch(`/api/transaction/list?email=${userData.email}`);
+        if (res.ok) {
+          const data = await res.json();
+          setTransactions(data);
+        }
+      } catch (error) {
+        console.error("Gagal memuat histori:", error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
+    fetchData();
   }, []);
 
-  // Filter data berdasarkan status
+  // 2. Filter Data
   const filteredData = activeFilter === 'all' 
-    ? historiData 
-    : historiData.filter(item => item.status === activeFilter);
+    ? transactions 
+    : transactions.filter(item => item.status === activeFilter);
 
-  // Format tanggal
+  // 3. Helper Functions
   const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    };
-    return new Date(dateString).toLocaleDateString('id-ID', options);
+    return new Date(dateString).toLocaleDateString('id-ID', { 
+      year: 'numeric', month: 'long', day: 'numeric' 
+    });
   };
 
-  // Format harga
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
+      style: 'currency', currency: 'IDR', minimumFractionDigits: 0
     }).format(price);
   };
 
-  // Status badge styling
-  const getStatusBadge = (status: string) => {
-    const badges = {
-      success: { text: 'Berhasil', class: 'status-success' },
-      pending: { text: 'Pending', class: 'status-pending' },
-      failed: { text: 'Gagal', class: 'status-failed' }
+  // Mencari detail kursus dari file static berdasarkan ID dari database
+  const getCourseDetail = (idString: string) => {
+    const courseId = parseInt(idString);
+    const course = allCourses.find(c => c.id === courseId);
+    return course || {
+      title: 'Kursus Tidak Ditemukan',
+      image: '/placeholder.jpg',
+      slug: '#',
+      instructor: '-'
     };
-    return badges[status as keyof typeof badges] || badges.success;
+  };
+
+  // Badge Style
+  const getStatusBadge = (status: string) => {
+    const badges: any = {
+      'SUCCESS': { text: 'Berhasil', class: 'status-success' },
+      'PENDING': { text: 'Pending', class: 'status-pending' },
+      'FAILED': { text: 'Gagal', class: 'status-failed' }
+    };
+    return badges[status] || badges['SUCCESS'];
   };
 
   return (
     <main className="histori-container">
         <div className="container py-5">
           
-          {/* Header Section */}
           <div className="histori-header mb-5">
             <h1 className="histori-title">📋 Histori Pembelian Saya</h1>
-            <p className="histori-subtitle">Halo, <strong>{userName}</strong>! Berikut adalah riwayat pembelian kursus kamu.</p>
+            <p className="histori-subtitle">Halo, <strong>{userName}</strong>! Berikut riwayat pembelian kamu.</p>
           </div>
 
-          {/* Filter Tabs */}
           <div className="filter-tabs mb-4">
-            <button 
-              className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('all')}
-            >
-              Semua ({historiData.length})
+            <button className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`} onClick={() => setActiveFilter('all')}>
+              Semua
             </button>
-            <button 
-              className={`filter-btn ${activeFilter === 'success' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('success')}
-            >
-              ✅ Berhasil ({historiData.filter(d => d.status === 'success').length})
-            </button>
-            <button 
-              className={`filter-btn ${activeFilter === 'pending' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('pending')}
-            >
-              ⏳ Pending ({historiData.filter(d => d.status === 'pending').length})
-            </button>
-            <button 
-              className={`filter-btn ${activeFilter === 'failed' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('failed')}
-            >
-              ❌ Gagal ({historiData.filter(d => d.status === 'failed').length})
+            <button className={`filter-btn ${activeFilter === 'SUCCESS' ? 'active' : ''}`} onClick={() => setActiveFilter('SUCCESS')}>
+              ✅ Berhasil
             </button>
           </div>
 
-          {/* Content Section */}
-          {filteredData.length === 0 ? (
-            // Empty State
+          {loading ? (
+            <p className="text-center text-white">Memuat data...</p>
+          ) : filteredData.length === 0 ? (
             <div className="empty-state">
               <div className="empty-icon">🛒</div>
               <h3>Belum Ada Pembelian</h3>
-              <p>Kamu belum memiliki riwayat pembelian di kategori ini.</p>
-              <Link href="/kursus" className="btn-explore">
+              <p>Kamu belum membeli kursus apapun.</p>
+              <Link href="/#courses" className="btn-explore">
                 Jelajahi Kursus
               </Link>
             </div>
           ) : (
-            // Histori Cards
             <div className="row g-4">
-              {filteredData.map((item) => {
-                const statusBadge = getStatusBadge(item.status);
+              {filteredData.map((trx) => {
+                const badge = getStatusBadge(trx.status);
+                const courseDetail = getCourseDetail(trx.courseId);
                 
                 return (
-                  <div key={item.id} className="col-12 col-md-6 col-lg-4">
+                  <div key={trx.id} className="col-12 col-md-6 col-lg-4">
                     <div className="histori-card">
                       
-                      {/* Course Image */}
                       <div className="card-image-wrapper">
                         <Image 
-                          src={item.courseImage} 
-                          alt={item.courseTitle}
-                          width={400}
-                          height={250}
+                          src={courseDetail.image} 
+                          alt={courseDetail.title}
+                          width={400} height={250}
                           className="card-image"
-                          onError={(e) => {
-                            // Fallback jika gambar tidak ada
-                            e.currentTarget.src = 'https://via.placeholder.com/400x250/667EEA/FFFFFF?text=Kursus';
-                          }}
+                          style={{objectFit: 'cover'}}
                         />
-                        <span className={`status-badge ${statusBadge.class}`}>
-                          {statusBadge.text}
+                        <span className={`status-badge ${badge.class}`}>
+                          {badge.text}
                         </span>
                       </div>
 
-                      {/* Card Body */}
                       <div className="card-body-custom">
-                        <h3 className="course-title">{item.courseTitle}</h3>
+                        <h3 className="course-title">{courseDetail.title}</h3>
                         
                         <div className="card-info">
                           <div className="info-row">
                             <span className="info-label">📅 Tanggal:</span>
-                            <span className="info-value">{formatDate(item.purchaseDate)}</span>
+                            <span className="info-value">{formatDate(trx.createdAt)}</span>
                           </div>
                           <div className="info-row">
                             <span className="info-label">💰 Harga:</span>
-                            <span className="info-value price">{formatPrice(item.price)}</span>
+                            <span className="info-value price">{formatPrice(trx.amount)}</span>
                           </div>
                           <div className="info-row">
-                            <span className="info-label">🔖 ID Transaksi:</span>
-                            <span className="info-value transaction-id">{item.transactionId}</span>
+                            <span className="info-label">💳 Metode:</span>
+                            <span className="info-value">{trx.paymentMethod}</span>
                           </div>
                         </div>
 
-                        {/* Action Buttons */}
                         <div className="card-actions">
-                          {item.status === 'success' && (
-                            <Link 
-                              href={`/kursus/${item.courseSlug}`} 
-                              className="btn-access"
-                            >
-                              🎓 Akses Kursus
-                            </Link>
-                          )}
-                          {item.status === 'pending' && (
-                            <button className="btn-payment">
-                              💳 Selesaikan Pembayaran
-                            </button>
-                          )}
-                          {item.status === 'failed' && (
-                            <button className="btn-retry">
-                              🔄 Coba Lagi
-                            </button>
-                          )}
-                          <button className="btn-detail">
-                            📄 Detail
-                          </button>
+                          <Link href={courseDetail.slug} className="btn-access">
+                            🎓 Akses Materi
+                          </Link>
                         </div>
                       </div>
                     </div>
