@@ -86,8 +86,18 @@ const handlePay = async () => {
 
     const result = await response.json();
     console.log('📥 Response:', result);
-
+  
     if (response.ok) {
+        
+      
+      const savedPurchases = localStorage.getItem('purchasedCourses');
+      let purchasedIds: number[] = savedPurchases ? JSON.parse(savedPurchases) : [];
+
+      if (!purchasedIds.includes(selectedCourse.id)) {
+        purchasedIds.push(selectedCourse.id);
+        localStorage.setItem('purchasedCourses', JSON.stringify(purchasedIds));
+      }
+      
       if (selectedCourse.price === 0) {
         alert(`Berhasil mendaftar kursus gratis: ${selectedCourse.title}!`);
       } else {
