@@ -1,0 +1,99 @@
+// app/api/user/route.ts
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+
+// GET - Ambil data user berdasarkan email
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get('email');
+
+    if (!email) {
+      return NextResponse.json(
+        { error: 'Email wajib diisi' },
+        { status: 400 }
+      );
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        fullname: true,
+        email: true,
+        phone: true,
+        createdAt: true,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User tidak ditemukan' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(user, { status: 200 });
+
+  } catch (error) {
+    console.error('Get User Error:', error);
+    return NextResponse.json(
+      { error: 'Terjadi kesalahan pada server' },
+      { status: 500 }
+    );
+  }
+}
+
+// PUT - Update data user
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { email, fullname, phone } = body;
+
+    if (!email || !fullname) {
+      return NextResponse.json(
+        { error: 'Email dan Nama Lengkap wajib diisi' },
+        { status: 400 }
+      );
+    }
+
+    // Cek apakah user ada
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!existingUser) {
+      return NextResponse.json(
+        { error: 'User tidak ditemukan' },
+        { status: 404 }
+      );
+    }
+
+    // Update data user
+    const updatedUser = await prisma.user.update({
+      where: { email },
+      data: {
+        fullname,
+        phone,
+      },
+      select: {
+        id: true,
+        fullname: true,
+        email: true,
+        phone: true,
+      },
+    });
+
+    return NextResponse.json(
+      { message: 'Data berhasil diperbarui', user: updatedUser },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    console.error('Update User Error:', error);
+    return NextResponse.json(
+      { error: 'Terjadi kesalahan pada server' },
+      { status: 500 }
+    );
+  }
+}

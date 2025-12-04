@@ -39,6 +39,10 @@ export default function LoginPage() {
       // Simpan data user ke localStorage
       if (typeof window !== "undefined") {
         localStorage.setItem("currentUser", JSON.stringify(data.user));
+        
+        // ✅ TAMBAHAN: Simpan email & nama untuk user page
+        localStorage.setItem("userEmail", data.user.email);
+        localStorage.setItem("userName", data.user.fullname);
       }
 
       router.push("/"); // Pindah ke Home

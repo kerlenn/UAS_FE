@@ -1,19 +1,62 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import '../styles/user.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { UserIcon } from '../components/UserIcon';
+import { getCurrentUserEmail, clearUserSession } from '@/lib/auth';
 
 export default function UserPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
-    namaLengkap: 'ker',
-    email: 'k@gmail.com',
-    noTelepon: '081234567890',
+    namaLengkap: '',
+    email: '',
+    noTelepon: '',
     feedback: ''
   });
+
+  // Ambil email dari localStorage (di-set saat login berhasil)
+  const userEmail = getCurrentUserEmail() || '';
+
+  // Fetch data user saat page load
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/user?email=${userEmail}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          setFormData({
+            namaLengkap: data.fullname,
+            email: data.email,
+            noTelepon: data.phone || '',
+            feedback: ''
+          });
+        } else {
+          alert(data.error || 'Gagal memuat data user');
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        alert('Terjadi kesalahan saat memuat data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userEmail) {
+      fetchUserData();
+    } else {
+      // Jika tidak ada userEmail, redirect ke login
+      setLoading(false);
+      alert('Anda belum login. Silakan login terlebih dahulu.');
+      router.push('/login');
+    }
+  }, [userEmail]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -22,29 +65,113 @@ export default function UserPage() {
     });
   };
 
-  const handleSimpanPerubahan = (e: React.FormEvent) => {
+  const handleSimpanPerubahan = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Data disimpan:', formData);
-    alert('Perubahan berhasil disimpan!');
-  };
+    
+    try {
+      const response = await fetch('/api/user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          fullname: formData.namaLengkap,
+          phone: formData.noTelepon,
+        }),
+      });
 
-  const handleHapusAkun = () => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus akun? Tindakan ini tidak dapat dibatalkan.')) {
-      console.log('Akun dihapus');
-      alert('Akun berhasil dihapus');
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Perubahan berhasil disimpan!');
+        console.log('Data disimpan:', data);
+      } else {
+        alert(data.error || 'Gagal menyimpan perubahan');
+      }
+    } catch (error) {
+      console.error('Error saving changes:', error);
+      alert('Terjadi kesalahan saat menyimpan data');
     }
   };
 
-  const handleKirimFeedback = (e: React.FormEvent) => {
+  const handleHapusAkun = async () => {
+    if (window.confirm('Apakah Anda yakin ingin menghapus akun? Tindakan ini tidak dapat dibatalkan.')) {
+      try {
+        const response = await fetch('/api/user/delete', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Akun berhasil dihapus');
+          // Hapus session menggunakan helper function
+          clearUserSession();
+          // Redirect ke halaman login
+          router.push('/login');
+        } else {
+          alert(data.error || 'Gagal menghapus akun');
+        }
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('Terjadi kesalahan saat menghapus akun');
+      }
+    }
+  };
+
+  const handleKirimFeedback = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!formData.feedback.trim()) {
       alert('Mohon isi feedback terlebih dahulu');
       return;
     }
-    console.log('Feedback dikirim:', formData.feedback);
-    alert('Feedback berhasil dikirim!');
-    setFormData({ ...formData, feedback: '' });
+
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userEmail: formData.email,
+          content: formData.feedback,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Feedback berhasil dikirim!');
+        setFormData({ ...formData, feedback: '' });
+        console.log('Feedback dikirim:', data);
+      } else {
+        alert(data.error || 'Gagal mengirim feedback');
+      }
+    } catch (error) {
+      console.error('Error sending feedback:', error);
+      alert('Terjadi kesalahan saat mengirim feedback');
+    }
   };
+
+  if (loading) {
+    return (
+      <main className="user-page-container">
+        <div className="container py-5">
+          <div className="text-center">
+            <p>Loading...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -85,8 +212,8 @@ export default function UserPage() {
             <div className="col-lg-7">
               <div className="user-form-card">
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                  <h2 className="form-card-title">Nama Lengkap</h2>
-                  <button className="btn-back" onClick={() => window.history.back()}>
+                  <h2 className="form-card-title">Data Pengguna</h2>
+                  <button className="btn-back" onClick={() => router.push('/')}>
                     ← Kembali ke Beranda
                   </button>
                 </div>
@@ -100,7 +227,7 @@ export default function UserPage() {
                       type="text"
                       name="namaLengkap"
                       className="form-input-user"
-                      placeholder="ker"
+                      placeholder="Masukkan nama lengkap"
                       value={formData.namaLengkap}
                       onChange={handleChange}
                       required
@@ -114,11 +241,15 @@ export default function UserPage() {
                       type="email"
                       name="email"
                       className="form-input-user"
-                      placeholder="k@gmail.com"
+                      placeholder="email@example.com"
                       value={formData.email}
                       onChange={handleChange}
-                      required
+                      disabled
+                      style={{ backgroundColor: '#f5f5f5', cursor: 'not-allowed' }}
                     />
+                    <small style={{ color: '#666', fontSize: '0.85rem' }}>
+                      Email tidak dapat diubah
+                    </small>
                   </div>
 
                   {/* No Telepon */}
@@ -131,7 +262,6 @@ export default function UserPage() {
                       placeholder="081234567890"
                       value={formData.noTelepon}
                       onChange={handleChange}
-                      required
                     />
                   </div>
 
