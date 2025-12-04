@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import "../styles/course-detail.css";
 
+const CURRENT_COURSE_ID = 4; 
+
 // Data Video berdasarkan DetailBlender.html
 const courseVideos = [
   { title: "User Interface - Blender 3D Modeling", url: "https://youtu.be/_l7fshHOsPA?si=Tqy4otutfVb_Q4en", duration: "05:50", isFree: true },
@@ -25,7 +27,7 @@ export default function DetailBlenderPage() {
   
   // State User
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [hasPurchased] = useState(false); 
+  const [hasPurchased, setHasPurchased] = useState(false); 
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -33,13 +35,23 @@ export default function DetailBlenderPage() {
 
   // Cek Login
   useEffect(() => {
+    // 1. Cek Login
     const checkAuth = setTimeout(() => {
       if (typeof window !== "undefined") {
         const user = localStorage.getItem("currentUser");
         setIsLoggedIn(!!user);
+
+        // 2. Cek Pembelian dari LocalStorage
+        const savedPurchases = localStorage.getItem('purchasedCourses');
+        if (savedPurchases) {
+            const purchasedList = JSON.parse(savedPurchases);
+            // Cek apakah ID kursus saat ini ada di daftar pembelian
+            if (purchasedList.includes(CURRENT_COURSE_ID)) {
+                setHasPurchased(true);
+            }
+        }
       }
     }, 0);
-
     return () => clearTimeout(checkAuth);
   }, []);
 
@@ -78,6 +90,9 @@ export default function DetailBlenderPage() {
         statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>;
       } else if (video.isFree) {
         statusBadge = <span className="video-label ms-auto">Gratis</span>;
+      } else {
+        // Jika berbayar tapi sudah dibeli
+        statusBadge = <span className="badge bg-success ms-auto">Terbuka</span>;
       }
 
       return (
@@ -221,8 +236,10 @@ export default function DetailBlenderPage() {
             <aside className="purchase-sidebar">
               <div className="purchase-box">
                 {hasPurchased ? (
-                    <div className="alert alert-success fw-bold">
-                        <i className="fas fa-check-circle me-2"></i> Anda sudah membeli kursus ini
+                    <div className="alert alert-success fw-bold text-center">
+                        <i className="fas fa-check-circle me-2 mb-2" style={{fontSize: '2rem'}}></i><br/>
+                        Anda sudah membeli kursus ini. <br/>
+                        <span className="fw-normal small">Silakan akses materi di samping.</span>
                     </div>
                 ) : (
                     <>

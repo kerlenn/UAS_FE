@@ -4,42 +4,40 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { fullname, email, phone, password } = body;
+    const { userEmail, content } = body;
 
-    if (!fullname || !email || !password) {
+    if (!userEmail || !content) {
       return NextResponse.json(
-        { error: 'Nama, Email, dan Password wajib diisi' },
+        { error: 'Email dan isi feedback wajib diisi' },
         { status: 400 }
       );
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: { email: email },
+      where: { email: userEmail },
     });
 
-    if (existingUser) {
+    if (!existingUser) {
       return NextResponse.json(
-        { error: 'Email ini sudah terdaftar, gunakan email lain.' },
-        { status: 400 }
+        { error: 'User tidak ditemukan' },
+        { status: 404 }
       );
     }
 
-    const newUser = await prisma.user.create({
+    const newFeedback = await prisma.feedback.create({
       data: {
-        fullname,
-        email,
-        phone,
-        password,
+        content,
+        userEmail,
       },
     });
 
     return NextResponse.json(
-      { message: 'Registrasi Berhasil', user: newUser },
+      { message: 'Feedback berhasil dikirim', feedback: newFeedback },
       { status: 201 }
     );
 
   } catch (error) {
-    console.error('Register Error:', error);
+    console.error('Feedback Error:', error);
     return NextResponse.json(
       { error: 'Terjadi kesalahan pada server' },
       { status: 500 }

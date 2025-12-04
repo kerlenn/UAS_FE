@@ -1,10 +1,11 @@
-// uas/app/kursus_data_struktur/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import "../styles/course-detail.css";
+
+const CURRENT_COURSE_ID = 2; 
 
 const courseVideos = [
   { title: "Stack - Struktur Data", url: "https://youtu.be/RoKfhtE2G6c?si=VZ1XG8UyOwp0oi-c", duration: "07:16", isFree: true },
@@ -27,18 +28,31 @@ export default function DetailDataStrukturPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSection, setActiveSection] = useState("manfaat");
   
+  // State User & Pembelian
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [hasPurchased] = useState(false); 
+  const [hasPurchased, setHasPurchased] = useState(false); 
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  // EFFECT 1: Cek Login & Status Pembelian
   useEffect(() => {
+    // 1. Cek Login
     const checkAuth = setTimeout(() => {
       if (typeof window !== "undefined") {
         const user = localStorage.getItem("currentUser");
         setIsLoggedIn(!!user);
+
+        // 2. Cek Pembelian dari LocalStorage
+        const savedPurchases = localStorage.getItem('purchasedCourses');
+        if (savedPurchases) {
+            const purchasedList = JSON.parse(savedPurchases);
+            // Cek apakah ID kursus saat ini ada di daftar pembelian
+            if (purchasedList.includes(CURRENT_COURSE_ID)) {
+                setHasPurchased(true);
+            }
+        }
       }
     }, 0);
     return () => clearTimeout(checkAuth);
@@ -65,19 +79,24 @@ export default function DetailDataStrukturPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // --- FUNGSI RENDER LIST VIDEO DENGAN LOGIKA KUNCI ---
   const renderVideoList = () => {
     const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 4);
 
     return videosToShow.map((video, index) => {
+      // LOGIKA UTAMA: Video terbuka jika login DAN (gratis ATAU sudah beli)
       const isAccessible = isLoggedIn && (video.isFree || hasPurchased);
 
       let statusBadge;
       if (!isLoggedIn) {
         statusBadge = <span className="badge bg-warning text-dark ms-auto">Login</span>;
       } else if (!isAccessible) {
-        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>;
+        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>; // Terkunci
       } else if (video.isFree) {
         statusBadge = <span className="video-label ms-auto">Gratis</span>;
+      } else {
+        // Jika berbayar tapi sudah dibeli
+        statusBadge = <span className="badge bg-success ms-auto">Terbuka</span>;
       }
 
       return (
@@ -177,6 +196,7 @@ export default function DetailDataStrukturPage() {
                     <h2>Konten Kursus:</h2>
                     <p>{courseVideos.length} Video - Total 1 jam 10 menit</p>
                   </div>
+                  {/* Sembunyikan promo jika sudah beli */}
                   {!hasPurchased && <span className="promo-btn">Dua Video Pertama Gratis!</span>}
                 </div>
 
@@ -214,20 +234,25 @@ export default function DetailDataStrukturPage() {
 
             <aside className="purchase-sidebar">
               <div className="purchase-box">
+                {/* LOGIKA TAMPILAN SIDEBAR: SUDAH BELI VS BELUM BELI */}
                 {hasPurchased ? (
-                    <div className="alert alert-success fw-bold">
-                        <i className="fas fa-check-circle me-2"></i> Anda sudah membeli kursus ini
+                    <div className="alert alert-success fw-bold text-center">
+                        <i className="fas fa-check-circle me-2 mb-2" style={{fontSize: '2rem'}}></i><br/>
+                        Anda sudah membeli kursus ini. <br/>
+                        <span className="fw-normal small">Silakan akses materi di samping.</span>
                     </div>
                 ) : (
                     <>
                         <h2>Beli Kursus</h2>
                         <p className="price">Rp 230.000</p>
+                        
                         <p className="student-count">
                         <i className="fas fa-fire me-2" style={{color: 'var(--primary-orange)'}}></i>
                         <span>458 Pelajar sudah mendaftar</span>
                         </p>
                         <div className="action-buttons">
-                        <Link href="/pembayaran?id=2" className="btn-purchase primary">
+                        {/* Link ke pembayaran dengan ID Kursus */}
+                        <Link href={`/pembayaran?id=${CURRENT_COURSE_ID}`} className="btn-purchase primary">
                             Beli Langsung
                         </Link>
                         </div>

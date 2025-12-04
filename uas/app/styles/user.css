@@ -239,6 +239,79 @@
   box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
 }
 
+/* Tombol Ubah Password - Selaras dengan style existing */
+.btn-ubah-password {
+  width: 100%;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+  border: none;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.btn-ubah-password:hover {
+  background: linear-gradient(135deg, #e55a2e 0%, #e67a35 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.btn-ubah-password:active {
+  transform: translateY(0);
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+/* Back Button */
+.btn-back {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(-4px);
+}
+
+/* Responsive Design untuk 3 tombol */
+@media (max-width: 991px) {
+  .button-group {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .button-group {
+    margin-top: 24px;
+  }
+  
+  .btn-simpan,
+  .btn-ubah-password,
+  .btn-hapus {
+    width: 100%;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 991px) {
   .user-avatar-card {
