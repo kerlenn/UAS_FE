@@ -54,6 +54,23 @@ export async function PUT(request: Request) {
       );
     }
 
+    if (fullname.trim().length < 3) {
+      return NextResponse.json(
+        { error: 'Nama minimal 3 huruf' },
+        { status: 400 }
+      );
+    }
+
+    if (phone) {
+      const phoneRegex = /^(62|08)\d{9,}$/;
+      if (!phoneRegex.test(phone)) {
+        return NextResponse.json(
+          { error: 'No telepon harus minimal 11 digit dan dimulai dengan 62 atau 08' },
+          { status: 400 }
+        );
+      }
+    }
+
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
