@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { UserIcon } from "./UserIcon";
+import { UserIcon } from "./UserIcon"; // Pastikan path ini benar atau ganti dengan icon library lain
 import { usePathname, useRouter } from "next/navigation";
 
 export default function Header() {
@@ -12,25 +12,21 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   
-  // State untuk melacak hash (#) di URL
   const [activeHash, setActiveHash] = useState("");
   
   const pathname = usePathname();
   const router = useRouter();
 
-  // Effect untuk mendeteksi hash saat load dan navigasi
+  // Effect untuk mendeteksi hash
   useEffect(() => {
-    // Set hash saat pertama kali render
     if (typeof window !== "undefined") {
       setActiveHash(window.location.hash);
     }
 
-    // Fungsi update saat hash berubah
     const handleHashChange = () => {
       setActiveHash(window.location.hash);
     };
 
-    // Dengarkan event hashchange dan popstate
     window.addEventListener("hashchange", handleHashChange);
     window.addEventListener("popstate", handleHashChange);
 
@@ -72,7 +68,6 @@ export default function Header() {
     }
   };
 
-  // Helper untuk update hash manual saat klik link
   const handleLinkClick = (hash: string) => {
     setActiveHash(hash);
     setIsMobileMenuOpen(false); 
@@ -88,7 +83,6 @@ export default function Header() {
             <div className="d-none d-xl-flex align-items-center gap-3">
               <Link 
                 href="/" 
-                // Halaman Utama aktif hanya jika hash kosong
                 className={`nav-link-custom ${pathname === '/' && activeHash === '' ? 'active' : ''}`}
                 onClick={() => handleLinkClick("")}
               >
@@ -110,6 +104,17 @@ export default function Header() {
               >
                 Hubungi Kami
               </Link>
+
+              {/* [TAMBAHAN] Link Dashboard di Navigasi Utama (Opsional, agar mudah diakses) */}
+              {isLoggedIn && (
+                <Link 
+                  href="/dashboard" 
+                  className={`nav-link-custom ${pathname === '/dashboard' ? 'active' : ''}`}
+                  onClick={() => handleLinkClick("")}
+                >
+                  Dashboard Belajar
+                </Link>
+              )}
             </div>
 
             {/* Tengah: Logo */}
@@ -136,7 +141,6 @@ export default function Header() {
 
             {/* Kanan: Auth / Hamburger */}
             <div className="d-flex align-items-center gap-3 ms-auto">
-              {/* Desktop Auth */}
               <div className="d-none d-xl-flex align-items-center gap-3">
                 {isLoggedIn ? (
                   <>
@@ -152,9 +156,10 @@ export default function Header() {
                         boxShadow: '0 2px 8px rgba(255,255,255,0.1)'
                       }}
                     >
-                      Histori Pembelian
+                      Histori
                     </Link>
                     
+                    {/* Tombol Profil (User Icon) */}
                     <Link 
                       href="/user" 
                       className="btn-custom-orange rounded-circle d-flex align-items-center justify-content-center p-0 position-relative"
@@ -222,8 +227,6 @@ export default function Header() {
                   height: '30px',
                   transition: 'transform 0.3s ease'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
               >
                 <span className="w-100 bg-white rounded" style={{ height: '3px' }}></span>
                 <span className="w-100 bg-white rounded" style={{ height: '3px' }}></span>
@@ -260,6 +263,17 @@ export default function Header() {
               >
                 Hubungi Kami
               </Link>
+
+              {/* [TAMBAHAN] Link Dashboard di Mobile Menu */}
+              {isLoggedIn && (
+                <Link 
+                  href="/dashboard" 
+                  className={`nav-link-custom ps-3 text-white ${pathname === '/dashboard' ? 'active' : ''}`} 
+                  onClick={() => handleLinkClick("")}
+                >
+                  Dashboard Belajar
+                </Link>
+              )}
             </div>
             
             <hr className="border-white opacity-50 my-3"/>
@@ -279,9 +293,7 @@ export default function Header() {
                     href="/user" 
                     className="btn-custom-orange rounded-pill py-3 fw-semibold" 
                     onClick={toggleMobileMenu}
-                    style={{
-                      boxShadow: '0 4px 12px rgba(255,140,66,0.4)'
-                    }}
+                    style={{ boxShadow: '0 4px 12px rgba(255,140,66,0.4)' }}
                   >
                     👤 Profil Saya
                   </Link>
@@ -289,18 +301,14 @@ export default function Header() {
                     href="/histori" 
                     className="btn-custom-orange rounded-pill py-3 fw-semibold" 
                     onClick={toggleMobileMenu}
-                    style={{
-                      boxShadow: '0 4px 12px rgba(255,140,66,0.4)'
-                    }}
+                    style={{ boxShadow: '0 4px 12px rgba(255,140,66,0.4)' }}
                   >
                     Histori Pembelian
                   </Link>
                   <button 
                     onClick={handleLogout} 
                     className="btn-custom-outline rounded-pill py-3 fw-semibold"
-                    style={{
-                      boxShadow: '0 2px 8px rgba(255,255,255,0.1)'
-                    }}
+                    style={{ boxShadow: '0 2px 8px rgba(255,255,255,0.1)' }}
                   >
                     Keluar
                   </button>
@@ -311,9 +319,7 @@ export default function Header() {
                     href="/login" 
                     className="btn-custom-outline rounded-pill py-3 fw-semibold" 
                     onClick={toggleMobileMenu}
-                    style={{
-                      boxShadow: '0 2px 8px rgba(255,255,255,0.1)'
-                    }}
+                    style={{ boxShadow: '0 2px 8px rgba(255,255,255,0.1)' }}
                   >
                     Masuk
                   </Link>
@@ -321,9 +327,7 @@ export default function Header() {
                     href="/signup" 
                     className="btn-custom-orange rounded-pill py-3 fw-semibold" 
                     onClick={toggleMobileMenu}
-                    style={{
-                      boxShadow: '0 4px 12px rgba(255,140,66,0.4)'
-                    }}
+                    style={{ boxShadow: '0 4px 12px rgba(255,140,66,0.4)' }}
                   >
                     ✨ Daftar
                   </Link>
