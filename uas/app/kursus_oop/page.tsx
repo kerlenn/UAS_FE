@@ -5,30 +5,28 @@ import Image from "next/image";
 import Link from "next/link";
 import "../styles/course-detail.css";
 
-const CURRENT_COURSE_ID = 2; 
+const CURRENT_COURSE_ID = 5; // ID OOP di courses.ts
 
+// Data Video berdasarkan DetailOOP.html
 const courseVideos = [
-  { title: "Stack - Struktur Data", url: "https://youtu.be/RoKfhtE2G6c?si=VZ1XG8UyOwp0oi-c", duration: "07:16", isFree: true },
-  { title: "Queue - Struktur Data", url: "https://youtu.be/GC3jA6Cym1E?si=4zavVRDqhFNtbE-c", duration: "06:23", isFree: true },
+  { title: "Tutorial Menggunakan Oracle Academy Dari Sisi Learner Mahasiswa atau Pelajar", url: "https://youtu.be/OaO26DDkUrg?si=Y8zmAl8_egm-wI3D", duration: "08:23", isFree: true },
+  { title: "Membedakan Object Oriented dengan Sequential Programming - Belajar OOP Dengan Java", url: "https://youtu.be/sxYlPsOUdms?si=mj4Mq_n4qrwwVfwh", duration: "07:53", isFree: true },
   // Video Berbayar
-  { title: "Hash - Struktur Data", url: "https://youtu.be/M9i_-UVpRmE?si=IwMe7Ag7I-hRnGZf", duration: "08:29", isFree: false },
-  { title: "Binary Search Tree - Struktur Data", url: "https://youtu.be/uX1HmvKbaU8?si=RBlEK47GN-4D3mlZ", duration: "03:13", isFree: false },
-  { title: "Tree Travelsal - Struktur Data", url: "https://youtu.be/4eBfmPa4124?si=3O0dVxkOwVZCcgBg", duration: "05:35", isFree: false },
-  { title: "Avl Tree - Struktur Data", url: "https://youtu.be/d5C1MqDZDZQ?si=vkbk_fKQlSv7ZQNL", duration: "04:47", isFree: false },
-  { title: "Heap - Struktur Data", url: "https://youtu.be/_gq_t5byFcU?si=QhpFe2NB315erjpr", duration: "02:49", isFree: false },
-  { title: "Huffman Code - Struktur Data", url: "https://youtu.be/9PR8tl3KspQ?si=4HEwQ-i6423V1_Nx", duration: "03:03", isFree: false },
-  { title: "Graph BFS & DFS - Struktur Data", url: "https://youtu.be/xtcna3thBYI?si=iuyru-fpBU4Qz011", duration: "06:48", isFree: false },
-  { title: "Algoritma Dijikstra Graph - Struktur Data", url: "https://youtu.be/sX7x54uyPzY?si=6F1bDumVr7qmPlXf", duration: "07:31", isFree: false },
-  { title: "Minimum Spanning Tree - Struktur Data", url: "https://youtu.be/MgdeDVP2CvU?si=gWmoF_i76J6FMq-4", duration: "04:22", isFree: false },
-  { title: "Topological Ordering Sort - Struktur Data", url: "https://youtu.be/455nDoUvbw4?si=6-ej9u5UN7ewwcQW", duration: "03:01", isFree: false },
-  { title: "Critical Path Analysis Pada Task Network", url: "https://youtu.be/LrQUQCjkFJ0?si=xktj98NSGzRFojQR", duration: "05:44", isFree: false },
+  { title: "Greenfoot & Class Structure Method - Belajar OOP dengan Java", url: "https://youtu.be/upGTvTP7G9U?si=s7hcmtKGjtjhbjbE", duration: "09:00", isFree: false },
+  { title: "Object VS Class with Wombat - Belajar OOP dengan Java", url: "https://youtu.be/OCLiTqCTufU?si=q1LijIRk72fL2XRI", duration: "09:45", isFree: false },
+  { title: "Install JDK, Compile & Run Java dengan CMD Command Prompt - Belajar OOP dengan Java", url: "https://youtu.be/323Xx7-yQa0?si=04JLhW0ld0pHR9Z3", duration: "11:14", isFree: false },
+  { title: "Overloading, This & Javadoc - Belajar OOP dengan Java", url: "https://youtu.be/GypRwMZWQUQ?si=FaxSBbrFy5nXOsNc", duration: "07:11", isFree: false },
+  { title: "Apa itu Static? - Belajar OOP dengan Java", url: "https://youtu.be/NZ6UdEwa3KA?si=NlLTrkbNd3KmZzSv", duration: "03:48", isFree: false },
+  { title: "Penggunaan OverRiding - Belajar OOP dengan Java", url: "https://youtu.be/RS55hmY_vxA?si=3Gly-NdBClRR8gbr", duration: "04:36", isFree: false },
+  { title: "Abstract & Interface - Belajar OOP dengan Java", url: "https://youtu.be/YBIfd2zf0XE?si=cVtd4bShMG4CVrdq", duration: "07:43", isFree: false },
+  { title: "Pengenalan Eclipse", url: "https://youtu.be/H8_NzE1pmp4?si=42NhFjEwKsSSJy6o", duration: "08:42", isFree: false },
 ];
 
-export default function DetailDataStrukturPage() {
+export default function DetailOOPPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSection, setActiveSection] = useState("manfaat");
   
-  // State User & Pembelian
+  // State User
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasPurchased, setHasPurchased] = useState(false); 
 
@@ -36,7 +34,7 @@ export default function DetailDataStrukturPage() {
     setIsExpanded(!isExpanded);
   };
 
-  // EFFECT 1: Cek Login & Status Pembelian
+  // Cek Login
   useEffect(() => {
     // 1. Cek Login
     const checkAuth = setTimeout(() => {
@@ -58,6 +56,7 @@ export default function DetailDataStrukturPage() {
     return () => clearTimeout(checkAuth);
   }, []);
 
+  // Scroll Spy
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['manfaat', 'kursus', 'syarat'];
@@ -79,19 +78,17 @@ export default function DetailDataStrukturPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // --- FUNGSI RENDER LIST VIDEO DENGAN LOGIKA KUNCI ---
   const renderVideoList = () => {
     const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 4);
 
     return videosToShow.map((video, index) => {
-      // LOGIKA UTAMA: Video terbuka jika login DAN (gratis ATAU sudah beli)
       const isAccessible = isLoggedIn && (video.isFree || hasPurchased);
 
       let statusBadge;
       if (!isLoggedIn) {
         statusBadge = <span className="badge bg-warning text-dark ms-auto">Login</span>;
       } else if (!isAccessible) {
-        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>; // Terkunci
+        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>;
       } else if (video.isFree) {
         statusBadge = <span className="video-label ms-auto">Gratis</span>;
       } else {
@@ -131,21 +128,22 @@ export default function DetailDataStrukturPage() {
                 <span>&gt;</span>
                 <Link href="/kursus">Kursus</Link>
                 <span>&gt;</span>
-                <p>Struktur Data [2020]</p>
+                <p>Object Oriented Programming [2020]</p>
             </div>
 
             <div className="detail-content-wrapper">
                 <div className="course-text-info">
-                <h2>Kuliah Struktur Data [2020]</h2>
+                <h2>Object Oriented Programming [2020]</h2>
                 <p className="course-description">
-                    Struktur data adalah fondasi dari ilmu komputer modern.
-                    Menguasai konsep array, stack, queue, dan tree akan membuka jalan untuk membangun aplikasi yang kuat.
+                    Object Oriented Programming (OOP) adalah salah satu paradigma pemrograman tercanggih yang banyak digunakan di dunia pengembangan perangkat lunak saat ini. 
+                    Dengan konsep inti seperti class, object, inheritance, dan polymorphism, OOP menghadirkan serangkaian fitur yang bertujuan untuk menciptakan kode yang lebih terstruktur, mudah dipelihara, dan efisien. 
+                    Membangun aplikasi yang kompleks menjadi lebih sederhana karena setiap komponen dapat dimodelkan sebagai objek yang memiliki sifat dan perilaku, sehingga proses pengembangan hingga pengelolaan proyek perangkat lunak kini semakin terarah dan bermakna.
                 </p>
                 </div>
                 <div className="course-media-placeholder">
                 <Image
-                    src="/StrukturData.jpg"
-                    alt="Struktur Data"
+                    src="/OOP.jpg"
+                    alt="Object Oriented Programming"
                     width={800}
                     height={450}
                     style={{ width: "100%", height: "auto" }}
@@ -155,8 +153,8 @@ export default function DetailDataStrukturPage() {
 
             <div className="course-meta-info">
                 <span>Instruktur: Darius</span>
-                <span>Waktu Total: 1 jam 10 menit</span>
-                <span>Rilis: 25 November 2020</span>
+                <span>Waktu Total: 78 menit</span>
+                <span>Rilis: 1 September 2020</span>
             </div>
           </section>
 
@@ -173,20 +171,23 @@ export default function DetailDataStrukturPage() {
               <div className="learning-objectives" id="manfaat">
                 <h2>Yang akan Anda pelajari:</h2>
                 <ul>
-                  <li>Memahami konsep dasar struktur data.</li>
-                  <li>Mempelajari implementasi Array dan Structure.</li>
-                  <li>Menguasai konsep Tree, Binary Tree, dan Graph.</li>
+                  <li>Menguasai konsep-konsep praktis dan modern yang digunakan oleh para programmer profesional dalam pengembangan perangkat lunak berbasis OOP.</li>
+                  <li>Mempelajari prinsip inti OOP seperti class, object, inheritance, polymorphism, dan encapsulation yang menjadi fondasi aplikasi kompleks.</li>
+                  <li>Menerapkan keterampilan baru Anda pada proyek nyata untuk membangun sistem yang lebih terstruktur, efisien, dan mudah dikelola.</li>
                 </ul>
               </div>
 
               <div className="skills-acquired">
                 <h2>Keahlian yang akan Anda dapatkan:</h2>
                 <div className="skills-tags">
-                  <span className="skill-tag">Struktur Data</span>
-                  <span className="skill-tag">Problem Solving</span>
-                  <span className="skill-tag">Stack & Queue</span>
-                  <span className="skill-tag">Trees & Graphs</span>
-                  <span className="skill-tag">Dasar C++</span>
+                  <span className="skill-tag">Pemrograman Berorientasi Objek</span>
+                  <span className="skill-tag">Class & Object</span>
+                  <span className="skill-tag">Encapsulation</span>
+                  <span className="skill-tag">Inheritance</span>
+                  <span className="skill-tag">Polymorphism</span>
+                  <span className="skill-tag">Abstraction</span>
+                  <span className="skill-tag">Design Patterns Dasar</span>
+                  <span className="skill-tag">Pemodelan dengan UML</span>
                 </div>
               </div>
 
@@ -194,9 +195,8 @@ export default function DetailDataStrukturPage() {
                 <div className="course-content-header">
                   <div className="header-text">
                     <h2>Konten Kursus:</h2>
-                    <p>{courseVideos.length} Video - Total 1 jam 10 menit</p>
+                    <p>{courseVideos.length} Video - Total 78 menit</p>
                   </div>
-                  {/* Sembunyikan promo jika sudah beli */}
                   {!hasPurchased && <span className="promo-btn">Dua Video Pertama Gratis!</span>}
                 </div>
 
@@ -225,16 +225,16 @@ export default function DetailDataStrukturPage() {
               <div className="requirements-section" id="syarat">
                 <h2>Syarat:</h2>
                 <ul>
-                  <li>Memiliki pemahaman dasar logika pemrograman.</li>
-                  <li>Komputer atau laptop dengan koneksi internet.</li>
-                  <li>Code editor dan compiler C++ terinstal.</li>
+                  <li>Tidak dibutuhkan pengalaman pemrograman sebelumnya. Kursus ini dirancang khusus untuk pemula dan semua konsep akan diajarkan dari nol.</li>
+                  <li>Komputer PC atau laptop dengan koneksi internet stabil. Disarankan memiliki RAM minimal 4GB agar coding berjalan dengan lancar.</li>
+                  <li>Software pendukung pemrograman sudah terinstal, seperti Java JDK atau Python, serta editor kode (contoh: VS Code atau IntelliJ).</li>
+                  <li>Kemauan dan semangat yang tinggi untuk belajar logika pemrograman dan membangun aplikasi nyata!</li>
                 </ul>
               </div>
             </div>
 
             <aside className="purchase-sidebar">
               <div className="purchase-box">
-                {/* LOGIKA TAMPILAN SIDEBAR: SUDAH BELI VS BELUM BELI */}
                 {hasPurchased ? (
                     <div className="alert alert-success fw-bold text-center">
                         <i className="fas fa-check-circle me-2 mb-2" style={{fontSize: '2rem'}}></i><br/>
@@ -244,15 +244,13 @@ export default function DetailDataStrukturPage() {
                 ) : (
                     <>
                         <h2>Beli Kursus</h2>
-                        <p className="price">Rp 230.000</p>
-                        
+                        <p className="price">Rp 120.000</p>
                         <p className="student-count">
                         <i className="fas fa-fire me-2" style={{color: 'var(--primary-orange)'}}></i>
-                        <span>458 Pelajar sudah mendaftar</span>
+                        <span>92 Pelajar sudah mendaftar</span>
                         </p>
                         <div className="action-buttons">
-                        {/* Link ke pembayaran dengan ID Kursus */}
-                        <Link href={`/pembayaran?id=${CURRENT_COURSE_ID}`} className="btn-purchase primary">
+                        <Link href="/pembayaran?id=5" className="btn-purchase primary">
                             Beli Langsung
                         </Link>
                         </div>

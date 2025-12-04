@@ -11,10 +11,36 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
+  
+  // State untuk melacak hash (#) di URL
+  const [activeHash, setActiveHash] = useState("");
+  
   const pathname = usePathname();
   const router = useRouter();
 
-  // Cek status login saat component mount
+  // Effect untuk mendeteksi hash saat load dan navigasi
+  useEffect(() => {
+    // Set hash saat pertama kali render
+    if (typeof window !== "undefined") {
+      setActiveHash(window.location.hash);
+    }
+
+    // Fungsi update saat hash berubah
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash);
+    };
+
+    // Dengarkan event hashchange dan popstate
+    window.addEventListener("hashchange", handleHashChange);
+    window.addEventListener("popstate", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+      window.removeEventListener("popstate", handleHashChange);
+    };
+  }, [pathname]); 
+
+  // Cek status login
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("currentUser");
@@ -46,9 +72,15 @@ export default function Header() {
     }
   };
 
+  // Helper untuk update hash manual saat klik link
+  const handleLinkClick = (hash: string) => {
+    setActiveHash(hash);
+    setIsMobileMenuOpen(false); 
+  };
+
   return (
     <>
-      <header className="sticky-top header-gradient py-3 position-relative">
+      <header className="sticky-top header-gradient py-3">
         <div className="container-fluid px-4 px-md-5">
           <div className="d-flex align-items-center justify-content-between">
             
@@ -56,19 +88,25 @@ export default function Header() {
             <div className="d-none d-xl-flex align-items-center gap-3">
               <Link 
                 href="/" 
-                className={`nav-link-custom ${pathname === '/' ? 'active' : ''}`}
+                // Halaman Utama aktif hanya jika hash kosong
+                className={`nav-link-custom ${pathname === '/' && activeHash === '' ? 'active' : ''}`}
+                onClick={() => handleLinkClick("")}
               >
                 Halaman Utama
               </Link>
+              
               <Link 
-                href="/kursus" 
-                className={`nav-link-custom ${pathname === '/kursus' ? 'active' : ''}`}
+                href="/#courses" 
+                className={`nav-link-custom ${activeHash === '#courses' ? 'active' : ''}`}
+                onClick={() => handleLinkClick("#courses")}
               >
                 Kursus
               </Link>
+
               <Link 
                 href="/#contact" 
-                className="nav-link-custom"
+                className={`nav-link-custom ${activeHash === '#contact' ? 'active' : ''}`}
+                onClick={() => handleLinkClick("#contact")}
               >
                 Hubungi Kami
               </Link>
@@ -76,7 +114,7 @@ export default function Header() {
 
             {/* Tengah: Logo */}
             <div className="position-absolute top-50 start-50 translate-middle">
-              <Link href="/" className="d-flex align-items-center">
+              <Link href="/" className="d-flex align-items-center" onClick={() => handleLinkClick("")}>
                 <Image 
                   src="/Logo.png" 
                   alt="SkillUp! Logo" 
@@ -106,9 +144,8 @@ export default function Header() {
                       Halo, {userName}!
                     </span>
                     
-                    {/* Tombol Histori Pembelian - Dipercantik */}
                     <Link 
-                      href="/pembayaran" 
+                      href="/histori" 
                       className="btn-custom-outline px-3 py-1 rounded-pill fw-semibold"
                       style={{
                         transition: 'all 0.3s ease',
@@ -118,7 +155,6 @@ export default function Header() {
                       Histori Pembelian
                     </Link>
                     
-                    {/* Icon Profile - Dipercantik dengan Hover Effect */}
                     <Link 
                       href="/user" 
                       className="btn-custom-orange rounded-circle d-flex align-items-center justify-content-center p-0 position-relative"
@@ -140,7 +176,6 @@ export default function Header() {
                       <UserIcon className="text-white" />
                     </Link>
                     
-                    {/* Tombol Keluar - Dipercantik */}
                     <button 
                       onClick={handleLogout} 
                       className="btn-custom-outline px-3 py-1 rounded-pill fw-semibold"
@@ -204,22 +239,24 @@ export default function Header() {
             <div className="d-flex flex-column gap-2 mb-3">
               <Link 
                 href="/" 
-                className={`nav-link-custom ps-3 text-white ${pathname === '/' ? 'active' : ''}`} 
-                onClick={toggleMobileMenu}
+                className={`nav-link-custom ps-3 text-white ${pathname === '/' && activeHash === '' ? 'active' : ''}`} 
+                onClick={() => handleLinkClick("")}
               >
                 Halaman Utama
               </Link>
+              
               <Link 
-                href="/kursus" 
-                className={`nav-link-custom ps-3 text-white ${pathname === '/kursus' ? 'active' : ''}`} 
-                onClick={toggleMobileMenu}
+                href="/#courses" 
+                className={`nav-link-custom ps-3 text-white ${activeHash === '#courses' ? 'active' : ''}`} 
+                onClick={() => handleLinkClick("#courses")}
               >
                 Kursus
               </Link>
+
               <Link 
                 href="/#contact" 
-                className="nav-link-custom ps-3 text-white" 
-                onClick={toggleMobileMenu}
+                className={`nav-link-custom ps-3 text-white ${activeHash === '#contact' ? 'active' : ''}`} 
+                onClick={() => handleLinkClick("#contact")}
               >
                 Hubungi Kami
               </Link>
@@ -249,7 +286,7 @@ export default function Header() {
                     👤 Profil Saya
                   </Link>
                   <Link 
-                    href="/pembayaran" 
+                    href="/histori" 
                     className="btn-custom-orange rounded-pill py-3 fw-semibold" 
                     onClick={toggleMobileMenu}
                     style={{

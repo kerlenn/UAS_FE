@@ -1,5 +1,3 @@
-// uas/lib/courses.ts
-
 export type Course = {
   id: number;
   title: string;
@@ -48,7 +46,7 @@ export const allCourses: Course[] = [
     level: "Beginner",
     videoCount: 5,
     materi: "Roblox",
-    slug: "/DetailRoblox.html"
+    slug: "/kursus_roblox"
   },
   {
     id: 4,
@@ -68,10 +66,10 @@ export const allCourses: Course[] = [
     description: "Pahami pilar-pilar OOP (Encapsulation, Inheritance, Polymorphism) untuk menulis kode yang lebih bersih, modular, dan reusable.",
     instructor: "Dengan Instruktur Darius",
     image: "/OOP.jpg",
-    price: 80000,
+    price: 120000,
     level: "Professional",
     videoCount: 10,
     materi: "Programming",
-    slug: "/DetailOOP.html"
+    slug: "/kursus_oop"
   }
 ];

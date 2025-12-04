@@ -5,30 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 import "../styles/course-detail.css";
 
-const CURRENT_COURSE_ID = 2; 
+const CURRENT_COURSE_ID = 3; // ID Roblox di courses.ts
 
+// Data Video berdasarkan DetailRoblox.html
 const courseVideos = [
-  { title: "Stack - Struktur Data", url: "https://youtu.be/RoKfhtE2G6c?si=VZ1XG8UyOwp0oi-c", duration: "07:16", isFree: true },
-  { title: "Queue - Struktur Data", url: "https://youtu.be/GC3jA6Cym1E?si=4zavVRDqhFNtbE-c", duration: "06:23", isFree: true },
-  // Video Berbayar
-  { title: "Hash - Struktur Data", url: "https://youtu.be/M9i_-UVpRmE?si=IwMe7Ag7I-hRnGZf", duration: "08:29", isFree: false },
-  { title: "Binary Search Tree - Struktur Data", url: "https://youtu.be/uX1HmvKbaU8?si=RBlEK47GN-4D3mlZ", duration: "03:13", isFree: false },
-  { title: "Tree Travelsal - Struktur Data", url: "https://youtu.be/4eBfmPa4124?si=3O0dVxkOwVZCcgBg", duration: "05:35", isFree: false },
-  { title: "Avl Tree - Struktur Data", url: "https://youtu.be/d5C1MqDZDZQ?si=vkbk_fKQlSv7ZQNL", duration: "04:47", isFree: false },
-  { title: "Heap - Struktur Data", url: "https://youtu.be/_gq_t5byFcU?si=QhpFe2NB315erjpr", duration: "02:49", isFree: false },
-  { title: "Huffman Code - Struktur Data", url: "https://youtu.be/9PR8tl3KspQ?si=4HEwQ-i6423V1_Nx", duration: "03:03", isFree: false },
-  { title: "Graph BFS & DFS - Struktur Data", url: "https://youtu.be/xtcna3thBYI?si=iuyru-fpBU4Qz011", duration: "06:48", isFree: false },
-  { title: "Algoritma Dijikstra Graph - Struktur Data", url: "https://youtu.be/sX7x54uyPzY?si=6F1bDumVr7qmPlXf", duration: "07:31", isFree: false },
-  { title: "Minimum Spanning Tree - Struktur Data", url: "https://youtu.be/MgdeDVP2CvU?si=gWmoF_i76J6FMq-4", duration: "04:22", isFree: false },
-  { title: "Topological Ordering Sort - Struktur Data", url: "https://youtu.be/455nDoUvbw4?si=6-ej9u5UN7ewwcQW", duration: "03:01", isFree: false },
-  { title: "Critical Path Analysis Pada Task Network", url: "https://youtu.be/LrQUQCjkFJ0?si=xktj98NSGzRFojQR", duration: "05:44", isFree: false },
+  { title: "Instalasi & Basic Roblox Studio", url: "https://www.youtube.com/watch?v=bRSWT-UEeCU", duration: "06:46", isFree: true },
+  { title: "Terrain Editor & Generator", url: "https://www.youtube.com/watch?v=_hQAXqfT5O0", duration: "06:04", isFree: true },
+  { title: "ToolBox & Device Server Play", url: "https://www.youtube.com/watch?v=AL-xUl7lUiA", duration: "05:41", isFree: true },
+  { title: "Suara Ketika Menabrak Objek", url: "https://www.youtube.com/watch?v=62y7MlUTWos", duration: "05:21", isFree: true },
+  { title: "Menggunakan AI Assistant", url: "https://www.youtube.com/watch?v=0-B7eikcwIc", duration: "07:22", isFree: true },
 ];
 
-export default function DetailDataStrukturPage() {
+export default function DetailRobloxPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSection, setActiveSection] = useState("manfaat");
   
-  // State User & Pembelian
+  // State User
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasPurchased, setHasPurchased] = useState(false); 
 
@@ -36,7 +28,7 @@ export default function DetailDataStrukturPage() {
     setIsExpanded(!isExpanded);
   };
 
-  // EFFECT 1: Cek Login & Status Pembelian
+  // Cek Login
   useEffect(() => {
     // 1. Cek Login
     const checkAuth = setTimeout(() => {
@@ -58,6 +50,7 @@ export default function DetailDataStrukturPage() {
     return () => clearTimeout(checkAuth);
   }, []);
 
+  // Scroll Spy
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['manfaat', 'kursus', 'syarat'];
@@ -79,19 +72,17 @@ export default function DetailDataStrukturPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // --- FUNGSI RENDER LIST VIDEO DENGAN LOGIKA KUNCI ---
   const renderVideoList = () => {
-    const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 4);
+    const videosToShow = isExpanded ? courseVideos : courseVideos.slice(0, 2);
 
     return videosToShow.map((video, index) => {
-      // LOGIKA UTAMA: Video terbuka jika login DAN (gratis ATAU sudah beli)
       const isAccessible = isLoggedIn && (video.isFree || hasPurchased);
 
       let statusBadge;
       if (!isLoggedIn) {
         statusBadge = <span className="badge bg-warning text-dark ms-auto">Login</span>;
       } else if (!isAccessible) {
-        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>; // Terkunci
+        statusBadge = <span className="badge bg-secondary ms-auto">Premium</span>;
       } else if (video.isFree) {
         statusBadge = <span className="video-label ms-auto">Gratis</span>;
       } else {
@@ -131,21 +122,21 @@ export default function DetailDataStrukturPage() {
                 <span>&gt;</span>
                 <Link href="/kursus">Kursus</Link>
                 <span>&gt;</span>
-                <p>Struktur Data [2020]</p>
+                <p>Roblox Studio untuk Prototyping Game [2025]</p>
             </div>
 
             <div className="detail-content-wrapper">
                 <div className="course-text-info">
-                <h2>Kuliah Struktur Data [2020]</h2>
+                <h2>Roblox Studio untuk Prototyping Game [2025]</h2>
                 <p className="course-description">
-                    Struktur data adalah fondasi dari ilmu komputer modern.
-                    Menguasai konsep array, stack, queue, dan tree akan membuka jalan untuk membangun aplikasi yang kuat.
+                    Belajar membuat game pertamamu di platform Roblox. Mulai dari desain level, scripting dasar dengan Lua, hingga publikasi. 
+                    Kursus ini dirancang untuk pemula absolut yang ingin terjun ke dunia pengembangan game dengan cara yang menyenangkan dan interaktif.
                 </p>
                 </div>
                 <div className="course-media-placeholder">
                 <Image
-                    src="/StrukturData.jpg"
-                    alt="Struktur Data"
+                    src="/Roblox.jpg"
+                    alt="Roblox Studio Game Prototyping"
                     width={800}
                     height={450}
                     style={{ width: "100%", height: "auto" }}
@@ -155,8 +146,8 @@ export default function DetailDataStrukturPage() {
 
             <div className="course-meta-info">
                 <span>Instruktur: Darius</span>
-                <span>Waktu Total: 1 jam 10 menit</span>
-                <span>Rilis: 25 November 2020</span>
+                <span>Waktu Total: 31 menit</span>
+                <span>Rilis: 15 Januari 2025</span>
             </div>
           </section>
 
@@ -173,20 +164,25 @@ export default function DetailDataStrukturPage() {
               <div className="learning-objectives" id="manfaat">
                 <h2>Yang akan Anda pelajari:</h2>
                 <ul>
-                  <li>Memahami konsep dasar struktur data.</li>
-                  <li>Mempelajari implementasi Array dan Structure.</li>
-                  <li>Menguasai konsep Tree, Binary Tree, dan Graph.</li>
+                  <li>Menguasai navigasi dan antarmuka (interface) di dalam Roblox Studio untuk alur kerja yang cepat.</li>
+                  <li>Mempelajari dasar-dasar membangun dunia game, mulai dari menempatkan part hingga mengedit terrain (medan).</li>
+                  <li>Memahami konsep scripting fundamental menggunakan bahasa pemrograman Lua untuk membuat objek interaktif.</li>
+                  <li>Menerbitkan dan membagikan game pertama Anda ke jutaan pemain di platform Roblox.</li>
+                  <li>Membangun fondasi yang kuat untuk proyek game yang lebih kompleks di masa depan.</li>
                 </ul>
               </div>
 
               <div className="skills-acquired">
                 <h2>Keahlian yang akan Anda dapatkan:</h2>
                 <div className="skills-tags">
-                  <span className="skill-tag">Struktur Data</span>
+                  <span className="skill-tag">Game Prototyping</span>
+                  <span className="skill-tag">Level Design</span>
+                  <span className="skill-tag">Lua Scripting</span>
+                  <span className="skill-tag">Roblox Studio UI</span>
+                  <span className="skill-tag">3D Environment Design</span>
+                  <span className="skill-tag">Game Publishing</span>
                   <span className="skill-tag">Problem Solving</span>
-                  <span className="skill-tag">Stack & Queue</span>
-                  <span className="skill-tag">Trees & Graphs</span>
-                  <span className="skill-tag">Dasar C++</span>
+                  <span className="skill-tag">Dasar Game Development</span>
                 </div>
               </div>
 
@@ -194,10 +190,9 @@ export default function DetailDataStrukturPage() {
                 <div className="course-content-header">
                   <div className="header-text">
                     <h2>Konten Kursus:</h2>
-                    <p>{courseVideos.length} Video - Total 1 jam 10 menit</p>
+                    <p>{courseVideos.length} Video - Total 31 menit</p>
                   </div>
-                  {/* Sembunyikan promo jika sudah beli */}
-                  {!hasPurchased && <span className="promo-btn">Dua Video Pertama Gratis!</span>}
+                  {!hasPurchased && <span className="promo-btn">Semua Video Gratis!</span>}
                 </div>
 
                 <div className="video-list-container">
@@ -225,16 +220,17 @@ export default function DetailDataStrukturPage() {
               <div className="requirements-section" id="syarat">
                 <h2>Syarat:</h2>
                 <ul>
-                  <li>Memiliki pemahaman dasar logika pemrograman.</li>
-                  <li>Komputer atau laptop dengan koneksi internet.</li>
-                  <li>Code editor dan compiler C++ terinstal.</li>
+                  <li>Tidak perlu memiliki pengalaman coding atau pengembangan game sebelumnya. Kursus ini dibuat untuk pemula.</li>
+                  <li>Komputer atau Laptop (Windows atau Mac) yang mampu menjalankan Roblox Studio dengan koneksi internet.</li>
+                  <li>Software Roblox Studio yang sudah terinstal. Roblox Studio sepenuhnya gratis untuk diunduh dari situs web resmi Roblox.</li>
+                  <li>Memiliki akun Roblox untuk dapat menyimpan dan mempublikasikan game Anda.</li>
+                  <li>Antusiasme dan imajinasi untuk menciptakan dunia virtual Anda sendiri!</li>
                 </ul>
               </div>
             </div>
 
             <aside className="purchase-sidebar">
               <div className="purchase-box">
-                {/* LOGIKA TAMPILAN SIDEBAR: SUDAH BELI VS BELUM BELI */}
                 {hasPurchased ? (
                     <div className="alert alert-success fw-bold text-center">
                         <i className="fas fa-check-circle me-2 mb-2" style={{fontSize: '2rem'}}></i><br/>
@@ -244,15 +240,13 @@ export default function DetailDataStrukturPage() {
                 ) : (
                     <>
                         <h2>Beli Kursus</h2>
-                        <p className="price">Rp 230.000</p>
-                        
+                        <p className="price">Gratis</p>
                         <p className="student-count">
                         <i className="fas fa-fire me-2" style={{color: 'var(--primary-orange)'}}></i>
-                        <span>458 Pelajar sudah mendaftar</span>
+                        <span>783 Pelajar sudah mendaftar</span>
                         </p>
                         <div className="action-buttons">
-                        {/* Link ke pembayaran dengan ID Kursus */}
-                        <Link href={`/pembayaran?id=${CURRENT_COURSE_ID}`} className="btn-purchase primary">
+                        <Link href="/pembayaran?id=3" className="btn-purchase primary">
                             Beli Langsung
                         </Link>
                         </div>
@@ -264,7 +258,6 @@ export default function DetailDataStrukturPage() {
                   <ul>
                     <li><i className="fas fa-circle-play me-2"></i> {courseVideos.length} Video Pembelajaran</li>
                     <li><i className="fas fa-infinity me-2"></i> Akses Selamanya</li>
-                    <li><i className="fas fa-file-arrow-down me-2"></i> File Aset</li>
                     <li><i className="fas fa-trophy me-2"></i> Sertifikat Penyelesaian</li>
                   </ul>
                 </div>

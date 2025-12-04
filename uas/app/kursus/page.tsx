@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import './kursus.css';
-import { allCourses } from '@/lib/courses'; // <--- Import data dari sini
+import { allCourses } from '@/lib/courses'; 
 
-// Filter Type (tetap diperlukan untuk state filter)
 type Filters = {
   video: string[];
   materi: string[];
@@ -15,7 +14,19 @@ type Filters = {
 };
 
 export default function KursusPage() {
-  // ... (Sisa kode logika filter sama persis, karena allCourses sekarang diimport) ...
+  const [purchasedIds, setPurchasedIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    const savedPurchases = localStorage.getItem('purchasedCourses');
+    if (savedPurchases) {
+      try {
+        setPurchasedIds(JSON.parse(savedPurchases));
+      } catch (e) {
+        console.error("Gagal memuat data pembelian", e);
+      }
+    }
+  }, []);
+
   const [filters, setFilters] = useState<Filters>({
     video: [],
     materi: [],
@@ -24,29 +35,27 @@ export default function KursusPage() {
   });
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-     // ... (Kode handleFilterChange sama seperti sebelumnya) ...
-     const { name, value, checked } = e.target;
+    const { name, value, checked } = e.target;
     
-     setFilters((prevFilters) => {
-       const currentGroupFilters = prevFilters[name as keyof Filters];
-       
-       let newGroupFilters: string[];
-       if (checked) {
-         newGroupFilters = [...currentGroupFilters, value];
-       } else {
-         newGroupFilters = currentGroupFilters.filter((item) => item !== value);
-       }
-       
-       return {
-         ...prevFilters,
-         [name]: newGroupFilters,
-       };
-     });
+    setFilters((prevFilters) => {
+      const currentGroupFilters = prevFilters[name as keyof Filters];
+      
+      let newGroupFilters: string[];
+      if (checked) {
+        newGroupFilters = [...currentGroupFilters, value];
+      } else {
+        newGroupFilters = currentGroupFilters.filter((item) => item !== value);
+      }
+      
+      return {
+        ...prevFilters,
+        [name]: newGroupFilters,
+      };
+    });
   };
 
   const filteredCourses = useMemo(() => {
-    // Logika filter tetap sama
-    let tempCourses = [...allCourses]; // allCourses sekarang berasal dari import
+    let tempCourses = [...allCourses]; 
 
     if (filters.video.length > 0) {
       tempCourses = tempCourses.filter(course => 
@@ -87,7 +96,6 @@ export default function KursusPage() {
 
   return (
     <div className="container my-4">
-      {/* ... (JSX Tampilan sama persis seperti file original) ... */}
       <main>
         <div className="main-header">
           <div className="breadcrumbs">
@@ -99,8 +107,8 @@ export default function KursusPage() {
 
         <div className="row g-4">
           <div className="col-lg-4 col-xl-3">
-             {/* ... (Bagian Sidebar Filter sama persis) ... */}
-             <aside className="filters">
+            <aside className="filters">
+              {/* ... Bagian Filter Tetap Sama ... */}
               <div className="filter-group">
                 <h3>Banyak Video</h3>
                 <div className="filter-option">
@@ -174,37 +182,58 @@ export default function KursusPage() {
               </div>
 
               {filteredCourses.length > 0 ? (
-                filteredCourses.map((course) => (
-                  <div className="course-card" key={course.id}>
-                    <div className="card-left">
-                      <Image 
-                        src={course.image} 
-                        alt={course.title} 
-                        width={1920} height={1080}
-                        style={{ width: '100%', height: 'auto' }}
-                      />
-                      <span className="price">
-                        {course.price === 0 ? 'Gratis' : `Rp${course.price.toLocaleString('id-ID')}`}
-                      </span>
-                    </div>
-                    <div className="card-right">
-                      <div className="course-info">
-                        <h4>{course.title}</h4>
-                        <p className="description">{course.description}</p>
-                        <p className="instructor">{course.instructor}</p>
-                        <div className="meta-info">
-                          <span>{course.level}</span><span>•</span><span>{course.videoCount} Video</span>
+                filteredCourses.map((course) => {
+                  const isPurchased = purchasedIds.includes(course.id);
+
+                  return (
+                    <div className="course-card" key={course.id}>
+                      <div className="card-left">
+                        <Image 
+                          src={course.image} 
+                          alt={course.title} 
+                          width={1920} height={1080}
+                          style={{ width: '100%', height: 'auto' }}
+                        />
+                        <span className="price">
+                          {course.price === 0 ? 'Gratis' : `Rp${course.price.toLocaleString('id-ID')}`}
+                        </span>
+                      </div>
+                      <div className="card-right">
+                        <div className="course-info">
+                          <h4>{course.title}</h4>
+                          <p className="description">{course.description}</p>
+                          <p className="instructor">{course.instructor}</p>
+                          <div className="meta-info">
+                            <span>{course.level}</span><span>•</span><span>{course.videoCount} Video</span>
+                          </div>
+                        </div>
+                        <div className="buttons">
+                          <Link href={course.slug} className="btn btn-card">Lihat</Link>
+                          
+                          {/* 4. TAMPILKAN TOMBOL SESUAI STATUS PEMBELIAN */}
+                          {isPurchased ? (
+                            <button 
+                              className="btn btn-card" 
+                              style={{ 
+                                backgroundColor: '#6c757d', 
+                                borderColor: '#6c757d', 
+                                cursor: 'default',
+                                opacity: 0.8
+                              }} 
+                              disabled
+                            >
+                              ✓ Terdaftar
+                            </button>
+                          ) : (
+                            <Link href={`/pembayaran?id=${course.id}`} className="btn btn-card">
+                              Beli
+                            </Link>
+                          )}
                         </div>
                       </div>
-                      <div className="buttons">
-                        {/* Tombol Lihat mengarah ke slug masing-masing */}
-                        <Link href={course.slug} className="btn btn-card">Lihat</Link>
-                        {/* Tombol Beli mengarah ke pembayaran dengan ID */}
-                        <Link href={`/pembayaran?id=${course.id}`} className="btn btn-card">Beli</Link>
-                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <p className="text-center text-dark fs-5 mt-5">
                   Maaf, tidak ada kursus yang sesuai dengan filter Anda.
