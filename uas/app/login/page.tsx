@@ -3,7 +3,8 @@
 import React, { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import "../styles/login.css"; 
+import "../styles/login.css";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -76,12 +77,18 @@ export default function LoginPage() {
         <div className="auth-card">
           {/* Welcome Section (Kiri) */}
           <div className="welcome-section">
-            <div className="logo-badge">Logo</div>
+            <div style={{ marginBottom: '20px' }}>
+              <Image
+                src="/Logo.png"
+                alt="SkillUp! Logo"
+                width={150}
+                height={50}
+                style={{ height: '60px', width: 'auto' }}
+              />
+            </div>
             <h1 className="welcome-title">Selamat Datang!</h1>
             <p className="welcome-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-              Sed non risus. Suspendisse lectus tortor, dignissim sit amet, 
-              adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+              Selamat datang di SkillUp! Mulai perjalanan belajarmu hari ini. Kami menyediakan berbagai kursus interaktif yang dirancang untuk membantumu menguasai keterampilan baru dengan mudah, kapan saja dan di mana saja.
             </p>
           </div>
 
@@ -101,11 +108,11 @@ export default function LoginPage() {
 
               {/* Email Input */}
               <div className="input-group">
-                <input 
-                  type="email" 
-                  id="loginEmail" 
-                  required 
-                  placeholder=" " 
+                <input
+                  type="email"
+                  id="loginEmail"
+                  required
+                  placeholder=" "
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -114,17 +121,17 @@ export default function LoginPage() {
 
               {/* Password Input */}
               <div className="input-group password-input">
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  id="loginPassword" 
-                  required 
-                  placeholder=" " 
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="loginPassword"
+                  required
+                  placeholder=" "
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <label htmlFor="loginPassword">Password</label>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
@@ -135,8 +142,8 @@ export default function LoginPage() {
               {/* Form Options */}
               <div className="form-options">
                 <label className="checkbox-container">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
                   />
@@ -146,8 +153,8 @@ export default function LoginPage() {
               </div>
 
               {/* Submit Button */}
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className={`btn-submit ${isSubmitting ? 'loading' : ''}`}
                 disabled={isSubmitting}
               >

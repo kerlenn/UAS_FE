@@ -4,6 +4,7 @@ import React, { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import "../styles/signUp.css";
+import Image from "next/image";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -116,12 +117,18 @@ export default function SignUpPage() {
         <div className="auth-card">
           {/* Welcome Section (Kiri) */}
           <div className="welcome-section">
-            <div className="logo-badge">Logo</div>
+            <div style={{ marginBottom: '20px' }}>
+              <Image
+                src="/Logo.png"
+                alt="SkillUp! Logo"
+                width={150}
+                height={50}
+                style={{ height: '60px', width: 'auto' }}
+              />
+            </div>
             <h1 className="welcome-title">Selamat Datang!</h1>
             <p className="welcome-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Sed non risus. Suspendisse lectus tortor, dignissim sit amet,
-              adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+              Selamat datang di SkillUp! Mulai perjalanan belajarmu hari ini. Kami menyediakan berbagai kursus interaktif yang dirancang untuk membantumu menguasai keterampilan baru dengan mudah, kapan saja dan di mana saja.
             </p>
           </div>
 
