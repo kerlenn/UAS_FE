@@ -1,17 +1,19 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import '../styles/user.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { UserIcon } from '../components/UserIcon';
+import ProtectedRoute from '../components/ProtectedRoute';
+import ChangePasswordModal from '../components/ChangePasswordModal';
 import { getCurrentUserEmail, clearUserSession } from '@/lib/auth';
 
-export default function UserPage() {
+function UserPageContent() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     namaLengkap: '',
     email: '',
@@ -48,10 +50,6 @@ export default function UserPage() {
 
     if (userEmail) {
       fetchUserData();
-    } else {
-      setLoading(false);
-      alert('Anda belum login. Silakan login terlebih dahulu.');
-      router.push('/login');
     }
   }, [userEmail]);
 
@@ -267,6 +265,13 @@ export default function UserPage() {
                     </button>
                     <button 
                       type="button" 
+                      className="btn-ubah-password"
+                      onClick={() => setIsPasswordModalOpen(true)}
+                    >
+                      Ubah Password
+                    </button>
+                    <button 
+                      type="button" 
                       className="btn-hapus"
                       onClick={handleHapusAkun}
                     >
@@ -280,6 +285,22 @@ export default function UserPage() {
           </div>
         </div>
       </main>
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        userEmail={formData.email}
+      />
     </>
+  );
+}
+
+// Wrap dengan ProtectedRoute untuk memastikan hanya user yang login bisa akses
+export default function UserPage() {
+  return (
+    <ProtectedRoute>
+      <UserPageContent />
+    </ProtectedRoute>
   );
 }
