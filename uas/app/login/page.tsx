@@ -20,7 +20,6 @@ export default function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      // Panggil API Login
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,15 +32,16 @@ export default function LoginPage() {
         throw new Error(data.error || 'Gagal login');
       }
 
-      // Jika sukses
       alert(`Selamat datang kembali, ${data.user.fullname}!`);
-      
-      // Simpan data user ke localStorage
+
       if (typeof window !== "undefined") {
         localStorage.setItem("currentUser", JSON.stringify(data.user));
+
+        localStorage.setItem("userEmail", data.user.email);
+        localStorage.setItem("userName", data.user.fullname);
       }
 
-      router.push("/"); // Pindah ke Home
+      router.push("/");
 
     } catch (error) {
       if (error instanceof Error) {
