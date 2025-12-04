@@ -18,6 +18,23 @@ export default function LoginPage() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage("");
+
+    if (!email || !password) {
+      setErrorMessage("Email dan Password wajib diisi.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Format email tidak valid (harus mengandung '@').");
+      return;
+    }
+
+    if (password.length < 8) {
+      setErrorMessage("Password minimal harus 8 karakter.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -33,11 +50,10 @@ export default function LoginPage() {
         throw new Error(data.error || 'Gagal login');
       }
 
-      alert(`Selamat datang kembali, ${data.user.fullname}!`);
+      alert(`Eh ketemu lagi ${data.user.fullname}!`);
 
       if (typeof window !== "undefined") {
         localStorage.setItem("currentUser", JSON.stringify(data.user));
-
         localStorage.setItem("userEmail", data.user.email);
         localStorage.setItem("userName", data.user.fullname);
       }
@@ -48,7 +64,7 @@ export default function LoginPage() {
       if (error instanceof Error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage("Terjadi kesalahan saat login");
+        setErrorMessage("Kayaknya ada yang salah.");
       }
     } finally {
       setIsSubmitting(false);
@@ -94,14 +110,15 @@ export default function LoginPage() {
 
           {/* Form Section (Kanan) */}
           <div className="form-section">
-            <form className="auth-form" onSubmit={handleSubmit}>
+            
+            <form className="auth-form" onSubmit={handleSubmit} noValidate>
               <div className="form-header">
                 <h2 className="form-title">Login</h2>
               </div>
 
               {/* Error Message */}
               {errorMessage && (
-                <div className="error-message" style={{ display: 'block' }}>
+                <div className="error-message" style={{ display: 'block', color: 'red', backgroundColor: '#fee2e2', padding: '10px', borderRadius: '5px', marginBottom: '15px', fontSize: '14px' }}>
                   {errorMessage}
                 </div>
               )}
@@ -111,7 +128,6 @@ export default function LoginPage() {
                 <input
                   type="email"
                   id="loginEmail"
-                  required
                   placeholder=" "
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -124,7 +140,6 @@ export default function LoginPage() {
                 <input
                   type={showPassword ? "text" : "password"}
                   id="loginPassword"
-                  required
                   placeholder=" "
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
