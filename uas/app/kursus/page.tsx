@@ -17,14 +17,41 @@ export default function KursusPage() {
   const [purchasedIds, setPurchasedIds] = useState<number[]>([]);
 
   useEffect(() => {
-    const savedPurchases = localStorage.getItem('purchasedCourses');
-    if (savedPurchases) {
-      try {
-        setPurchasedIds(JSON.parse(savedPurchases));
-      } catch (e) {
-        console.error("Gagal memuat data pembelian", e);
+    const timer = setTimeout(() => {
+      if (typeof window === "undefined") return;
+
+      const savedPurchases = localStorage.getItem('purchasedCourses');
+      if (savedPurchases) {
+        try {
+          setPurchasedIds(JSON.parse(savedPurchases));
+        } catch (e) {
+          console.error("Gagal memuat data pembelian", e);
+        }
       }
-    }
+
+      const userStr = localStorage.getItem('currentUser');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          if (user.email) {
+            fetch(`/api/transactions/list?email=${user.email}`)
+              .then(res => res.json())
+              .then(data => {
+                if (Array.isArray(data)) {
+                  const ids = data
+                    .filter((t: { status: string; courseId: string }) => t.status === 'SUCCESS')
+                    .map((t: { courseId: string }) => Number(t.courseId));
+                  setPurchasedIds(ids);
+                  localStorage.setItem('purchasedCourses', JSON.stringify(ids));
+                }
+              })
+              .catch(err => console.error("Sync error:", err));
+          }
+        } catch {}
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const [filters, setFilters] = useState<Filters>({

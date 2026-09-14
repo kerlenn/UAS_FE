@@ -23,7 +23,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-footer-gray pe-md-5" style={{ lineHeight: '1.6' }}>
-              Jadi kami adalah sebuah organisasi yang learning yang bergerak di bidang pendidikan, yapping yapping yapping yapping yapping yapping yap
+              SkillUp adalah platform pembelajaran online interaktif yang membantu Anda menguasai keterampilan digital modern dengan panduan terstruktur dari para instruktur berpengalaman.
             </p>
           </div>
 

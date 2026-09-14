@@ -45,11 +45,35 @@ export default function DetailAdobePage() {
         // 2. Cek Pembelian dari LocalStorage
         const savedPurchases = localStorage.getItem('purchasedCourses');
         if (savedPurchases) {
+          try {
             const purchasedList = JSON.parse(savedPurchases);
-            // Cek apakah ID kursus saat ini ada di daftar pembelian
             if (purchasedList.includes(CURRENT_COURSE_ID)) {
-                setHasPurchased(true);
+              setHasPurchased(true);
             }
+          } catch {}
+        }
+
+        // 3. Sinkronisasi dengan database jika user login
+        if (user) {
+          try {
+            const userData = JSON.parse(user);
+            if (userData.email) {
+              fetch(`/api/transactions/list?email=${userData.email}`)
+                .then(res => res.json())
+                .then(data => {
+                  if (Array.isArray(data)) {
+                    const ids = data
+                      .filter((t: { status: string; courseId: string }) => t.status === 'SUCCESS')
+                      .map((t: { courseId: string }) => Number(t.courseId));
+                    localStorage.setItem('purchasedCourses', JSON.stringify(ids));
+                    if (ids.includes(CURRENT_COURSE_ID)) {
+                      setHasPurchased(true);
+                    }
+                  }
+                })
+                .catch(() => {});
+            }
+          } catch {}
         }
       }
     }, 0);

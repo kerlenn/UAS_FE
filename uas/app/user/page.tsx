@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import '../styles/user.css';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { UserIcon } from '../components/UserIcon';
 import ProtectedRoute from '../components/ProtectedRoute';
 import ChangePasswordModal from '../components/ChangePasswordModal';
@@ -24,10 +22,16 @@ function UserPageContent() {
   const userEmail = getCurrentUserEmail() || '';
 
   useEffect(() => {
+    const emailToUse = userEmail || getCurrentUserEmail();
+    if (!emailToUse) {
+      setLoading(false);
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/user?email=${userEmail}`);
+        const response = await fetch(`/api/user?email=${emailToUse}`);
         const data = await response.json();
 
         if (response.ok) {
@@ -48,9 +52,7 @@ function UserPageContent() {
       }
     };
 
-    if (userEmail) {
-      fetchUserData();
-    }
+    fetchUserData();
   }, [userEmail]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -93,6 +95,18 @@ function UserPageContent() {
 
       if (response.ok) {
         alert('Perubahan berhasil disimpan!');
+        if (typeof window !== 'undefined') {
+          const userStr = localStorage.getItem('currentUser');
+          if (userStr) {
+            try {
+              const u = JSON.parse(userStr);
+              u.fullname = data.user.fullname;
+              u.phone = data.user.phone;
+              localStorage.setItem('currentUser', JSON.stringify(u));
+            } catch {}
+          }
+          localStorage.setItem('userName', data.user.fullname);
+        }
         console.log('Data disimpan:', data);
       } else {
         alert(data.error || 'Gagal menyimpan perubahan');

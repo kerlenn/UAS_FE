@@ -75,12 +75,12 @@ export default function HomePage() {
         <section className="main-card-wrapper" id="courses">
           <div className="text-center mb-5">
             <h2 className="fw-bold mb-3 text-dark" style={{ fontSize: '1.75rem' }}>Siap Menata Ulang Karier Anda?</h2>
-            <p className="text-secondary">Berikut kursus yang siap membantu ada mencapai karir mu:</p>
+            <p className="text-secondary">Berikut kursus yang siap membantu Anda mencapai karier impian:</p>
           </div>
 
           <div className="row g-4 justify-content-center">
             <div className="col-12 col-md-6 col-lg-4">
-              <a href="/kursus_blender" className="text-decoration-none">
+              <Link href="/kursus_blender" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
                   <div className="position-relative w-100" style={{ height: '180px' }}>
                     <Image src="/Blender.jpg" alt="Blender 3D" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
@@ -91,11 +91,11 @@ export default function HomePage() {
                     <small>Beginner • 6 Video</small>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
 
             <div className="col-12 col-md-6 col-lg-4">
-              <a href="/kursus_adobe" className="text-decoration-none">
+              <Link href="/kursus_adobe" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
                   <div className="position-relative w-100" style={{ height: '180px' }}>
                     <Image src="/AdobeEA.jpeg" alt="Adobe After Effects" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
@@ -106,11 +106,11 @@ export default function HomePage() {
                     <small>Beginner • 6 Video</small>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
 
             <div className="col-12 col-md-6 col-lg-4">
-              <a href="/kursus_data_struktur" className="text-decoration-none">
+              <Link href="/kursus_data_struktur" className="text-decoration-none">
                 <div className="course-card h-100 d-block">
                   <div className="position-relative w-100" style={{ height: '180px' }}>
                     <Image src="/StrukturData.jpg" alt="Struktur Data" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
@@ -121,7 +121,7 @@ export default function HomePage() {
                     <small>Beginner • 6 Video</small>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
 

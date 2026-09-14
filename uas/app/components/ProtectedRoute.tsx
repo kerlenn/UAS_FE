@@ -13,13 +13,16 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isLoggedIn()) {
+        alert('Anda belum login. Silakan login terlebih dahulu.');
+        router.push('/login');
+      } else {
+        setIsChecking(false);
+      }
+    }, 0);
 
-    if (!isLoggedIn()) {
-      alert('Anda belum login. Silakan login terlebih dahulu.');
-      router.push('/login');
-    } else {
-      setIsChecking(false);
-    }
+    return () => clearTimeout(timer);
   }, [router]);
 
   if (isChecking) {

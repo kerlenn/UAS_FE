@@ -21,31 +21,48 @@ function PembayaranContent() {
   });
 
   useEffect(() => {
-    const user = localStorage.getItem('currentUser');
-    if (!user) {
-      alert('Anda harus login terlebih dahulu.');
-      router.push('/login');
-      return;
-    }
-
-    try {
-      const userData = JSON.parse(user);
-      setFormData(prev => ({
-        ...prev,
-        nama: userData.fullname || '',
-        email: userData.email || '',
-        telp: userData.phone || ''
-      }));
-    } catch (e) {
-      console.error(e);
-    }
-
-    if (courseIdParam) {
-      const foundCourse = allCourses.find(c => c.id === parseInt(courseIdParam));
-      if (foundCourse) {
-        setSelectedCourse(foundCourse);
+    const timer = setTimeout(() => {
+      const user = localStorage.getItem('currentUser');
+      if (!user) {
+        alert('Anda harus login terlebih dahulu.');
+        router.push('/login');
+        return;
       }
-    }
+
+      try {
+        const userData = JSON.parse(user);
+        setFormData(prev => ({
+          ...prev,
+          nama: userData.fullname || '',
+          email: userData.email || '',
+          telp: userData.phone || ''
+        }));
+      } catch (e) {
+        console.error(e);
+      }
+
+      if (courseIdParam) {
+        const targetId = parseInt(courseIdParam);
+        const foundCourse = allCourses.find(c => c.id === targetId);
+        if (foundCourse) {
+          setSelectedCourse(foundCourse);
+
+          // Cek apakah sudah pernah dibeli
+          const savedPurchases = localStorage.getItem('purchasedCourses');
+          if (savedPurchases) {
+            try {
+              const list: number[] = JSON.parse(savedPurchases);
+              if (list.includes(targetId)) {
+                alert('Anda sudah memiliki kursus ini!');
+                router.push(foundCourse.slug);
+              }
+            } catch {}
+          }
+        }
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [router, courseIdParam]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -88,6 +105,18 @@ const handlePay = async () => {
     console.log('📥 Response:', result);
 
     if (response.ok) {
+      // Simpan status pembelian ke localStorage
+      try {
+        const saved = localStorage.getItem('purchasedCourses');
+        const list: number[] = saved ? JSON.parse(saved) : [];
+        if (!list.includes(selectedCourse.id)) {
+          list.push(selectedCourse.id);
+          localStorage.setItem('purchasedCourses', JSON.stringify(list));
+        }
+      } catch (err) {
+        console.error('Failed to update purchasedCourses in localStorage:', err);
+      }
+
       if (selectedCourse.price === 0) {
         alert(`Berhasil mendaftar kursus gratis: ${selectedCourse.title}!`);
       } else {

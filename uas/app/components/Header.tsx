@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { UserIcon } from "./UserIcon";
 import { usePathname, useRouter } from "next/navigation";
+import { clearUserSession } from "@/lib/auth";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,10 +21,11 @@ export default function Header() {
 
   // Effect untuk mendeteksi hash saat load dan navigasi
   useEffect(() => {
-    // Set hash saat pertama kali render
-    if (typeof window !== "undefined") {
-      setActiveHash(window.location.hash);
-    }
+    const timer = setTimeout(() => {
+      if (typeof window !== "undefined") {
+        setActiveHash(window.location.hash);
+      }
+    }, 0);
 
     // Fungsi update saat hash berubah
     const handleHashChange = () => {
@@ -35,6 +37,7 @@ export default function Header() {
     window.addEventListener("popstate", handleHashChange);
 
     return () => {
+      clearTimeout(timer);
       window.removeEventListener("hashchange", handleHashChange);
       window.removeEventListener("popstate", handleHashChange);
     };
@@ -42,19 +45,28 @@ export default function Header() {
 
   // Cek status login
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user = localStorage.getItem("currentUser");
-      if (user) {
-        try {
-          const userData = JSON.parse(user);
-          setIsLoggedIn(true);
-          setUserName(userData.fullname || "User");
-        } catch (error) {
-          console.error("Error parsing user data:", error);
-          localStorage.removeItem("currentUser");
+    const timer = setTimeout(() => {
+      if (typeof window !== "undefined") {
+        const user = localStorage.getItem("currentUser");
+        if (user) {
+          try {
+            const userData = JSON.parse(user);
+            setIsLoggedIn(true);
+            setUserName(userData.fullname || "User");
+          } catch (error) {
+            console.error("Error parsing user data:", error);
+            clearUserSession();
+            setIsLoggedIn(false);
+            setUserName("");
+          }
+        } else {
+          setIsLoggedIn(false);
+          setUserName("");
         }
       }
-    }
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   const toggleMobileMenu = () => {
@@ -63,7 +75,7 @@ export default function Header() {
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem("currentUser");
+      clearUserSession();
       setIsLoggedIn(false);
       setUserName("");
       setIsMobileMenuOpen(false);

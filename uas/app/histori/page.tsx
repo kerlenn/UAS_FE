@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import './histori.css';
-import { allCourses } from '@/lib/courses'; // Import data statis kursus
+import { allCourses } from '@/lib/courses';
+import ProtectedRoute from '@/app/components/ProtectedRoute';
 
 // Tipe data dari API
 interface Transaction {
@@ -16,7 +17,7 @@ interface Transaction {
   paymentMethod: string;
 }
 
-export default function HistoriPembelianPage() {
+function HistoriPembelianContent() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'SUCCESS' | 'PENDING' | 'FAILED'>('all');
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,32 +25,34 @@ export default function HistoriPembelianPage() {
 
   // 1. Fetch Data saat halaman dimuat
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Ambil data user dari localStorage
-        const userJson = localStorage.getItem('currentUser');
-        if (!userJson) {
+    const timer = setTimeout(() => {
+      const fetchData = async () => {
+        try {
+          const userJson = localStorage.getItem('currentUser');
+          if (!userJson) {
             setLoading(false);
             return;
+          }
+
+          const userData = JSON.parse(userJson);
+          setUserName(userData.fullname || 'User');
+
+          const res = await fetch(`/api/transactions/list?email=${userData.email}`);
+          if (res.ok) {
+            const data = await res.json();
+            setTransactions(data);
+          }
+        } catch (error) {
+          console.error("Gagal memuat histori:", error);
+        } finally {
+          setLoading(false);
         }
+      };
 
-        const userData = JSON.parse(userJson);
-        setUserName(userData.fullname || 'User');
+      fetchData();
+    }, 0);
 
-        // Panggil API Histori
-        const res = await fetch(`/api/transactions/list?email=${userData.email}`);
-        if (res.ok) {
-          const data = await res.json();
-          setTransactions(data);
-        }
-      } catch (error) {
-        console.error("Gagal memuat histori:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    return () => clearTimeout(timer);
   }, []);
 
   // 2. Filter Data
@@ -76,7 +79,7 @@ export default function HistoriPembelianPage() {
     const course = allCourses.find(c => c.id === courseId);
     return course || {
       title: 'Kursus Tidak Ditemukan',
-      image: '/placeholder.jpg',
+      image: '/Logo.png',
       slug: '#',
       instructor: '-'
     };
@@ -84,7 +87,7 @@ export default function HistoriPembelianPage() {
 
   // Badge Style
   const getStatusBadge = (status: string) => {
-    const badges: any = {
+    const badges: Record<string, { text: string; class: string }> = {
       'SUCCESS': { text: 'Berhasil', class: 'status-success' },
       'PENDING': { text: 'Pending', class: 'status-pending' },
       'FAILED': { text: 'Gagal', class: 'status-failed' }
@@ -177,5 +180,13 @@ export default function HistoriPembelianPage() {
 
         </div>
       </main>
+  );
+}
+
+export default function HistoriPembelianPage() {
+  return (
+    <ProtectedRoute>
+      <HistoriPembelianContent />
+    </ProtectedRoute>
   );
 }

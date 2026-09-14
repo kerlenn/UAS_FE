@@ -37,9 +37,23 @@ export default function LoginPage() {
 
       if (typeof window !== "undefined") {
         localStorage.setItem("currentUser", JSON.stringify(data.user));
-
         localStorage.setItem("userEmail", data.user.email);
         localStorage.setItem("userName", data.user.fullname);
+
+        try {
+          const txRes = await fetch(`/api/transactions/list?email=${data.user.email}`);
+          if (txRes.ok) {
+            const txData = await txRes.json();
+            if (Array.isArray(txData)) {
+              const purchasedIds = txData
+                .filter((t: { status: string; courseId: string }) => t.status === 'SUCCESS')
+                .map((t: { courseId: string }) => Number(t.courseId));
+              localStorage.setItem("purchasedCourses", JSON.stringify(purchasedIds));
+            }
+          }
+        } catch (syncErr) {
+          console.error("Could not sync purchases:", syncErr);
+        }
       }
 
       router.push("/");

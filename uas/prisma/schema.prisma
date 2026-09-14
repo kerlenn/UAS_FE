@@ -42,4 +42,14 @@ model Course {
   price       Int
   instructor  String?
   
-  }
+  @@map("courses")
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  userEmail String
+  content   String
+  createdAt DateTime @default(now())
+
+  @@map("feedbacks")
+}
