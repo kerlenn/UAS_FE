@@ -33,7 +33,10 @@ export async function POST(request: Request) {
     console.error("Login API Error:", error);
 
     return NextResponse.json(
-      { error: 'Terjadi kesalahan server' },
+      {
+        error: 'Terjadi kesalahan server',
+        details: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }

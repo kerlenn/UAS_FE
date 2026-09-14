@@ -41,7 +41,10 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Register Error:', error);
     return NextResponse.json(
-      { error: 'Terjadi kesalahan pada server' },
+      {
+        error: 'Terjadi kesalahan pada server',
+        details: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }

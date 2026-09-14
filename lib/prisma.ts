@@ -7,8 +7,8 @@ function getDatabaseUrl(): string {
     return process.env.DATABASE_URL;
   }
 
-  // When running in Vercel serverless environment
-  if (process.env.VERCEL) {
+  // When running in Vercel / serverless environment
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
     const tmpDbPath = '/tmp/dev.db';
 
     if (!fs.existsSync(tmpDbPath)) {
@@ -16,6 +16,7 @@ function getDatabaseUrl(): string {
       if (fs.existsSync(sourceDbPath)) {
         try {
           fs.copyFileSync(sourceDbPath, tmpDbPath);
+          fs.chmodSync(tmpDbPath, 0o666);
         } catch (err) {
           console.error('Failed to copy db to /tmp:', err);
         }
