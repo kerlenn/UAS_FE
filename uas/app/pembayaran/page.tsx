@@ -103,7 +103,7 @@ const handlePay = async () => {
 
     const result = await response.json();
     console.log('📥 Response:', result);
-
+  
     if (response.ok) {
       // Simpan status pembelian ke localStorage
       try {
@@ -116,7 +116,6 @@ const handlePay = async () => {
       } catch (err) {
         console.error('Failed to update purchasedCourses in localStorage:', err);
       }
-
       if (selectedCourse.price === 0) {
         alert(`Berhasil mendaftar kursus gratis: ${selectedCourse.title}!`);
       } else {

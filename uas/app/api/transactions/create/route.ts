@@ -6,53 +6,58 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { email, courseId, amount, paymentMethod } = body;
 
-    // 1. Cari User ID berdasarkan email
+    if (!email || !courseId || amount === undefined) {
+      return NextResponse.json(
+        { error: 'Data transaksi tidak lengkap' },
+        { status: 400 }
+      );
+    }
+
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: email },
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User tidak ditemukan' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'User tidak ditemukan' },
+        { status: 404 }
+      );
     }
 
-    // 2. CEK APAKAH SUDAH PERNAH BELI (TAMBAHAN INI)
     const existingTransaction = await prisma.transaction.findFirst({
       where: {
         userId: user.id,
-        courseId: String(courseId),
-        status: 'SUCCESS'
+        courseId: Number(courseId),
+        status: "SUCCESS" 
       }
     });
 
     if (existingTransaction) {
       return NextResponse.json(
-        { error: 'Anda sudah membeli kursus ini' },
-        { status: 400 }
+        { message: 'Anda sudah memiliki kursus ini', transaction: existingTransaction },
+        { status: 200 }
       );
     }
 
-    // 3. Simpan Transaksi ke Database
     const newTransaction = await prisma.transaction.create({
       data: {
         userId: user.id,
-        courseId: String(courseId),
+        courseId: Number(courseId), 
         amount: Number(amount),
         paymentMethod: paymentMethod || 'free',
-        status: 'SUCCESS',
+        status: 'SUCCESS', 
       },
     });
 
-    console.log('✅ Transaction created:', newTransaction);
-
     return NextResponse.json(
-      { message: 'Transaksi berhasil', data: newTransaction },
+      { message: 'Transaksi berhasil', transaction: newTransaction },
       { status: 201 }
     );
 
   } catch (error) {
     console.error('Create Transaction Error:', error);
     return NextResponse.json(
-      { error: 'Gagal memproses transaksi' },
+      { error: 'Terjadi kesalahan saat memproses transaksi' },
       { status: 500 }
     );
   }
