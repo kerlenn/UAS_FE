@@ -161,7 +161,7 @@ export default function DetailOOPPage() {
                 <ul>
                   <li>Konsep Class dan Object.</li>
                   <li>Implementasi Inheritance dan Polymorphism.</li>
-                  <li>Prinsip DRY (Don't Repeat Yourself).</li>
+                  <li>Prinsip DRY (Don&apos;t Repeat Yourself).</li>
                   <li>Membuat kode yang mudah dirawat (Maintainable).</li>
                 </ul>
               </div>

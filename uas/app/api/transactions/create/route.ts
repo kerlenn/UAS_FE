@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     const existingTransaction = await prisma.transaction.findFirst({
       where: {
         userId: user.id,
-        courseId: Number(courseId),
+        courseId: String(courseId),
         status: "SUCCESS" 
       }
     });
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     const newTransaction = await prisma.transaction.create({
       data: {
         userId: user.id,
-        courseId: Number(courseId), 
+        courseId: String(courseId), 
         amount: Number(amount),
         paymentMethod: paymentMethod || 'free',
         status: 'SUCCESS', 
